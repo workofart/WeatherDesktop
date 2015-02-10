@@ -2,11 +2,9 @@
 public class LongForecastEntry{
 
 	private float  minTemp, maxTemp,temperature;
-	private String pressure,weather, icon, humidity, sunrise, sunset, time;
+	private String pressure,weather, icon, humidity, time;
 	
-	public LongForecastEntry(String sunrise, String sunset, String weather, String icon, float temperature, String humidity, String pressure, float minTemp, float maxTemp, String time) {
-		this.sunrise = sunrise;
-		this.sunset = sunset;
+	public LongForecastEntry(String weather, String icon, float temperature, String humidity, String pressure, float minTemp, float maxTemp, String time) {
 		this.weather = weather;
 		this.icon = icon;
 		this.temperature = temperature;
@@ -19,8 +17,6 @@ public class LongForecastEntry{
 	public String toString(){
 		String result = "";
 		result = result +
-				 "Sunrise " + sunrise + "\n" +
-				 "Sunset " + sunset + "\n" +
 				 "Weather " + weather + "\n" +
 				 "Icon " + icon + "\n" +
 				 "Temperature in K " + getTemp(0) + "\n" +
@@ -42,13 +38,6 @@ public class LongForecastEntry{
 	}
 	public String getTime(){
 		return time;
-	}
-	public String getSunrise(){
-		return sunrise;
-	}
-	
-	public String getSunset(){
-		return sunset;
 	}
 	
 	public String getHumidity(){

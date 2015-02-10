@@ -6,8 +6,7 @@ public class LongForecast {
 		JSonParser data = new JSonParser(getter);
 		list = new LongForecastEntry[5];
 		for(int i = 1; i < 6; i++){
-			list[i-1] = new LongForecastEntry("",
-											"",
+			list[i-1] = new LongForecastEntry(
 											str(data.findObject("list|"+i+"|weather|0|main").getContent()),
 											str(data.findObject("list|"+i+"|weather|0|icon").getContent()),
 											Float.parseFloat(data.findObject("list|"+i+"|temp|day").getContent()),
@@ -25,12 +24,6 @@ public class LongForecast {
 	 */
 	private String str(String s){
 		return s.substring(1,s.length()-1);
-	}
-	public String getSunrise(int index){
-		return list[index].getSunrise();
-	}
-	public String getSunset(int index){
-		return list[index].getSunset();
 	}
 	public String getHumidity(int index){
 		return list[index].getHumidity();
