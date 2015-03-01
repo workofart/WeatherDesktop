@@ -1,30 +1,30 @@
+package weather;
+
+
+import data.JSONObject;
+import data.Query;
+
 public class LongForecast {
 	private LongForecastEntry[] list;
 	
 	public LongForecast(String city){
+		// get the long term weather from online and save the data in an array
 		Query getter = new Query(city,2);
-		JSonParser data = new JSonParser(getter);
+		JSONObject data = new JSONObject(getter.toString());
 		list = new LongForecastEntry[5];
 		for(int i = 1; i < 6; i++){
 			list[i-1] = new LongForecastEntry(
-											str(data.findObject("list|"+i+"|weather|0|main").getContent()),
-											str(data.findObject("list|"+i+"|weather|0|icon").getContent()),
-											Float.parseFloat(data.findObject("list|"+i+"|temp|day").getContent()),
-											data.findObject("list|"+i+"|humidity").getContent() + " %",
-											data.findObject("list|"+i+"|pressure").getContent() + " hPa",
-											Float.parseFloat(data.findObject("list|"+i+"|temp|min").getContent()),
-											Float.parseFloat(data.findObject("list|"+i+"|temp|max").getContent()),
-											new java.util.Date((long)Integer.parseInt(data.findObject("list|"+i+"|dt").getContent()) * 1000).toString().substring(4, 10));
+											data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description"),
+											data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
+											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("day"),
+											data.getJSONArray("list").getJSONObject(i).getInt("humidity") + " %",
+											data.getJSONArray("list").getJSONObject(i).getDouble("pressure") + " hPa",
+											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("min"),
+											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("max"),
+											new java.util.Date((long)data.getJSONArray("list").getJSONObject(i).getInt("dt") * 1000).toString().substring(4, 10));
 		}
 	}
-	/**
-	 * helper method to format string data
-	 * @param s data as string to be formatted
-	 * @return the formatted string data
-	 */
-	private String str(String s){
-		return s.substring(1,s.length()-1);
-	}
+	
 	public String getHumidity(int index){
 		return list[index].getHumidity();
 	}
@@ -56,7 +56,7 @@ public class LongForecast {
 		String result = "";
 		for(int i = 0; i < 5; i++){
 			result = result + i + "\n" +
-					list[i] + "\n";
+					list[i] + "\n\n";
 		}
 		return result;
 	}

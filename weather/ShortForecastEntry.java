@@ -1,8 +1,11 @@
+package weather;
+
+
 public class ShortForecastEntry {
-		private float temperature;
+		private double temperature;
 		private String weather, icon, time;
 		
-		public ShortForecastEntry(String time, String weather, String icon, float temperature){
+		public ShortForecastEntry(String time, String weather, String icon, double temperature){
 			this.time = time;
 			this.temperature = temperature;
 			this.weather = weather;

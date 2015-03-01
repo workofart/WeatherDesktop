@@ -1,3 +1,8 @@
+package weather;
+import data.JSONArray;
+import data.JSONObject;
+import data.Query;
+
 /**
  * This class contains all the data for current weather
  * @author Team8
@@ -7,34 +12,39 @@ public class CurrentWeather {
 	private String sunrise, // sunrise time
 				   sunset, // sunset time
 				   weather, // main weather description
-				   icon, // weather icon
-				   humidity, // humidity in %
-				   pressure, // pressure in hPa
-				   speed, // wind speed in m/s
-				   direction;// wind direction in meteorology
-	private float temperature, // Temperature in K
+				   direction,// wind direction in meteorology
+				   icon; // weather icon
+				   
+				   
+	private double temperature, // Temperature in K
+					pressure, // pressure in hPa
+					speed, // wind speed in m/s
+		   			
 				  minTemp, // Temperature in K
 				  maxTemp; // Temperature in K
+	private int	humidity; // humidity in %
+				
 	
 	/**
 	 * Constructor for the current weather
 	 * @param city the city to be search about
 	 */
 	public CurrentWeather(String city){
+		// get the JSON String from web sites
 		Query getter = new Query(city,0);
-		JSonParser data = new JSonParser(getter);
-		// extract data from JsonObject
-		sunrise = new java.util.Date((long)num(data.findObject("sys|sunrise").getContent()) * 1000).toString().substring(11, 19);
-		sunset = new java.util.Date((long)num(data.findObject("sys|sunset").getContent()) * 1000).toString().substring(11, 19);
-		weather = str(data.findObject("weather|0|main").getContent());
-		icon = str(data.findObject("weather|0|icon").getContent());
-		humidity = data.findObject("main|humidity").getContent() + " %";
-		temperature = flo(data.findObject("main|temp").getContent());
-		pressure = data.findObject("main|pressure").getContent() + " hPa";
-		minTemp = flo(data.findObject("main|temp_min").getContent());
-		maxTemp= flo(data.findObject("main|temp_max").getContent());
-		speed = data.findObject("wind|speed").getContent() + " m/s";
-		makeDirection(flo(data.findObject("wind|deg").getContent()));
+		// extract the data from JSON
+		JSONObject data = new JSONObject(getter.toString());
+		sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,19);
+		sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,19);
+		weather = data.getJSONArray("weather").getJSONObject(0).getString("description");
+		icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
+		humidity = data.getJSONObject("main").getInt("humidity");
+		temperature = data.getJSONObject("main").getDouble("temp");
+		pressure = data.getJSONObject("main").getDouble("pressure");
+		minTemp = data.getJSONObject("main").getDouble("temp_min");
+		maxTemp = data.getJSONObject("main").getDouble("temp_max");
+		speed = data.getJSONObject("wind").getInt("speed");
+		makeDirection(data.getJSONObject("wind").getInt("deg"));
 	}
 	
 	/**
@@ -57,32 +67,7 @@ public class CurrentWeather {
 		direction = array[dir];
 	}
 	
-	/**
-	 * helper method to format string data
-	 * @param s data as string to be formatted
-	 * @return the formatted string data
-	 */
-	private String str(String s){
-		return s.substring(1,s.length()-1);
-	}
 	
-	/**
-	 * helper method to format integer data
-	 * @param s data as string to be formatted
-	 * @return the formatted integer data
-	 */
-	private int num(String s){
-		return Integer.parseInt(s);
-	}
-	
-	/**
-	 * helper method to format float number data
-	 * @param s data as string to be formatted
-	 * @return the formatted float number data
-	 */
-	private float flo(String s){
-		return Float.parseFloat(s);
-	}
 	/**
 	 * getter method for sunrise
 	 * @return sunrise time as String
@@ -111,27 +96,7 @@ public class CurrentWeather {
 	public String getIcon(){
 		return icon;
 	}
-	/**
-	 * getter method for humidity
-	 * @return humidity as String
-	 */
-	public String getHumidity(){
-		return humidity;
-	}
-	/**
-	 * getter method for pressure
-	 * @return air pressure as String
-	 */
-	public String getPressure(){
-		return pressure;
-	}
-	/**
-	 * getter method for wind speed
-	 * @return wind speed as String
-	 */
-	public String getSpeed(){
-		return speed;
-	}
+	
 	/**
 	 * getter method for wind direction
 	 * @return wind direction as String
@@ -152,7 +117,7 @@ public class CurrentWeather {
 		if(unit == 1){
 			return Math.round(temperature - 273.15) + " C";
 		}
-		return Math.round(temperature * 9 / 5 - 459.67) + " F";
+		return Math.round(temperature * 9.0 / 5.0 - 459.67) + " F";
 	}
 
 	/**
@@ -167,7 +132,7 @@ public class CurrentWeather {
 		if(unit == 1){
 			return Math.round(minTemp - 273.15) + " C";
 		}
-		return Math.round(minTemp * 9 / 5 - 459.67) + " F";
+		return Math.round(minTemp * 9.0 / 5.0 - 459.67) + " F";
 	}
 
 	/**
@@ -182,7 +147,7 @@ public class CurrentWeather {
 		if(unit == 1){
 			return Math.round(maxTemp - 273.15) + " C";
 		}
-		return Math.round(maxTemp * 9 / 5 - 459.67) + " F";
+		return Math.round(maxTemp * 9.0 / 5.0 - 459.67) + " F";
 	}
 	/**
 	 * toString method for current weather object
@@ -209,7 +174,49 @@ public class CurrentWeather {
 	}
 
 	public static void main(String[] args){
-		CurrentWeather weather  = new CurrentWeather("London,GB");
+		CurrentWeather weather  = new CurrentWeather("London,CA");
 		System.out.println(weather);
+	}
+
+	/**
+	 * @return the temperature
+	 */
+	public double getTemperature() {
+		return temperature;
+	}
+
+	/**
+	 * @return the pressure
+	 */
+	public double getPressure() {
+		return pressure;
+	}
+
+	/**
+	 * @return the speed
+	 */
+	public double getSpeed() {
+		return speed;
+	}
+
+	/**
+	 * @return the minTemp
+	 */
+	public double getMinTemp() {
+		return minTemp;
+	}
+
+	/**
+	 * @return the maxTemp
+	 */
+	public double getMaxTemp() {
+		return maxTemp;
+	}
+
+	/**
+	 * @return the humidity
+	 */
+	public int getHumidity() {
+		return humidity;
 	}
 }

@@ -1,10 +1,13 @@
+package weather;
+
+
 
 public class LongForecastEntry{
 
-	private float  minTemp, maxTemp,temperature;
+	private double  minTemp, maxTemp,temperature;
 	private String pressure,weather, icon, humidity, time;
 	
-	public LongForecastEntry(String weather, String icon, float temperature, String humidity, String pressure, float minTemp, float maxTemp, String time) {
+	public LongForecastEntry(String weather, String icon, double temperature, String humidity, String pressure, double minTemp, double maxTemp, String time) {
 		this.weather = weather;
 		this.icon = icon;
 		this.temperature = temperature;
@@ -95,6 +98,72 @@ public class LongForecastEntry{
 			return Math.round(maxTemp - 273.15) + " C";
 		}
 		return Math.round(maxTemp * 9 / 5 - 459.67) + " F";
+	}
+	/**
+	 * @return the minTemp
+	 */
+	public double getMinTemp() {
+		return minTemp;
+	}
+	/**
+	 * @return the maxTemp
+	 */
+	public double getMaxTemp() {
+		return maxTemp;
+	}
+	/**
+	 * @return the temperature
+	 */
+	public double getTemperature() {
+		return temperature;
+	}
+	/**
+	 * @param minTemp the minTemp to set
+	 */
+	public void setMinTemp(double minTemp) {
+		this.minTemp = minTemp;
+	}
+	/**
+	 * @param maxTemp the maxTemp to set
+	 */
+	public void setMaxTemp(double maxTemp) {
+		this.maxTemp = maxTemp;
+	}
+	/**
+	 * @param temperature the temperature to set
+	 */
+	public void setTemperature(double temperature) {
+		this.temperature = temperature;
+	}
+	/**
+	 * @param pressure the pressure to set
+	 */
+	public void setPressure(String pressure) {
+		this.pressure = pressure;
+	}
+	/**
+	 * @param weather the weather to set
+	 */
+	public void setWeather(String weather) {
+		this.weather = weather;
+	}
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	/**
+	 * @param humidity the humidity to set
+	 */
+	public void setHumidity(String humidity) {
+		this.humidity = humidity;
+	}
+	/**
+	 * @param time the time to set
+	 */
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
 }

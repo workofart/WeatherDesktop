@@ -1,19 +1,23 @@
+package weather;
+
+
+import data.JSONObject;
+import data.Query;
+
 public class ShortForecast {
 	
 	private ShortForecastEntry[] list;
 	public ShortForecast(String city){
+		// get data from online and save the first eight entries as an array of short forecast entries
 		Query getter = new Query(city,1);
-		JSonParser data = new JSonParser(getter);
+		JSONObject data = new JSONObject(getter.toString());
 		list = new ShortForecastEntry[8];
 		for(int i = 0; i < 8; i++){
-			list[i] = new ShortForecastEntry(data.findObject("list|"+i+"|dt_txt").getContent().substring(11,19),
-										 	 str(data.findObject("list|"+i+"|weather|0|main").getContent()),
-										 	 str(data.findObject("list|"+i+"|weather|0|icon").getContent()),
-										 	 Float.parseFloat(data.findObject("list|"+i+"|main|temp").getContent()));
+			list[i] = new ShortForecastEntry(data.getJSONArray("list").getJSONObject(i).getString("dt_txt").substring(11,19),
+										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description"),
+										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
+										 	 data.getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp"));
 		}
-	}
-	private String str(String s){
-		return s.substring(1,s.length()-1);
 	}
 	
 	public String toString(){

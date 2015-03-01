@@ -1,5 +1,6 @@
+package data;
 /**
- * class to fetch data from internet
+ * class to fetch data from Internet
  * @author Team8
  */
 import java.io.BufferedReader;
@@ -43,9 +44,9 @@ public class Query {
 	
 	public static void main(String[] args){
 		Query getter = new Query("London,gb", 2);
-		System.out.println(getter);
-		//getter = new Query("",3);
 		//System.out.println(getter);
+		//getter = new Query("",3);
+		System.out.println(getter);
 	}
 	
 }
