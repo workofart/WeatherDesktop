@@ -140,7 +140,6 @@ public class JSONObject {
     *            A JSONObject.
     * @param names
     *            An array of strings.
-    * @throws JSONException
     * @exception JSONException
     *                If a value is a non-finite number or if a name is
     *                duplicated.
@@ -216,7 +215,6 @@ public class JSONObject {
     * @param map
     *            A map object that can be used to initialize the contents of
     *            the JSONObject.
-    * @throws JSONException
     */
    public JSONObject(Map<String, Object> map) {
        this.map = new HashMap<String, Object>();
@@ -580,7 +578,7 @@ public class JSONObject {
 
    /**
     * Get an array of field names from a JSONObject.
-    *
+    * @param jo JSONObject to read name from
     * @return An array of field names, or null if there are no names.
     */
    public static String[] getNames(JSONObject jo) {
@@ -600,7 +598,7 @@ public class JSONObject {
 
    /**
     * Get an array of field names from an Object.
-    *
+    * @param object the object to read name from
     * @return An array of field names, or null if there are no names.
     */
    public static String[] getNames(Object object) {
@@ -1027,9 +1025,8 @@ public class JSONObject {
     * @param value
     *            A Collection value.
     * @return this.
-    * @throws JSONException
     */
-   public JSONObject put(String key, Collection<Object> value) throws JSONException {
+   public JSONObject put(String key, Collection<Object> value){
        this.put(key, new JSONArray(value));
        return this;
    }
@@ -1091,9 +1088,8 @@ public class JSONObject {
     * @param value
     *            A Map value.
     * @return this.
-    * @throws JSONException
     */
-   public JSONObject put(String key, Map<String, Object> value) throws JSONException {
+   public JSONObject put(String key, Map<String, Object> value) {
        this.put(key, new JSONObject(value));
        return this;
    }
@@ -1169,7 +1165,7 @@ public class JSONObject {
 
    /**
     * Produce a string in double quotes with backslash sequences in all the
-    * right places. A backslash will be inserted within </, producing <\/,
+    * right places. A backslash will be inserted within , producing ,
     * allowing JSON text to be delivered in HTML. In JSON text, a string cannot
     * contain a control character or an unescaped quote or backslash.
     *
@@ -1554,11 +1550,10 @@ public class JSONObject {
     * compactness, no whitespace is added.
     * <p>
     * Warning: This method assumes that the data structure is acyclical.
-    *
+    * @param writer object to write
     * @return The writer.
-    * @throws JSONException
     */
-   public Writer write(Writer writer) throws JSONException {
+   public Writer write(Writer writer) {
        return this.write(writer, 0, 0);
    }
 

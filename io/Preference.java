@@ -1,9 +1,17 @@
-package io;
 
+package io;
+/**
+ * object to store user preference
+ * @author team 8
+ */
 public class Preference {
+	// attribute for current location and temperature unit
 	private String location;
 	private int tempUnit;
 	
+	/**
+	 * constructor to use default location and unit
+	 */
 	public Preference(){
 		location = "London,ca";
 		tempUnit = 1;

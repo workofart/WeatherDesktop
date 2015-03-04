@@ -1,16 +1,22 @@
+
 package weather;
 
 
 import data.JSONException;
 import data.JSONObject;
 import data.Query;
-
-public final class MarsWeather {
+/**
+ * Class for Mars Weather
+ * @author team8
+ */
+public final class MarsWeather{
 	private double wind_speed,min_temp, min_temp_fahrenheit, max_temp, max_temp_fahrenheit, pressure;
 	private int humidity; // Atmospheric Pressure
 	private String  wind_direction, weather, icon;
 			
-	// Constructor
+	/**
+	 * constructor to get data from website and store
+	 */
 	public MarsWeather(){
 		Query getter = new Query(null, 3);
 		// get data from JSON
@@ -46,7 +52,9 @@ public final class MarsWeather {
 	
 
 	/**
-	 * @return the min_temp
+	 * get minTemp field in the object with proper unit
+	 * @param unit the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
+	 * @return the report_temp_min minimum expected temperature
 	 */
 	public String getMinTemp(int unit) {
 		if(unit == 0){
@@ -59,7 +67,9 @@ public final class MarsWeather {
 	}
 
 	/**
-	 * @return the max_temp
+	 * get maxTemp field in the object with proper unit
+	 * @param unit the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
+	 * @return the report_temp_max minimum expected temperature
 	 */
 	public String getMaxTemp(int unit) {
 		if(unit == 0){
@@ -72,6 +82,7 @@ public final class MarsWeather {
 	}
 
 	/**
+	 * getter method for air pressure
 	 * @return the pressure
 	 */
 	public String getPressure() {
@@ -79,6 +90,7 @@ public final class MarsWeather {
 	}
 
 	/**
+	 * getter method for wind direction
 	 * @return the wind_direction
 	 */
 	public String getDirection() {
@@ -86,27 +98,47 @@ public final class MarsWeather {
 	}
 
 	/**
+	 * getter method for main weather description
 	 * @return the atmo_opacity
 	 */
 	public String getWeather() {
 		return weather;
 	}
-
+	
+	/**
+	 * getter method for icon code
+	 * @return icon code in String
+	 */
 	public String getIcon(){
 		return icon;
 	}
+	
+	/**
+	 * getter method for wind speed in kph
+	 * @return wind speed in String
+	 */
 	public String getSpeed(){
 		if(this.wind_speed == -1.0f){
 			return "--";
 		}
 		return wind_speed + " kph";
 	}
+	
+	/**
+	 * getter method for humidity
+	 * @return humidity in String
+	 */
 	public String getHumidity(){
 		if(this.humidity == -1.0f){
 			return "--";
 		}
 		return humidity + "%";
 	}
+	
+	/**
+	 * method to generate a String contains all the information
+	 * @return String all the information
+	 */
 	public String toString(){
 		return "Weather description " + this.weather + "\n" +
 			   "Weather Icon " + this.icon + "\n" +
@@ -121,41 +153,52 @@ public final class MarsWeather {
 			   "Wind speed " + this.wind_speed + "\n" +
 			   "Wind direction " + this.wind_direction;
 	}
+	
+	/**
+	 * test method 
+	 * @param args parameter from command line
+	 */
 	public static void main(String[] args){
 		MarsWeather weather = new MarsWeather();
 		System.out.println(weather);
 	}
 	/**
+	 * getter method for wind speed
 	 * @return the wind_speed
 	 */
 	public double getWind_speed() {
 		return wind_speed;
 	}
 	/**
+	 * getter method for minimum temperature in C
 	 * @return the min_temp
 	 */
 	public double getMin_temp() {
 		return min_temp;
 	}
 	/**
+	 * getter method for minimum temperature in F
 	 * @return the min_temp_fahrenheit
 	 */
 	public double getMin_temp_fahrenheit() {
 		return min_temp_fahrenheit;
 	}
 	/**
+	 * getter method for maximum temperature in C
 	 * @return the max_temp
 	 */
 	public double getMax_temp() {
 		return max_temp;
 	}
 	/**
+	 * getter method for maximum temperature in F
 	 * @return the max_temp_fahrenheit
 	 */
 	public double getMax_temp_fahrenheit() {
 		return max_temp_fahrenheit;
 	}
 	/**
+	 * getter method for wind direction
 	 * @return the wind_direction
 	 */
 	public String getWind_direction() {

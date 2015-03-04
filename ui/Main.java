@@ -1,3 +1,4 @@
+
 package ui;
 
 import io.Preference;
@@ -14,19 +15,31 @@ import javax.swing.JPanel;
 import weather.CurrentWeather;
 import weather.LongForecast;
 import weather.ShortForecast;
-
+/**
+ * Main Window Class
+ * @author team8
+ */
 
 public class Main {
+	// three main panel for current weather, short forecast and long forecast
 	private static TodayPanel tpanel;
 	private static SForecastPanel[] spanelArray;
 	private static LForecastPanel[] lpanelArray;
 	
+	/**
+	 * the program starts here
+	 * @param args parameter from command line
+	 */
 	public static void main(String[] args) {
 		init();
 		Preference pref = new Preference();
 		refresh(pref);
 	}
 	
+	/**
+	 * helper method to refresh main window according to the preference object
+	 * @param pref the Preference object that contain all the preference data
+	 */
 	private static void refresh(Preference pref){
 		int tempUnit = pref.getTempUnit();
 		String location = pref.getLocation();
@@ -37,14 +50,14 @@ public class Main {
 		tpanel.setPresLabel(data.getPressure());
 		tpanel.setHumLabel(data.getHumidity());
 		tpanel.setWinLabel(data.getSpeed(), data.getDirection());
+		tpanel.setIcon(data.getIcon());
 		
 		ShortForecast sdata = new ShortForecast(location);
 		
-		for(int i = 0; i < 7; i++){
+		for(int i = 0; i < 8; i++){
 			spanelArray[i].setTemp(sdata.getTemp(i, tempUnit), tempUnit);
-			
+			spanelArray[i].setIcon(sdata.getIcon(i));
 			spanelArray[i].setSky(sdata.getWeather(i));
-			System.out.println("short refresh " + i);
 		}
 		
 		LongForecast ldata = new LongForecast(location);
@@ -52,10 +65,14 @@ public class Main {
 		for(int i = 0; i < 5; i++){
 			lpanelArray[i].setTemp(ldata.getTemp(i, tempUnit), tempUnit);
 			lpanelArray[i].setSky(ldata.getWeather(i));
+			lpanelArray[i].setIcon(ldata.getIcon(i));
 		}
 		
 	}
 	
+	/**
+	 * helper method to initialize windows
+	 */
 	private static void init(){
 		JFrame frame = new JFrame("Stage 2");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +88,7 @@ public class Main {
 		con.gridheight=1;
 		con.weighty=0.4;
 		con.weightx=1;
-		tpanel=new TodayPanel();
+		tpanel = new TodayPanel();
 		frame.add(tpanel,con);
 		
 		//*****Short Term Panels****
@@ -80,9 +97,9 @@ public class Main {
 		spanels.setBackground(Color.magenta);
 		spanels.setLayout(new BoxLayout(spanels,BoxLayout.PAGE_AXIS));
 		spanels.setPreferredSize(new Dimension(262,(int)(910*0.7)));
-		spanelArray=new SForecastPanel[7];
+		spanelArray = new SForecastPanel[8];
 		for(int i=0;i<spanelArray.length;i++){
-			spanelArray[i]=new SForecastPanel(i);
+			spanelArray[i]=new SForecastPanel();
 			spanels.add(spanelArray[i]);
 		}
 		con.fill = GridBagConstraints.BOTH;

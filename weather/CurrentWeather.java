@@ -107,47 +107,47 @@ public class CurrentWeather {
 	
 	/**
 	 * getter method for temperature in the needed format
-	 * @param n the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
+	 * @param unit the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
 	 * @return the main_temp in String format
 	 */
 	public String getTemp(int unit) {
 		if(unit == 0){
-			return Math.round(temperature) + " K";
+			return Math.round(temperature) + "";
 		}
 		if(unit == 1){
-			return Math.round(temperature - 273.15) + " C";
+			return Math.round(temperature - 273.15) + "";
 		}
-		return Math.round(temperature * 9.0 / 5.0 - 459.67) + " F";
+		return Math.round(temperature * 9.0 / 5.0 - 459.67) + "";
 	}
 
 	/**
 	 * getter method for minimum expected temperature in the needed format
-	 * @param n the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
+	 * @param unit the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
 	 * @return the main_temp_min minimum expected temperature
 	 */
 	public String getMinTemp(int unit) {
 		if(unit == 0){
-			return Math.round(minTemp) + " K";
+			return Math.round(minTemp) + "";
 		}
 		if(unit == 1){
-			return Math.round(minTemp - 273.15) + " C";
+			return Math.round(minTemp - 273.15) + "";
 		}
-		return Math.round(minTemp * 9.0 / 5.0 - 459.67) + " F";
+		return Math.round(minTemp * 9.0 / 5.0 - 459.67) + "";
 	}
 
 	/**
 	 * getter method for maximum expected temperature in the needed format
-	 * @param n the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
+	 * @param unit the indicator for the unit of temperature, 0 - K, 1 - C, 2 - F
 	 * @return the main_temp_max maximum expected temperature
 	 */
 	public String getMaxTemp(int unit) {
 		if(unit == 0){
-			return Math.round(maxTemp) + " K";
+			return Math.round(maxTemp) + "";
 		}
 		if(unit == 1){
-			return Math.round(maxTemp - 273.15) + " C";
+			return Math.round(maxTemp - 273.15) + "";
 		}
-		return Math.round(maxTemp * 9.0 / 5.0 - 459.67) + " F";
+		return Math.round(maxTemp * 9.0 / 5.0 - 459.67) + "";
 	}
 	/**
 	 * toString method for current weather object
@@ -172,13 +172,18 @@ public class CurrentWeather {
 			   "Wind speed " + this.speed + "\n" +
 			   "Wind direction " + this.direction;
 	}
-
+	
+	/**
+	 * test method for Current Weather
+	 * @param args parameter from command line
+	 */
 	public static void main(String[] args){
 		CurrentWeather weather  = new CurrentWeather("London,CA");
 		System.out.println(weather);
 	}
 
 	/**
+	 * getter method for temperature
 	 * @return the temperature
 	 */
 	public double getTemperature() {
@@ -186,20 +191,23 @@ public class CurrentWeather {
 	}
 
 	/**
+	 * getter method for air Pressure
 	 * @return the pressure
 	 */
-	public double getPressure() {
-		return pressure;
+	public String getPressure() {
+		return pressure+"";
 	}
 
 	/**
+	 * getter method for wind speed
 	 * @return the speed
 	 */
-	public double getSpeed() {
-		return speed;
+	public String getSpeed() {
+		return speed+"";
 	}
 
 	/**
+	 * getter method for Minimum Temperature
 	 * @return the minTemp
 	 */
 	public double getMinTemp() {
@@ -207,6 +215,7 @@ public class CurrentWeather {
 	}
 
 	/**
+	 * getter method for Maximum Temperature
 	 * @return the maxTemp
 	 */
 	public double getMaxTemp() {
@@ -214,9 +223,10 @@ public class CurrentWeather {
 	}
 
 	/**
+	 * getter method for humidity
 	 * @return the humidity
 	 */
-	public int getHumidity() {
-		return humidity;
+	public String getHumidity() {
+		return humidity+"";
 	}
 }
