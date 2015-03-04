@@ -1,0 +1,38 @@
+<project>
+	<modelVersion> 4.0.0 </modelVersion>
+	<groupId> ca.uwo.csd.cs2212.team8 </groupId>
+	<artifactId> team8_TheWeather </artifactId>	
+	<packaging> jar </packaging>
+	<version> 1.0 </version>
+	<dependencies>
+
+
+
+</dependencies>
+	<build>
+		<plugins>
+  			<plugin>
+				<groupId> org.apache.maven.plugins </groupId>
+				<artifactId> maven-jar-plugin </artifactId>
+ 				<version>2.4 </version>
+ 				<configuration>
+ 					<archive>
+ 						<manifest>
+ 							<mainClass>ui.Main</mainClass>
+ 						</manifest>
+ 					</archive>
+				 </configuration>
+			</plugin>
+			<plugin>
+                		<artifactId>maven-compiler-plugin</artifactId>
+                    		<version>2.3.2</version>
+                    		<configuration>
+                        		<source>1.6</source>
+                        		<target>1.6</target>
+                        		<compilerArgument></compilerArgument>
+                    		</configuration>
+                	</plugin>		
+				 
+		</plugins>
+	</build>
+</project>
