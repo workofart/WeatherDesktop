@@ -93,7 +93,7 @@ public class TodayPanel extends JPanel{
 		spanels.setBackground(Color.magenta);
 		spanels.setLayout(new BoxLayout(spanels,BoxLayout.PAGE_AXIS));
 		spanels.setPreferredSize(new Dimension(262,(int)(910*0.7)));
-		SForecastPanel[] spanelarray=new SForecastPanel[7];
+		SForecastPanel[] spanelarray=new SForecastPanel[8];
 		for(int i=0;i<spanelarray.length;i++){
 			spanelarray[i]=new SForecastPanel(i);
 			spanels.add(spanelarray[i]);
