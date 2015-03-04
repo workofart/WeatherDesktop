@@ -80,7 +80,7 @@ public class Main {
 		spanels.setBackground(Color.magenta);
 		spanels.setLayout(new BoxLayout(spanels,BoxLayout.PAGE_AXIS));
 		spanels.setPreferredSize(new Dimension(262,(int)(910*0.7)));
-		spanelArray=new SForecastPanel[7];
+		spanelArray=new SForecastPanel[8];
 		for(int i=0;i<spanelArray.length;i++){
 			spanelArray[i]=new SForecastPanel(i);
 			spanels.add(spanelArray[i]);
