@@ -32,8 +32,8 @@ public class SForecastPanel extends JPanel{
 		
 		
 		
-		setPreferredSize(new Dimension(262,91));
-		setMinimumSize(new Dimension(262,91));
+		setPreferredSize(new Dimension(262,80));
+		setMinimumSize(new Dimension(262,80));
 		setMaximumSize(new Dimension(5000,5000));
 		
 	}
