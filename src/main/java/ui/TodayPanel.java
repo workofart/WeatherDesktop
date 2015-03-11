@@ -5,11 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -85,7 +88,7 @@ public class TodayPanel extends JPanel{
 	 * @param icon the icon code to be shown
 	 */
 	public void setIcon(String icon){
-		iconLabel.setIcon(new ImageIcon("src/main/resources/UI/Icon/"+icon+".png"));
+		iconLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/resources/UI/Icon/"+icon+".png")));
 	}
 
 
