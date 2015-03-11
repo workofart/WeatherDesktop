@@ -4,6 +4,8 @@ package io;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import data.JSONObject;
 
@@ -15,7 +17,7 @@ public class Preference {
 	// attribute for current location and temperature unit
 	private String location;
 	private int tempUnit;
-	private final String file = "src/main/resources/Preference/Preference";
+	private final String file = "Preference";
 	
 	/**
 	 * constructor to use default location and unit
@@ -57,8 +59,10 @@ public class Preference {
 	 * method to read from the preference file and set the attributes
 	 */
 	public void read(){
+		ClassLoader cl = this.getClass().getClassLoader();
+		InputStream input = cl.getResourceAsStream(file);
+		InputStreamReader reader = new InputStreamReader(input);
 		try{
-			FileReader reader = new FileReader(file);
 			JSONObject pref = new JSONObject(reader.read());
 			location = pref.getString("location");
 			tempUnit = pref.getInt("tempUnit");
@@ -85,7 +89,8 @@ public class Preference {
 	 */
 	private void init(){
 		try{
-			FileWriter writer = new FileWriter(file);
+			ClassLoader cl = this.getClass().getClassLoader();
+			FileWriter writer = cl.getResourceAsStream(file);
 			writer.write("{\"init\":\"true\",\"location\":\" null \",\"tempUnit\":\"null\"}");
 			writer.flush();
 		}catch(IOException e){

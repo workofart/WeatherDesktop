@@ -88,7 +88,8 @@ public class TodayPanel extends JPanel{
 	 * @param icon the icon code to be shown
 	 */
 	public void setIcon(String icon){
-		iconLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/resources/UI/Icon/"+icon+".png")));
+		ClassLoader cl = this.getClass().getClassLoader();
+		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
 	}
 
 
