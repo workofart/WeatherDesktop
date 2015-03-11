@@ -18,6 +18,9 @@ public class ShortForecast{
 	public ShortForecast(String city){
 		// get data from online and save the first eight entries as an array of short forecast entries
 		Query getter = new Query(city,1);
+		while(getter.toString() == null){
+			getter = new Query(city,1);
+		}
 		JSONObject data = new JSONObject(getter.toString());
 		list = new ShortForecastEntry[8];
 		for(int i = 0; i < 8; i++){

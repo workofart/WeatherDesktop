@@ -19,6 +19,9 @@ public class LongForecast{
 	public LongForecast(String city){
 		// get the long term weather from online and save the data in an array
 		Query getter = new Query(city,2);
+		while(getter.toString() == null){
+			getter = new Query(city,2);
+		}
 		JSONObject data = new JSONObject(getter.toString());
 		list = new LongForecastEntry[5];
 		for(int i = 1; i < 6; i++){
