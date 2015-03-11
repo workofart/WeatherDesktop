@@ -91,11 +91,6 @@ public class SForecastPanel extends JPanel{
 	 * @param icon the icon code for Open Weather API
 	 */
 	public void setIcon(String icon){
-		try{
-			BufferedImage image = ImageIO.read(new URL("http://openweathermap.org/img/w/" + icon+".png"));
-			iconLabel.setIcon(new ImageIcon(image));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+		iconLabel.setIcon(new ImageIcon("src/main/resources/UI/Icon/"+icon+".png"));
 	}
 }

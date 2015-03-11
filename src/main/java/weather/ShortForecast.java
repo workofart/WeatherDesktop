@@ -22,7 +22,7 @@ public class ShortForecast{
 		list = new ShortForecastEntry[8];
 		for(int i = 0; i < 8; i++){
 			list[i] = new ShortForecastEntry(data.getJSONArray("list").getJSONObject(i).getString("dt_txt").substring(11,19),
-										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description"),
+										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
 										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
 										 	 data.getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp"));
 		}
