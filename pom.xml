@@ -3,12 +3,13 @@
 	<groupId> ca.uwo.csd.cs2212.team8 </groupId>
 	<artifactId> team8_TheWeather </artifactId>	
 	<packaging> jar </packaging>
-	<version> 1.0 </version>
-	<dependencies>
+	<version>1.0</version>
 
 
+	<!--<properties>
+		<project.build.sourceEncoding> UTF-8 </project.build.sourceEncoding>
+	</properties>-->
 
-</dependencies>
 	<build>
 		<plugins>
   			<plugin>
@@ -34,5 +35,24 @@
                 	</plugin>		
 				 
 		</plugins>
+
+		<resources>
+        	        <resource>
+	                        <directory> src/main/resources/Preference </directory>
+        	        </resource>
+			<resource>
+                                <directory> src/main/resources/UI/Icon </directory>
+                        </resource>
+			<resource>
+                                <directory> src/main/resources/UI/Background/cool_temps </directory>
+                        </resource>
+			<resource>
+                                <directory> src/main/resources/UI/Background/warm_temps </directory>
+                        </resource>
+			<resource>
+                                <directory> src/main/resources/UI/Background/mars_UI </directory>
+                        </resource>
+	        </resources>
+
 	</build>
 </project>
