@@ -91,6 +91,8 @@ public class LForecastPanel extends JPanel{
 	 * @param icon the icon code for Open Weather API
 	 */
 	public void setIcon(String icon){
-		iconLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/resources/UI/Icon/"+icon+".png")));
+		java.net.URL imageURL = LForecastPanel.class.getResource("src/main/resources/UI/Icon/"+icon+".png");
+		System.out.println(imageURL);
+		iconLabel.setIcon(new ImageIcon(imageURL));
 	}
 }
