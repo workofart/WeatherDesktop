@@ -42,7 +42,7 @@ public class Query {
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			JSon = br.readLine();	
 		}catch(Exception e){
-			System.out.println("Query Problem\n");
+			System.out.println("Bad Connection, pulling again");
 		}
 	}
 	

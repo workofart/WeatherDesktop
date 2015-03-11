@@ -32,6 +32,9 @@ public class CurrentWeather {
 	public CurrentWeather(String city){
 		// get the JSON String from web sites
 		Query getter = new Query(city,0);
+		while(getter.toString() == null){
+			getter = new Query(city,0);
+		}
 		// extract the data from JSON
 		JSONObject data = new JSONObject(getter.toString());
 		sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,19);
