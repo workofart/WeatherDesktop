@@ -1,28 +1,40 @@
 
 package io;
-
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
-import data.JSONObject;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * object to store user preference
  * @author team 8
  */
-public class Preference {
-	// attribute for current location and temperature unit
+public class Preference implements Serializable {
+	/**
+	 * The user's current location
+	 */
 	private String location;
+	/**
+	 * The user's temperature unit
+	 */
 	private int tempUnit;
-	private final String file = "src/main/resources/Preference/Preference";
 	
 	/**
 	 * constructor to use default location and unit
 	 */
 	public Preference(){
-		location = "London,ca";
-		tempUnit = 1;
+		this("", 1);
+	}
+	
+	public Preference(String location, int tempUnit){
+		this.location = location;
+		this.tempUnit = tempUnit;
 	}
 
 	/**
@@ -53,52 +65,25 @@ public class Preference {
 		this.tempUnit = tempUnit;
 	}
 	
-	/**
-	 * method to read from the preference file and set the attributes
-	 */
-	public void read(){
-		try{
-			FileReader reader = new FileReader(file);
-			JSONObject pref = new JSONObject(reader.read());
-			location = pref.getString("location");
-			tempUnit = pref.getInt("tempUnit");
-		}catch(IOException e){
-			System.out.println(e.getMessage());
+	public static void main(String[] args) {
+		String path;
+		try {
+			path = URLDecoder.decode(Preference.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
+			System.out.println(path);
+			Preference p = new Preference("London,ca", 1);
+			File f = new File(path + ".Preference");
+			f.createNewFile();
+			System.out.println("File Not Exist, Created");
+			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(path + ".Preference"));
+			output.writeObject(p);
+			output.close();
+		} catch (UnsupportedEncodingException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * method to save the current attributes to the file as JSON text
-	 */
-	public void write(){
-		try{
-			FileWriter writer = new FileWriter(file);
-			writer.write("{\"init\":\"false\",\"location\":\"" + location + "\",\"tempUnit\":\"" + tempUnit + "\"}");
-			writer.flush();
-		}catch(IOException e){
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	/**
-	 * helper method to initiate the preference file
-	 */
-	private void init(){
-		try{
-			FileWriter writer = new FileWriter(file);
-			writer.write("{\"init\":\"true\",\"location\":\" null \",\"tempUnit\":\"null\"}");
-			writer.flush();
-		}catch(IOException e){
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	/**
-	 * static test method to initialize the preference file
-	 * @param args
-	 */
-	public static void main(String[] args){
-		Preference p = new Preference();
-		p.init();
-	}
+
 }

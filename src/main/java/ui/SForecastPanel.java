@@ -3,6 +3,7 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -91,6 +92,7 @@ public class SForecastPanel extends JPanel{
 	 * @param icon the icon code for Open Weather API
 	 */
 	public void setIcon(String icon){
-		iconLabel.setIcon(new ImageIcon("src/main/resources/UI/Icon/"+icon+".png"));
+		ClassLoader cl = this.getClass().getClassLoader();
+		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
 	}
 }
