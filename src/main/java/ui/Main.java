@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -20,11 +21,12 @@ import weather.ShortForecast;
  * @author team8
  */
 
-public class Main {
+public class Main{
 	// three main panel for current weather, short forecast and long forecast
 	private static TodayPanel tpanel;
 	private static SForecastPanel[] spanelArray;
 	private static LForecastPanel[] lpanelArray;
+	private static Preference pref;
 	
 	/**
 	 * the program starts here
@@ -32,15 +34,15 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		init();
-		Preference pref = new Preference();
-		refresh(pref);
+		pref = new Preference();
+		refresh();
 	}
 	
 	/**
 	 * helper method to refresh main window according to the preference object
 	 * @param pref the Preference object that contain all the preference data
 	 */
-	private static void refresh(Preference pref){
+	public static void refresh(){
 		int tempUnit = pref.getTempUnit();
 		String location = pref.getLocation();
 		CurrentWeather data = new CurrentWeather(location);
@@ -143,6 +145,14 @@ public class Main {
 		frame.pack();
 		frame.setSize(525,950);
 		frame.setVisible(true);
+	}
+	/**
+	 * 
+	 * @param new_pref
+	 * Updates preferences object of the program
+	 */
+	public static void choosePreferences(){
+		//Pop-up window here!
 	}
 	
 }

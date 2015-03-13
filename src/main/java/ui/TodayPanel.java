@@ -1,16 +1,21 @@
 
 package ui;
 
+import io.Preference;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,9 +26,9 @@ import weather.CurrentWeather;
  * @author team8
  */
 
-public class TodayPanel extends JPanel{
+public class TodayPanel extends JPanel implements ActionListener{
 	//label for temperature, wind, pressure, humidity, main weather and icon
-	private JLabel tempLabel, winLabel, presLabel, humLabel, sunLabel, iconLabel;
+	private JLabel tempLabel, winLabel, presLabel, humLabel, sunLabel, iconLabel, refreshLabel;
 	
 	/**
 	 * constructor to initialize all the text fields to hyphen
@@ -77,6 +82,35 @@ public class TodayPanel extends JPanel{
 		sunLabel.setBounds((int)tempLabel.getPreferredSize().getWidth()-70,(int)tempLabel.getPreferredSize().getHeight()+50,(int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 		this.add(sunLabel);
 		//icon
+		
+		
+		//Refresh button
+		JButton refresh_b=new JButton();
+		refresh_b.setText("<html><p style=\"color:black; font-size:14px\">Refresh</p></html>");
+		refresh_b.setBounds(0,0,(int)refresh_b.getPreferredSize().getWidth()+5,(int)refresh_b.getPreferredSize().getHeight()+5);
+		refresh_b.setOpaque(false);
+		refresh_b.setContentAreaFilled(false);
+		refresh_b.addActionListener(this);
+		this.add(refresh_b);
+		
+		
+		//Preferences Button
+		JButton pref_b=new JButton();
+		pref_b.setText("<html><p style=\"color:black; font-size:14px\">Preferences</p></html>");
+		pref_b.setBounds((int)(this.getPreferredSize().getWidth()-pref_b.getPreferredSize().getWidth())-20,0,(int)pref_b.getPreferredSize().getWidth()+5,(int)pref_b.getPreferredSize().getHeight()+5);
+		pref_b.setOpaque(false);
+		pref_b.setContentAreaFilled(false);
+		pref_b.addActionListener(this);
+		this.add(pref_b);
+		
+		
+		//Refresh label
+		refreshLabel=new JLabel();
+//		sunLabel.setOpaque(true);
+//		sunLabel.setBackground(Color.green);
+		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:dd-mm-yy</p></html>");
+		refreshLabel.setBounds((int)(this.getPreferredSize().getWidth()-refreshLabel.getPreferredSize().getWidth()-17),(int)(this.getPreferredSize().getHeight()-refreshLabel.getPreferredSize().getHeight()+5),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
+		this.add(refreshLabel);
 		
 		
 	}
@@ -143,6 +177,32 @@ public class TodayPanel extends JPanel{
 		sunLabel.setBounds((int)tempLabel.getPreferredSize().getWidth()-70,(int)tempLabel.getPreferredSize().getHeight()+50,(int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 	}
 	
+	
+	/**
+	 * refresh method for wind label
+	 * @param speed the wind speed to be shown in m/s
+	 * @param direction the wind direction to be shown
+	 */
+	public void setRefreshLabel(String date) {
+
+		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:"+date+"</p></html>");
+		refreshLabel.setBounds((int)(this.getPreferredSize().getWidth()-refreshLabel.getPreferredSize().getWidth()-20),(int)(this.getPreferredSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
+	}
+
+
+	
+	@Override
+	public void actionPerformed(ActionEvent e){
+		
+		if(e.getActionCommand().equals("<html><p style=\"color:black; font-size:14px\">Refresh</p></html>")){
+			System.out.println("Refreshing!!");
+			Main.refresh();
+		}else if(e.getActionCommand().equals("<html><p style=\"color:black; font-size:14px\">Preferences</p></html>")){
+			System.out.println("Let's get your preferences!");
+			Main.choosePreferences();
+		}
+		
+	}
 	
 
 	
