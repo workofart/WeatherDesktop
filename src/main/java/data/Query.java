@@ -32,11 +32,11 @@ public class Query {
 			break;
 		case THREE_HOUR_FORECAST:
 			address = "http://api.openweathermap.org/data/2.5/forecast?q=" + location+ 
-			"&APPID=1b9a3efc4f0b62ef0b0ba00532015985";
+			"&APPID=a59d2137be4e7f2ef70800bb88f5a7f5";
 			break;
 		case DAILY_FORECAST:
 			address = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + location 
-			+"&cnt=6&mode=json&APPID=1b9a3efc4f0b62ef0b0ba00532015985";
+			+"&cnt=6&mode=json&APPID=bed420cd0cdd025a171927dacc52d5d7";
 			break;
 		default:
 			address = "http://marsweather.ingenology.com/v1/latest/?format=json";
