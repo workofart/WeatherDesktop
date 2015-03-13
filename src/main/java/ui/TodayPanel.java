@@ -205,7 +205,6 @@ public class TodayPanel extends JPanel implements ActionListener{
 
 
 	
-	@Override
 	public void actionPerformed(ActionEvent e){
 		
 		if(e.getActionCommand().equals("<html><p style=\"color:black; font-size:14px\">Refresh</p></html>")){
