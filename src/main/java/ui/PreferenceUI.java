@@ -68,7 +68,7 @@ public class PreferenceUI extends JFrame {
 			JRadioButton[] a = {tempK, tempC, tempF};
 			a[pref.getTempUnit()].setSelected(true);
 			textField.setText(pref.getLocation());
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e){
 			this.setVisible(true);
 			tempC.setSelected(true);
 			textField.setText("Toronto,ca");
@@ -88,8 +88,8 @@ public class PreferenceUI extends JFrame {
 	
 	
 	private void init(){
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 241, 144);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		System.out.println("HERE!");
 		getContentPane().setLayout(null);
 		
 		lblLocation = new JLabel("Location");
@@ -177,6 +177,10 @@ public class PreferenceUI extends JFrame {
 		textField.setBounds(100, 15, 105, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
+		
+		pack();
+		setBounds(100, 100, 241, 144);
+		setVisible(true);
 	}
 	
 	public void showPreference(){

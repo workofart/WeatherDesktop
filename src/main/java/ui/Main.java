@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,26 +28,25 @@ import javax.swing.JPanel;
  * @author team8
  */
 
-public class Main {
+public class Main{
 	// three main panel for current weather, short forecast and long forecast
 	private static TodayPanel tpanel;
 	private static SForecastPanel[] spanelArray;
 	private static LForecastPanel[] lpanelArray;
 	private static PreferenceUI preference;
+	private static Preference pref;
 	
 	/**
 	 * the program starts here
 	 * @param args parameter from command line
 	 */
 	public static void main(String[] args) {
-		preference = new PreferenceUI();
 		init();
-		while(preference.isVisible()){
-			System.out.print("");
-		}
 		//System.out.println("refresh main window");
 		//System.out.println(preference.getLocationPref() +"\n" + preference.getUnitPref());
+		choosePreferences();
 		refresh(preference.getLocationPref(), preference.getUnitPref());
+		pref = new Preference();
 	}
 	
 	/**
@@ -56,7 +55,6 @@ public class Main {
 	 */
 	private static void refresh(String location, int tempUnit) throws JSONException{
 		if(location.toLowerCase().equals("mars")){
-			
 		}
 		else{
 			CurrentWeather data = new CurrentWeather(location);
@@ -84,6 +82,13 @@ public class Main {
 				lpanelArray[i].setIcon(ldata.getIcon(i));
 			}
 		}
+	}
+	
+	/**
+	 * Public method to refresh
+	 */	
+	public static void refresh(){
+		refresh(preference.getLocationPref(), preference.getUnitPref());
 	}
 	
 	/**
@@ -155,6 +160,15 @@ public class Main {
 		frame.pack();
 		frame.setSize(525,950);
 		frame.setVisible(true);
+	}
+	/**
+	 * 
+	 * @param new_pref
+	 * Updates preferences object of the program
+	 */
+	public static void choosePreferences(){
+		preference = new PreferenceUI();
+		refresh();
 	}
 	
 }
