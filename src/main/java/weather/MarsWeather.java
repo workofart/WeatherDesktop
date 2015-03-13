@@ -19,6 +19,9 @@ public final class MarsWeather{
 	 */
 	public MarsWeather(){
 		Query getter = new Query(null, 3);
+		while(getter.toString() == null){
+			getter = new Query(null, 3);
+		}
 		// get data from JSON
 		JSONObject data = new JSONObject(getter.toString());
 		min_temp = data.getJSONObject("report").getDouble("min_temp");
