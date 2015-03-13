@@ -5,11 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -85,7 +88,8 @@ public class TodayPanel extends JPanel{
 	 * @param icon the icon code to be shown
 	 */
 	public void setIcon(String icon){
-		iconLabel.setIcon(new ImageIcon("src/main/resources/UI/Icon/"+icon+".png"));
+		ClassLoader cl = this.getClass().getClassLoader();
+		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
 	}
 
 
@@ -93,8 +97,18 @@ public class TodayPanel extends JPanel{
 	 * refresh method for main temperature
 	 * @param temp the temperature data to be shown
 	 */
-	public void setTempLabel(String temp) {
-		tempLabel.setText("<html><p style=\"color:blue; font-size:75px\">" + temp + "&deg C</p></html>");
+	public void setTempLabel(String temp, int unit) {
+		String s = "<html><p style=\"font-size:75px\">" + temp + "&deg ";
+		switch(unit){
+			case 0: s = s + "K";
+				break;
+			case 1: s = s + "C";
+				break;
+			case 2: s = s + "F";
+				break;
+		}
+		
+		tempLabel.setText(s +"</p></html>");
 		tempLabel.setBounds(50,50,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 	}
 
