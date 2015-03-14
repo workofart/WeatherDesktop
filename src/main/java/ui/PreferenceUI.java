@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URLDecoder;
 
 import javax.swing.JTextField;
 
@@ -31,7 +32,6 @@ import data.Query;
 
 public class PreferenceUI extends JFrame {
 
-	private JPanel contentPane;
 	private Preference pref;
 	private JLabel lblLocation, lblTemperature;
 	private JRadioButton tempC, tempK, tempF;
@@ -39,56 +39,38 @@ public class PreferenceUI extends JFrame {
 	private JButton btnSave, btnCancel;
 	private JTextField textField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PreferenceUI frame = new PreferenceUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
+	
 
 	/**
-	 * Create the frame.
+	 * constructor for Preference UI who tries to read preference object from disk
 	 */
-	public PreferenceUI() {
+	public PreferenceUI(String name) throws Exception{
 		
 		pref = new Preference();
 		init();
-		try {
-			ObjectInputStream input = new ObjectInputStream(new FileInputStream(".Preference"));
-			pref = (Preference) input.readObject();
-			JRadioButton[] a = {tempK, tempC, tempF};
-			a[pref.getTempUnit()].setSelected(true);
-			textField.setText(pref.getLocation());
-		} catch (FileNotFoundException e){
-			this.setVisible(true);
-			tempC.setSelected(true);
-			textField.setText("Toronto,ca");
-			this.setAlwaysOnTop(true);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		
+
+		String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		path = URLDecoder.decode(path, "UTF-8");
+		System.out.println(path);
+		ObjectInputStream input = new ObjectInputStream(new FileInputStream(path+name));
+		pref = (Preference) input.readObject();
+		JRadioButton[] a = {tempK, tempC, tempF};
+		a[pref.getTempUnit()].setSelected(true);
+		textField.setText(pref.getLocation());
+		input.close();	
+	}
+	
+	public PreferenceUI(){
+		pref = new Preference();
+		init();
+		this.setVisible(true);
 	}
 	
 	
 	private void init(){
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		this.setAlwaysOnTop(true);
 		getContentPane().setLayout(null);
 		
 		lblLocation = new JLabel("Location");
@@ -134,7 +116,7 @@ public class PreferenceUI extends JFrame {
 		buttonGroup.add(tempC);
 		buttonGroup.add(tempF);
 		buttonGroup.add(tempK);
-		
+		tempC.setSelected(true);
 		btnSave = new JButton("Apply");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -143,19 +125,14 @@ public class PreferenceUI extends JFrame {
 					System.out.println(pref.getLocation());
 					System.out.println(pref.getTempUnit());
 					setVisible(false);
-					if(pref.getLocation().toLowerCase().equals("mars") || new Query(pref.getLocation(),0).toString().length() > 50){
-						
-						ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(".Preference"));
-						output.writeObject(pref);
-						output.close();
-						
-					}
-					else{
-						setVisible(true);
-						JOptionPane.showMessageDialog(null," is invalid.");
-					}
+					String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+					path = URLDecoder.decode(path, "UTF-8");
+					ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(path +".Preference"));
+					output.writeObject(pref);
+					output.close();
+					Main.refresh(pref.getLocation(),pref.getTempUnit());
+					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -176,25 +153,59 @@ public class PreferenceUI extends JFrame {
 		textField.setBounds(100, 15, 105, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
+
+		textField.setText("Mars");
 		
 		pack();
 		setBounds(100, 100, 241, 144);
-		setVisible(true);
+		setVisible(false);
+		setResizable(false);
 	}
 	
+	/**
+	 * method to show the frame with the location in text field and radio button selected as the temperature unit
+	 */
 	public void showPreference(){
+		//set the selected part according to the preference object
 		textField.setText(pref.getLocation());
 		JRadioButton[] a = {tempK, tempC, tempF};
 		a[pref.getTempUnit()].setSelected(true);
+		//show the frame
 		this.setVisible(true);
 	}
 	
+	/**
+	 * getter method for location selection
+	 * @return the location selection as String
+	 */
 	public String getLocationPref(){
 		return pref.getLocation();
 	}
 	
+	/**
+	 * getter method for temperature unit
+	 * @return temperature unit, 0 - k, 1 - C, 2 - F
+	 */
 	public int getUnitPref(){
 		return pref.getTempUnit();
+	}
+	
+	/**
+	 * test method for PreferenceUI
+	 * @param args command line arguments
+	 */
+	public static void main(String[] args) {
+		// create this object and show the frame
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PreferenceUI frame = new PreferenceUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 }

@@ -38,7 +38,8 @@ public class SForecastPanel extends JPanel{
 		this.setBackground(Color.yellow);
 		
 		//Temp, sky
-		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&deg C</p></html>");
+
+		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&#8451</p></html>");
 		tempLabel.setBounds(10,20,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 //		tempLabel.setOpaque(true);
 		tempLabel.setBackground(Color.green);
@@ -51,7 +52,7 @@ public class SForecastPanel extends JPanel{
 		this.add(sunLabel);
 		
 //		timeLabel
-		timeLabel=new JLabel("<html><p style=\"font-size:10px\">5:45pm</p></html>");
+		timeLabel=new JLabel("<html><p style=\"font-size:10px\">--:--</p></html>");
 		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 		timeLabel.setBackground(Color.pink);
 		this.add(timeLabel);
@@ -63,20 +64,23 @@ public class SForecastPanel extends JPanel{
 		setMaximumSize(new Dimension(5000,5000));
 		
 	}
-	
+	public void setTime(String time){
+		timeLabel.setText("<html><p style=\"font-size:10px\">" + time + "</p></html>");
+		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+	}
 	/**
 	 * refresh method for temperature
 	 * @param temp the temperature to be shown
 	 * @param unit the flag to indicate temperature unit
 	 */
 	public void setTemp(String temp, int unit){
-		String s = "<html><p style=\"font-size:30px\">" + temp + "&deg ";
+		String s = "<html><p style=\"font-size:30px\">" + temp;
 		switch(unit){
-			case 0: s = s + "K";
+			case 0: s = s + "&#8490";
 				break;
-			case 1: s = s + "C";
+			case 1: s = s + "&#8451";
 				break;
-			case 2: s = s + "F";
+			case 2: s = s + "&#8457";
 				break;
 		}
 		
@@ -108,12 +112,14 @@ public class SForecastPanel extends JPanel{
 		super.paintComponent(g);
 		BufferedImage img = null;
 		ClassLoader cl = this.getClass().getClassLoader();
-//		iconLabel.setIcon(new ImageIcon(cl.getResource("cool_UI_01.png")));
 		try {
 		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_06.png"));
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		g.drawImage(img, 0,0,10+(int)this.getPreferredSize().getWidth(), 10+(int)this.getPreferredSize().getHeight(), null);
+	}
+	public String getTime(){
+		return this.timeLabel.getText().substring(0,2);
 	}
 }

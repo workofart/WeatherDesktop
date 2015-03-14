@@ -4,6 +4,7 @@ package ui;
 import data.JSONException;
 import weather.CurrentWeather;
 import weather.LongForecast;
+import weather.MarsWeather;
 import weather.ShortForecast;
 import io.Preference;
 
@@ -16,6 +17,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import java.util.Date;
+
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
@@ -36,54 +40,98 @@ public class Main{
 	private static SForecastPanel[] spanelArray;
 	private static LForecastPanel[] lpanelArray;
 	private static PreferenceUI preference;
-	private static Preference pref;
-	
+
+	private static JFrame frame;
 	/**
 	 * the program starts here
 	 * @param args parameter from command line
 	 */
 	public static void main(String[] args) {
 		init();
-		//System.out.println("refresh main window");
-		//System.out.println(preference.getLocationPref() +"\n" + preference.getUnitPref());
-		choosePreferences();
-//		refresh(preference.getLocationPref(), preference.getUnitPref());
-		pref = new Preference();
+		try {
+			preference = new PreferenceUI(".Preference");
+			refresh();
+		} catch (Exception e){
+			if(preference == null)
+				preference = new PreferenceUI();
+			else
+				preference.setVisible(true);
+		}
+		
+>>>>>>> origin/Zihao_Eclipse
 	}
 	
 	/**
 	 * helper method to refresh main window according to the preference object
 	 * @param pref the Preference object that contain all the preference data
 	 */
-	private static void refresh(String location, int tempUnit) throws JSONException{
+	public static void refresh(String location, int tempUnit) throws JSONException{
 		if(location.toLowerCase().equals("mars")){
-		}
-		else{
-			CurrentWeather data = new CurrentWeather(location);
-			
+			frame.setSize(530,300);
+			MarsWeather data = new MarsWeather();
+
 			tpanel.setTempLabel(data.getTemp(tempUnit), tempUnit);
 			tpanel.setSunLabel(data.getWeather());
 			tpanel.setPresLabel(data.getPressure());
 			tpanel.setHumLabel(data.getHumidity());
 			tpanel.setWinLabel(data.getSpeed(), data.getDirection());
 			tpanel.setIcon(data.getIcon());
+			tpanel.setMaxMinLabel(data.getMaxTemp(tempUnit), data.getMinTemp(tempUnit), tempUnit);
+			tpanel.setLocationLabel("Mars");
+			tpanel.setRefreshLabel();
 			
-			ShortForecast sdata = new ShortForecast(location);
-			
-			for(int i = 0; i < 8; i++){
-				spanelArray[i].setTemp(sdata.getTemp(i, tempUnit), tempUnit);
-				spanelArray[i].setIcon(sdata.getIcon(i));
-				spanelArray[i].setSky(sdata.getWeather(i));
+		}
+		else{
+			frame.setSize(530,933);
+			try{
+				CurrentWeather data = new CurrentWeather(location);
+				tpanel.setTempLabel(data.getTemp(tempUnit), tempUnit);
+				tpanel.setSunLabel(data.getWeather());
+				tpanel.setPresLabel(data.getPressure());
+				tpanel.setHumLabel(data.getHumidity());
+				tpanel.setWinLabel(data.getSpeed(), data.getDirection());
+				tpanel.setIcon(data.getIcon());
+				tpanel.setMaxMinLabel(data.getMaxTemp(tempUnit), data.getMinTemp(tempUnit), tempUnit);
+				tpanel.setRisetLabel(data.getSunrise(),data.getSunset());
+				tpanel.setLocationLabel(data.getLocation());
+				tpanel.setRefreshLabel();
+			}catch(JSONException e){
+				JOptionPane.showMessageDialog(null," is invalid.");
+				preference.showPreference();
+				return;
 			}
 			
+			
+			//if(spanelArray[0].getTime().equals("--") || new Date().toString().compareTo(spanelArray[0].getTime()) >= 0){
+				ShortForecast sdata = new ShortForecast(location);
+				
+				for(int i = 0; i < 8; i++){
+					spanelArray[i].setTemp(sdata.getTemp(i, tempUnit), tempUnit);
+					spanelArray[i].setIcon(sdata.getIcon(i));
+					spanelArray[i].setSky(sdata.getWeather(i));
+					spanelArray[i].setTime(sdata.getTime(i));
+				}
+			//}
+			
+						
 			LongForecast ldata = new LongForecast(location);
 			
 			for(int i = 0; i < 5; i++){
 				lpanelArray[i].setTemp(ldata.getTemp(i, tempUnit), tempUnit);
 				lpanelArray[i].setSky(ldata.getWeather(i));
 				lpanelArray[i].setIcon(ldata.getIcon(i));
+				lpanelArray[i].setMaxMin(ldata.getMaxTemp(i, tempUnit), ldata.getMinTemp(i, tempUnit), tempUnit);
+				lpanelArray[i].setTime(ldata.getTime(i));
+				
 			}
 		}
+	}
+	
+	public static void refresh(){
+		refresh(preference.getLocationPref(), preference.getUnitPref());
+	}
+	public static PreferenceUI getPrefUI(){
+		return preference;
 	}
 	
 	/**
@@ -97,22 +145,10 @@ public class Main{
 	 * helper method to initialize windows
 	 */
 	private static void init(){
-		JFrame frame = new JFrame("Stage 2");
+		frame = new JFrame("8_TheWeather");
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-//		GridBagConstraints con=new GridBagConstraints();
-		
-		
-		//Panel
-//		con.fill=GridBagConstraints.BOTH;
-//		con.gridx=0;
-//		con.gridy=0;
-//		con.gridwidth=2;
-//		con.gridheight=1;
-//		con.weighty=0.4;
-//		con.weightx=1;
-		tpanel = new TodayPanel();
-//		tpanel.setBounds(0,0,(int)tpanel.getPreferredSize().getWidth(),(int)tpanel.getPreferredSize().getHeight());
 		frame.add(tpanel,BorderLayout.PAGE_START);
 		
 		//*****Short Term Panels****
@@ -126,13 +162,6 @@ public class Main{
 			spanelArray[i]=new SForecastPanel();
 			spanels.add(spanelArray[i]);
 		}
-//		con.fill = GridBagConstraints.BOTH;
-//		con.gridx = 0;
-//		con.gridy = 1;
-//		con.gridwidth=1;
-//		con.gridheight=1;
-//		con.weighty=0.7;
-//		spanels.setBounds(-100,(int)tpanel.getPreferredSize().getHeight(),(int)spanels.getPreferredSize().getWidth(),(int)spanels.getPreferredSize().getHeight());
 		frame.add(spanels, BorderLayout.LINE_START);
 
 		
@@ -148,20 +177,14 @@ public class Main{
 			lpanelArray[i]=new LForecastPanel();
 			lpanels.add(lpanelArray[i]);
 		}
-//		con.fill = GridBagConstraints.BOTH;
-//		con.gridx = 1;
-//		con.gridy = 1;
-//		con.gridwidth=1;
-//		con.gridheight=1;
-//		con.weighty=0.7;
 		lpanels.setBackground(Color.magenta);
-//		spanels.setBounds((int)spanels.getPreferredSize().getWidth(),(int)tpanel.getPreferredSize().getHeight(),(int)lpanels.getPreferredSize().getWidth(),(int)lpanels.getPreferredSize().getHeight());
 		frame.add(lpanels,BorderLayout.LINE_END);
 
 		
 		tpanel.setLayout(null);
 		frame.pack();
-		frame.setSize(539,949);
+
+		frame.setSize(530,933);
 		frame.setVisible(true);
 	}
 	/**

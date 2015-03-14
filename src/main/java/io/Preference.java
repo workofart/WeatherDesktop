@@ -16,14 +16,14 @@ import java.net.URLDecoder;
  * @author team 8
  */
 public class Preference implements Serializable {
-	/**
-	 * The user's current location
-	 */
+
+	// The user's current location
+	
 	private String location;
-	/**
-	 * The user's temperature unit
-	 */
+	//The user's temperature unit
 	private int tempUnit;
+	
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * constructor to use default location and unit
