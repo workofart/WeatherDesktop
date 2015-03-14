@@ -63,6 +63,7 @@ public class Main{
 	 */
 	public static void refresh(String location, int tempUnit) throws JSONException{
 		if(location.toLowerCase().equals("mars")){
+			frame.setSize(530,300);
 			MarsWeather data = new MarsWeather();
 			tpanel.setTempLabel(data.getTemp(tempUnit), tempUnit);
 			tpanel.setSunLabel(data.getWeather());
@@ -73,8 +74,10 @@ public class Main{
 			tpanel.setMaxMinLabel(data.getMaxTemp(tempUnit), data.getMinTemp(tempUnit), tempUnit);
 			tpanel.setLocationLabel("Mars");
 			tpanel.setRefreshLabel();
+			
 		}
 		else{
+			frame.setSize(530,933);
 			try{
 				CurrentWeather data = new CurrentWeather(location);
 				tpanel.setTempLabel(data.getTemp(tempUnit), tempUnit);
@@ -112,6 +115,8 @@ public class Main{
 				lpanelArray[i].setTemp(ldata.getTemp(i, tempUnit), tempUnit);
 				lpanelArray[i].setSky(ldata.getWeather(i));
 				lpanelArray[i].setIcon(ldata.getIcon(i));
+				lpanelArray[i].setMaxMin(ldata.getMaxTemp(i, tempUnit), ldata.getMinTemp(i, tempUnit), tempUnit);
+				lpanelArray[i].setTime(ldata.getTime(i));
 				
 			}
 		}
@@ -129,6 +134,7 @@ public class Main{
 	 */
 	private static void init(){
 		frame = new JFrame("8_TheWeather");
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		
@@ -169,7 +175,7 @@ public class Main{
 		
 		tpanel.setLayout(null);
 		frame.pack();
-		frame.setSize(539,949);
+		frame.setSize(530,933);
 		frame.setVisible(true);
 	}
 	

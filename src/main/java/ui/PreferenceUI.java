@@ -51,6 +51,7 @@ public class PreferenceUI extends JFrame {
 		init();
 		String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		path = URLDecoder.decode(path, "UTF-8");
+		System.out.println(path);
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(path+name));
 		pref = (Preference) input.readObject();
 		JRadioButton[] a = {tempK, tempC, tempF};
