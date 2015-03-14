@@ -49,10 +49,27 @@ public final class MarsWeather{
 	 * helper method to generate icon according to weather
 	 */
 	private void makeIcon(){
-		icon =  weather;
+		if(this.weather.equals("Sunny")){
+			this.icon = "01d";
+		}
+		else if(this.weather.equals("Cloudy")){
+			this.icon = "03d";
+		}
+		else{
+			this.icon = "50d";
+		}
 	}
 	
-	
+	public String getTemp(int unit){
+		double temp = (min_temp + max_temp)/2, temp_fahrenheit = (min_temp_fahrenheit + max_temp_fahrenheit)/2;
+		if(unit == 0){
+			return Math.round(temp + 273.15) + "";
+		}
+		if(unit == 1){
+			return Math.round(temp) + "";
+		}
+		return Math.round(temp_fahrenheit) + "";
+	}
 
 	/**
 	 * get minTemp field in the object with proper unit
@@ -61,12 +78,12 @@ public final class MarsWeather{
 	 */
 	public String getMinTemp(int unit) {
 		if(unit == 0){
-			return Math.round(min_temp + 273.15) + " K";
+			return Math.round(min_temp + 273.15) + "";
 		}
 		if(unit == 1){
-			return Math.round(min_temp) + " C";
+			return Math.round(min_temp) + "";
 		}
-		return Math.round(min_temp_fahrenheit) + " F";
+		return Math.round(min_temp_fahrenheit) + "";
 	}
 
 	/**
@@ -76,12 +93,12 @@ public final class MarsWeather{
 	 */
 	public String getMaxTemp(int unit) {
 		if(unit == 0){
-			return Math.round(max_temp + 273.15) + " K";
+			return Math.round(max_temp + 273.15) + "";
 		}
 		if(unit == 1){
-			return Math.round(max_temp) + " C";
+			return Math.round(max_temp) + "";
 		}
-		return Math.round(max_temp_fahrenheit) + " F";
+		return Math.round(max_temp_fahrenheit) + "";
 	}
 
 	/**
@@ -89,7 +106,7 @@ public final class MarsWeather{
 	 * @return the pressure
 	 */
 	public String getPressure() {
-		return pressure + " hPa";
+		return pressure + "";
 	}
 
 	/**
@@ -124,7 +141,7 @@ public final class MarsWeather{
 		if(this.wind_speed == -1.0f){
 			return "--";
 		}
-		return wind_speed + " kph";
+		return wind_speed + "";
 	}
 	
 	/**
@@ -135,7 +152,7 @@ public final class MarsWeather{
 		if(this.humidity == -1.0f){
 			return "--";
 		}
-		return humidity + "%";
+		return humidity + "";
 	}
 	
 	/**
@@ -145,7 +162,7 @@ public final class MarsWeather{
 	public String toString(){
 		return "Weather description " + this.weather + "\n" +
 			   "Weather Icon " + this.icon + "\n" +
-			   "Humidity " + this.humidity + "\n" +
+			   "Humidity " + this.getHumidity() + "\n" +
 			   "Pressure " + this.pressure + "\n" +
 			   "Max Temperature in K " + this.getMaxTemp(0) + "\n" +
 			   "Max Temperature in C " + this.getMaxTemp(1) + "\n" +
@@ -153,7 +170,7 @@ public final class MarsWeather{
 			   "Min Temperature in K " + this.getMinTemp(0) + "\n" +
 			   "Min Temperature in C " + this.getMinTemp(1) + "\n" +
 			   "Min Temperature in F " + this.getMinTemp(2) + "\n" +
-			   "Wind speed " + this.wind_speed + "\n" +
+			   "Wind speed " + this.getSpeed() + "\n" +
 			   "Wind direction " + this.wind_direction;
 	}
 	
@@ -164,47 +181,5 @@ public final class MarsWeather{
 	public static void main(String[] args){
 		MarsWeather weather = new MarsWeather();
 		System.out.println(weather);
-	}
-	/**
-	 * getter method for wind speed
-	 * @return the wind_speed
-	 */
-	public double getWind_speed() {
-		return wind_speed;
-	}
-	/**
-	 * getter method for minimum temperature in C
-	 * @return the min_temp
-	 */
-	public double getMin_temp() {
-		return min_temp;
-	}
-	/**
-	 * getter method for minimum temperature in F
-	 * @return the min_temp_fahrenheit
-	 */
-	public double getMin_temp_fahrenheit() {
-		return min_temp_fahrenheit;
-	}
-	/**
-	 * getter method for maximum temperature in C
-	 * @return the max_temp
-	 */
-	public double getMax_temp() {
-		return max_temp;
-	}
-	/**
-	 * getter method for maximum temperature in F
-	 * @return the max_temp_fahrenheit
-	 */
-	public double getMax_temp_fahrenheit() {
-		return max_temp_fahrenheit;
-	}
-	/**
-	 * getter method for wind direction
-	 * @return the wind_direction
-	 */
-	public String getWind_direction() {
-		return wind_direction;
 	}
 }

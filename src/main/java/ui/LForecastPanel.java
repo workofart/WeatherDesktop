@@ -3,8 +3,10 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -19,8 +21,9 @@ import javax.swing.JPanel;
  */
 public class LForecastPanel extends JPanel{
 	// label for temperature, main weather, and icon
-	private JLabel tempLabel, sunLabel, iconLabel;
-
+	private JLabel tempLabel, sunLabel, iconLabel, maxminLabel, timeLabel;
+	private String tmpbkgd="cool";
+	
 	public LForecastPanel(){
 		this.setLayout(null);
 		
@@ -29,22 +32,33 @@ public class LForecastPanel extends JPanel{
 		iconLabel.setBounds(50,50,50,50);
 		this.add(iconLabel);
 	
+//		timeLabel
+		timeLabel=new JLabel("<html><p style=\"font-size:10px\">MMM DD</p></html>");
+		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+		timeLabel.setBackground(Color.pink);
+		this.add(timeLabel);
+		
 		//Temp, sky		
 		this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		this.setBackground(Color.yellow);
-		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&deg C</p></html>");
+		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&#8451</p></html>");
 		tempLabel.setBounds(10,10,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
-		tempLabel.setOpaque(true);
+//		tempLabel.setOpaque(true);
 		tempLabel.setBackground(Color.green);
 		this.add(tempLabel);
+		
+//		Max Min temp
+		maxminLabel=new JLabel("<html><p style=\"color:black; font-size:10px\">Max: ---&#8451 Min: ---&#8451</p></html>");
+		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+		maxminLabel.setBackground(Color.pink);
+		this.add(maxminLabel);
 		
 		//Sky
 		sunLabel=new JLabel("<html><p style=\"font-size:12px\">--------</p></html>");
 		sunLabel.setBounds(120,60,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
-		sunLabel.setOpaque(true);
+//		sunLabel.setOpaque(true);
 		sunLabel.setBackground(Color.green);
 		this.add(sunLabel);
-		
 		
 		
 		
@@ -60,13 +74,13 @@ public class LForecastPanel extends JPanel{
 	 * @param unit the flag to indicate unit of temperature
 	 */
 	public void setTemp(String temp, int unit){
-		String s = "<html><p style=\"font-size:30px\">" + temp + "&deg ";
+		String s = "<html><p style=\"font-size:30px\">" + temp;
 		switch(unit){
-			case 0: s = s + "K";
+			case 0: s = s + "&#8490";
 				break;
-			case 1: s = s + "C";
+			case 1: s = s + "&#8451";
 				break;
-			case 2: s = s + "F";
+			case 2: s = s + "&#8457";
 				break;
 		}
 		
@@ -93,5 +107,47 @@ public class LForecastPanel extends JPanel{
 	public void setIcon(String icon){
 		ClassLoader cl = this.getClass().getClassLoader();
 		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
+	}
+	
+	public void setTime(String date){
+		timeLabel.setText("<html><p style=\"font-size:10px\">" + date + "</p></html>");
+		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+	}
+	
+	public void setMaxMin(String max, String min, int unit){
+		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+		String s = "<html><p style=\"color:blue; font-size:10px\">Max: " + max;
+		switch(unit){
+			case 0: s = s + "&#8490 Min: ";
+				break;
+			case 1: s = s + "&#8451 Min: ";
+				break;
+			case 2: s = s + "&#8457 Min: ";
+				break;
+		}
+		switch(unit){
+			case 0: s = s + min + "&#8490";
+				break;
+			case 1: s = s + min + "&#8451";
+				break;
+			case 2: s = s + min +"&#8457";
+				break;
+		}
+		
+		maxminLabel.setText(s +"</p></html>");
+		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+	}
+	
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		BufferedImage img = null;
+		ClassLoader cl = this.getClass().getClassLoader();
+//		iconLabel.setIcon(new ImageIcon(cl.getResource("cool_UI_01.png")));
+		try {
+		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_06.png"));
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		g.drawImage(img, 0,0,10+(int)this.getPreferredSize().getWidth(), 10+(int)this.getPreferredSize().getHeight(), null);
 	}
 }

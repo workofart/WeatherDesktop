@@ -1,5 +1,8 @@
 package weather;
+import java.util.Date;
+
 import data.JSONArray;
+import data.JSONException;
 import data.JSONObject;
 import data.Query;
 
@@ -8,11 +11,12 @@ import data.Query;
  * @author Team8
  *
  */
-public class CurrentWeather {
+public class CurrentWeather{
 	private String sunrise, // sunrise time
 				   sunset, // sunset time
 				   weather, // main weather description
 				   direction,// wind direction in meteorology
+				   location,
 				   icon; // weather icon
 				   
 				   
@@ -29,16 +33,19 @@ public class CurrentWeather {
 	 * Constructor for the current weather
 	 * @param city the city to be search about
 	 */
-	public CurrentWeather(String city){
+	public CurrentWeather(String city) throws JSONException{
 		// get the JSON String from web sites
-		Query getter = new Query(city,0);
-		while(getter.toString() == null){
-			getter = new Query(city,0);
-		}
+		//Query getter = new Query(city,0);
 		// extract the data from JSON
-		JSONObject data = new JSONObject(getter.toString());
-		sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,19);
-		sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,19);
+		//JSONObject data = new JSONObject(getter.toString());
+		JSONObject data = new JSONObject("{\"coord\":{\"lon\":139,\"lat\":35},\"sys\":{\"country\":\"JP\",\"sunrise\":1369769524,\"sunset\":1369821049},"
+				+ "\"weather\":[{\"id\":804,\"main\":\"clouds\",\"description\":\"overcast clouds\",\"icon\":\"04n\"}],"
+				+ "\"main\":{\"temp\":289.5,\"humidity\":89,\"pressure\":1013,\"temp_min\":287.04,\"temp_max\":292.04},"
+				+ "\"wind\":{\"speed\":7.31,\"deg\":187.002},"
+				+ "\"rain\":{\"3h\":0},\"clouds\":{\"all\":92},\"dt\":1369824698,\"id\":1851632,\"name\":\"Shuzenji\","
+				+ "\"cod\":200}");
+		sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
+		sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
 		weather = data.getJSONArray("weather").getJSONObject(0).getString("main");
 		icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
 		humidity = data.getJSONObject("main").getInt("humidity");
@@ -47,6 +54,7 @@ public class CurrentWeather {
 		minTemp = data.getJSONObject("main").getDouble("temp_min");
 		maxTemp = data.getJSONObject("main").getDouble("temp_max");
 		speed = data.getJSONObject("wind").getInt("speed");
+		location = data.getString("name") + ", "+ data.getJSONObject("sys").getString("country");
 		makeDirection(data.getJSONObject("wind").getInt("deg"));
 	}
 	
@@ -173,17 +181,14 @@ public class CurrentWeather {
 			   "Min Temperature in C " + this.getMinTemp(1) + "\n" +
 			   "Min Temperature in F " + this.getMinTemp(2) + "\n" +
 			   "Wind speed " + this.speed + "\n" +
-			   "Wind direction " + this.direction;
+			   "Wind direction " + this.direction + "\n" +
+			   "Location " + this.location;
+	}
+	public String getLocation(){
+		return this.location;
 	}
 	
-	/**
-	 * test method for Current Weather
-	 * @param args parameter from command line
-	 */
-	public static void main(String[] args){
-		CurrentWeather weather  = new CurrentWeather("London,CA");
-		System.out.println(weather);
-	}
+	
 
 	/**
 	 * getter method for temperature
@@ -210,26 +215,18 @@ public class CurrentWeather {
 	}
 
 	/**
-	 * getter method for Minimum Temperature
-	 * @return the minTemp
-	 */
-	public double getMinTemp() {
-		return minTemp;
-	}
-
-	/**
-	 * getter method for Maximum Temperature
-	 * @return the maxTemp
-	 */
-	public double getMaxTemp() {
-		return maxTemp;
-	}
-
-	/**
 	 * getter method for humidity
 	 * @return the humidity
 	 */
 	public String getHumidity() {
 		return humidity+"";
+	}
+	/**
+	 * test method for Current Weather
+	 * @param args parameter from command line
+	 */
+	public static void main(String[] args){
+		CurrentWeather weather  = new CurrentWeather("London,CA");
+		System.out.println(weather);
 	}
 }

@@ -18,18 +18,17 @@ public class ShortForecast{
 	public ShortForecast(String city){
 		// get data from online and save the first eight entries as an array of short forecast entries
 		Query getter = new Query(city,1);
-		while(getter.toString() == null){
-			getter = new Query(city,1);
-		}
 		JSONObject data = new JSONObject(getter.toString());
 		list = new ShortForecastEntry[8];
 		for(int i = 0; i < 8; i++){
-			list[i] = new ShortForecastEntry(data.getJSONArray("list").getJSONObject(i).getString("dt_txt").substring(11,19),
+			list[i] = new ShortForecastEntry(data.getJSONArray("list").getJSONObject(i).getString("dt_txt").substring(11,16),
 										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
 										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
 										 	 data.getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp"));
 		}
 	}
+	
+	
 	/**
 	 * generate a string contains all the information
 	 * @return String contains all the information
