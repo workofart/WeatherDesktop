@@ -38,7 +38,6 @@ public class SForecastPanel extends JPanel{
 		this.setBackground(Color.yellow);
 		
 		//Temp, sky
-
 		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&#8451</p></html>");
 		tempLabel.setBounds(10,20,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 //		tempLabel.setOpaque(true);
@@ -119,6 +118,7 @@ public class SForecastPanel extends JPanel{
 		}
 		g.drawImage(img, 0,0,10+(int)this.getPreferredSize().getWidth(), 10+(int)this.getPreferredSize().getHeight(), null);
 	}
+	
 	public String getTime(){
 		return this.timeLabel.getText().substring(0,2);
 	}

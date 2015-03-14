@@ -12,7 +12,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -37,29 +36,25 @@ import weather.CurrentWeather;
  * @author team8
  */
 
-public class TodayPanel extends JPanel implements ActionListener{
+public class TodayPanel extends JPanel{
 	//label for temperature, wind, pressure, humidity, main weather and icon
-
 	private JLabel tempLabel, winLabel, presLabel, humLabel, sunLabel, iconLabel, refreshLabel,risetLabel, maxminLabel, locationLabel;
-
 	private JButton refresh_b,pref_b;
 	/**
 	 * constructor to initialize all the text fields to hyphen
 	 */
 	public TodayPanel(){
-
 		
 //		this.setBackground(Color.cyan);
 		this.setMinimumSize(new Dimension(525,270));
 		this.setPreferredSize(new Dimension(525,270));
 		setLayout(null);
-	
+		
 		//Temp, wind, pressure, humidity, sun, sky
 		iconLabel = new JLabel();
 		iconLabel.setBounds(40,40,50,50);
 		this.add(iconLabel);
 		
-
 		//icon
 		
 		
@@ -83,12 +78,10 @@ public class TodayPanel extends JPanel implements ActionListener{
 		tempLabel=new JLabel();
 		tempLabel.setBackground(Color.WHITE);
 		tempLabel.setText("<html><p style=\"color:blue; font-size:75px\">---&#8451</p></html>");
-
 		tempLabel.setBounds(50,50,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 		this.add(tempLabel);
 		
 //		Max Min temp
-
 		maxminLabel=new JLabel("<html><p style=\"color:blue; font-size:12px\">Max: ---&#8451Min: ---&#8451</p></html>");
 		maxminLabel.setBounds(25,210,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
 		maxminLabel.setBackground(Color.pink);
@@ -112,7 +105,6 @@ public class TodayPanel extends JPanel implements ActionListener{
 		
 		//Wind
 		winLabel=new JLabel();
-
 		winLabel.setBackground(Color.green);
 		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>--</b>m/s --</p></html>");
 		winLabel.setBounds(330,100,(int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
@@ -142,6 +134,7 @@ public class TodayPanel extends JPanel implements ActionListener{
 		risetLabel.setBackground(Color.pink);
 		this.add(risetLabel);
 		
+		
 		//Refresh label
 		refreshLabel=new JLabel();
 		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:----------</p></html>");
@@ -152,37 +145,6 @@ public class TodayPanel extends JPanel implements ActionListener{
 		locationLabel.setBounds((int)(this.getPreferredSize().getWidth()-locationLabel.getPreferredSize().getWidth()-160),(int)(locationLabel.getPreferredSize().getHeight()+10),(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
 		add(locationLabel);
 		
-		
-		
-		//Refresh button
-		refresh_b=new JButton();
-		refresh_b.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("reload.png")));
-		refresh_b.setBounds(0,0,(int)refresh_b.getPreferredSize().getWidth()+5,(int)refresh_b.getPreferredSize().getHeight()+5);
-		refresh_b.setOpaque(false);
-		refresh_b.setContentAreaFilled(false);
-		refresh_b.setBorderPainted(false);
-		refresh_b.addActionListener(this);
-		this.add(refresh_b);
-		
-		
-		//Preferences Button
-		pref_b=new JButton();
-		pref_b.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("gear.png")));
-		pref_b.setBounds((int)(this.getPreferredSize().getWidth()-pref_b.getPreferredSize().getWidth()),0,(int)pref_b.getPreferredSize().getWidth()+5,(int)pref_b.getPreferredSize().getHeight()+5);
-		pref_b.setOpaque(false);
-		pref_b.setContentAreaFilled(false);
-		pref_b.setBorderPainted(false);
-		pref_b.addActionListener(this);
-		this.add(pref_b);
-		
-		
-		//Refresh label
-		refreshLabel=new JLabel();
-//		sunLabel.setOpaque(true);
-//		sunLabel.setBackground(Color.green);
-		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:dd-mm-yy</p></html>");
-		refreshLabel.setBounds((int)(this.getPreferredSize().getWidth()-refreshLabel.getPreferredSize().getWidth()-17),(int)(this.getPreferredSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
-		this.add(refreshLabel);
 		
 		
 	}
@@ -285,42 +247,12 @@ public class TodayPanel extends JPanel implements ActionListener{
 	 * @param speed the wind speed to be shown in m/s
 	 * @param direction the wind direction to be shown
 	 */
-
 	public void setRefreshLabel() {
 		Date date = new Date();
 		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:"+date.toString().substring(4,19)+"</p></html>");
 		refreshLabel.setBounds((int)(this.getPreferredSize().getWidth()-refreshLabel.getPreferredSize().getWidth()),(int)(this.getPreferredSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 	}
 
-		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:"+date+"</p></html>");
-		refreshLabel.setBounds((int)(this.getPreferredSize().getWidth()-refreshLabel.getPreferredSize().getWidth()-20),(int)(this.getPreferredSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
-	}
-
-
-	
-	public void actionPerformed(ActionEvent e){
-		if(e.getSource()==refresh_b){
-			System.out.println("Refreshing!!");
-			Main.refresh();
-		}else if(e.getSource()==pref_b){
-			System.out.println("Let's get your preferences!");
-			Main.choosePreferences();
-		}
-		
-	}
-	
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		BufferedImage img = null;
-		ClassLoader cl = this.getClass().getClassLoader();
-//		iconLabel.setIcon(new ImageIcon(cl.getResource("cool_UI_01.png")));
-		try {
-		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_01.png"));
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		g.drawImage(img, 0,0,10+(int)this.getPreferredSize().getWidth(), 10+(int)this.getPreferredSize().getHeight(), null);
-	}
 	
 	public void setLocationLabel(String s){
 		locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s + "</b></p></html>");

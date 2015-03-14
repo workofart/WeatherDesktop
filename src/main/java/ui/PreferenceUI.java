@@ -49,7 +49,6 @@ public class PreferenceUI extends JFrame {
 		
 		pref = new Preference();
 		init();
-
 		String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		path = URLDecoder.decode(path, "UTF-8");
 		System.out.println(path);
@@ -69,7 +68,6 @@ public class PreferenceUI extends JFrame {
 	
 	
 	private void init(){
-
 		this.setAlwaysOnTop(true);
 		getContentPane().setLayout(null);
 		
@@ -153,7 +151,6 @@ public class PreferenceUI extends JFrame {
 		textField.setBounds(100, 15, 105, 20);
 		getContentPane().add(textField);
 		textField.setColumns(10);
-
 		textField.setText("Mars");
 		
 		pack();

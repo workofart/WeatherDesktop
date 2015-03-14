@@ -33,7 +33,6 @@ public class LForecastPanel extends JPanel{
 		this.add(iconLabel);
 	
 //		timeLabel
-
 		timeLabel=new JLabel("<html><p style=\"font-size:10px\">MMM DD</p></html>");
 		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 		timeLabel.setBackground(Color.pink);
@@ -49,7 +48,6 @@ public class LForecastPanel extends JPanel{
 		this.add(tempLabel);
 		
 //		Max Min temp
-
 		maxminLabel=new JLabel("<html><p style=\"color:black; font-size:10px\">Max: ---&#8451 Min: ---&#8451</p></html>");
 		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
 		maxminLabel.setBackground(Color.pink);

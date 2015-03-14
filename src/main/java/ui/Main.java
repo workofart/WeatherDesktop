@@ -17,9 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
 import java.util.Date;
-
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
@@ -40,7 +38,6 @@ public class Main{
 	private static SForecastPanel[] spanelArray;
 	private static LForecastPanel[] lpanelArray;
 	private static PreferenceUI preference;
-
 	private static JFrame frame;
 	/**
 	 * the program starts here
@@ -58,7 +55,6 @@ public class Main{
 				preference.setVisible(true);
 		}
 		
->>>>>>> origin/Zihao_Eclipse
 	}
 	
 	/**
@@ -69,7 +65,6 @@ public class Main{
 		if(location.toLowerCase().equals("mars")){
 			frame.setSize(530,300);
 			MarsWeather data = new MarsWeather();
-
 			tpanel.setTempLabel(data.getTemp(tempUnit), tempUnit);
 			tpanel.setSunLabel(data.getWeather());
 			tpanel.setPresLabel(data.getPressure());
@@ -135,13 +130,6 @@ public class Main{
 	}
 	
 	/**
-	 * Public method to refresh
-	 */	
-	public static void refresh(){
-		refresh(preference.getLocationPref(), preference.getUnitPref());
-	}
-	
-	/**
 	 * helper method to initialize windows
 	 */
 	private static void init(){
@@ -149,6 +137,10 @@ public class Main{
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
+		
+		
+		//Panel
+		tpanel = new TodayPanel();
 		frame.add(tpanel,BorderLayout.PAGE_START);
 		
 		//*****Short Term Panels****
@@ -183,18 +175,8 @@ public class Main{
 		
 		tpanel.setLayout(null);
 		frame.pack();
-
 		frame.setSize(530,933);
 		frame.setVisible(true);
-	}
-	/**
-	 * 
-	 * @param new_pref
-	 * Updates preferences object of the program
-	 */
-	public static void choosePreferences(){
-		preference = new PreferenceUI();
-//		refresh();
 	}
 	
 }
