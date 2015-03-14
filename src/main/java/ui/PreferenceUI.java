@@ -89,7 +89,6 @@ public class PreferenceUI extends JFrame {
 	
 	private void init(){
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		System.out.println("HERE!");
 		getContentPane().setLayout(null);
 		
 		lblLocation = new JLabel("Location");

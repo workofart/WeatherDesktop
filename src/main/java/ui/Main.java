@@ -7,6 +7,7 @@ import weather.LongForecast;
 import weather.ShortForecast;
 import io.Preference;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -45,7 +47,7 @@ public class Main{
 		//System.out.println("refresh main window");
 		//System.out.println(preference.getLocationPref() +"\n" + preference.getUnitPref());
 		choosePreferences();
-		refresh(preference.getLocationPref(), preference.getUnitPref());
+//		refresh(preference.getLocationPref(), preference.getUnitPref());
 		pref = new Preference();
 	}
 	
@@ -97,20 +99,21 @@ public class Main{
 	private static void init(){
 		JFrame frame = new JFrame("Stage 2");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new GridBagLayout());
-		GridBagConstraints con=new GridBagConstraints();
+		frame.setLayout(new BorderLayout());
+//		GridBagConstraints con=new GridBagConstraints();
 		
 		
 		//Panel
-		con.fill=GridBagConstraints.BOTH;
-		con.gridx=0;
-		con.gridy=0;
-		con.gridwidth=2;
-		con.gridheight=1;
-		con.weighty=0.4;
-		con.weightx=1;
+//		con.fill=GridBagConstraints.BOTH;
+//		con.gridx=0;
+//		con.gridy=0;
+//		con.gridwidth=2;
+//		con.gridheight=1;
+//		con.weighty=0.4;
+//		con.weightx=1;
 		tpanel = new TodayPanel();
-		frame.add(tpanel,con);
+//		tpanel.setBounds(0,0,(int)tpanel.getPreferredSize().getWidth(),(int)tpanel.getPreferredSize().getHeight());
+		frame.add(tpanel,BorderLayout.PAGE_START);
 		
 		//*****Short Term Panels****
 		
@@ -123,14 +126,14 @@ public class Main{
 			spanelArray[i]=new SForecastPanel();
 			spanels.add(spanelArray[i]);
 		}
-		con.fill = GridBagConstraints.BOTH;
-		con.gridx = 0;
-		con.gridy = 1;
-		con.gridwidth=1;
-		con.gridheight=1;
-//		con.weightx=0.5;
-		con.weighty=0.7;
-		frame.add(spanels, con);
+//		con.fill = GridBagConstraints.BOTH;
+//		con.gridx = 0;
+//		con.gridy = 1;
+//		con.gridwidth=1;
+//		con.gridheight=1;
+//		con.weighty=0.7;
+//		spanels.setBounds(-100,(int)tpanel.getPreferredSize().getHeight(),(int)spanels.getPreferredSize().getWidth(),(int)spanels.getPreferredSize().getHeight());
+		frame.add(spanels, BorderLayout.LINE_START);
 
 		
 		
@@ -145,20 +148,20 @@ public class Main{
 			lpanelArray[i]=new LForecastPanel();
 			lpanels.add(lpanelArray[i]);
 		}
-		con.fill = GridBagConstraints.BOTH;
-		con.gridx = 1;
-		con.gridy = 1;
-		con.gridwidth=1;
-		con.gridheight=1;
-//		con.weightx=0.5;
-		con.weighty=0.7;
+//		con.fill = GridBagConstraints.BOTH;
+//		con.gridx = 1;
+//		con.gridy = 1;
+//		con.gridwidth=1;
+//		con.gridheight=1;
+//		con.weighty=0.7;
 		lpanels.setBackground(Color.magenta);
-		frame.add(lpanels, con);
+//		spanels.setBounds((int)spanels.getPreferredSize().getWidth(),(int)tpanel.getPreferredSize().getHeight(),(int)lpanels.getPreferredSize().getWidth(),(int)lpanels.getPreferredSize().getHeight());
+		frame.add(lpanels,BorderLayout.LINE_END);
 
 		
 		tpanel.setLayout(null);
 		frame.pack();
-		frame.setSize(525,950);
+		frame.setSize(539,949);
 		frame.setVisible(true);
 	}
 	/**
@@ -168,7 +171,7 @@ public class Main{
 	 */
 	public static void choosePreferences(){
 		preference = new PreferenceUI();
-		refresh();
+//		refresh();
 	}
 	
 }

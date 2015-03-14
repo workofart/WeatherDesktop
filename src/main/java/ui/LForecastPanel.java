@@ -3,8 +3,10 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -19,8 +21,9 @@ import javax.swing.JPanel;
  */
 public class LForecastPanel extends JPanel{
 	// label for temperature, main weather, and icon
-	private JLabel tempLabel, sunLabel, iconLabel;
-
+	private JLabel tempLabel, sunLabel, iconLabel, maxminLabel, timeLabel;
+	private String tmpbkgd="cool";
+	
 	public LForecastPanel(){
 		this.setLayout(null);
 		
@@ -29,22 +32,33 @@ public class LForecastPanel extends JPanel{
 		iconLabel.setBounds(50,50,50,50);
 		this.add(iconLabel);
 	
+//		timeLabel
+		timeLabel=new JLabel("<html><p style=\"font-size:10px\">June 12</p></html>");
+		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+		timeLabel.setBackground(Color.pink);
+		this.add(timeLabel);
+		
 		//Temp, sky		
 		this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		this.setBackground(Color.yellow);
 		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&deg C</p></html>");
 		tempLabel.setBounds(10,10,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
-		tempLabel.setOpaque(true);
+//		tempLabel.setOpaque(true);
 		tempLabel.setBackground(Color.green);
 		this.add(tempLabel);
+		
+//		Max Min temp
+		maxminLabel=new JLabel("<html><p style=\"color:black; font-size:10px\">Max: 49&deg Min: 40&deg</p></html>");
+		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+		maxminLabel.setBackground(Color.pink);
+		this.add(maxminLabel);
 		
 		//Sky
 		sunLabel=new JLabel("<html><p style=\"font-size:12px\">--------</p></html>");
 		sunLabel.setBounds(120,60,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
-		sunLabel.setOpaque(true);
+//		sunLabel.setOpaque(true);
 		sunLabel.setBackground(Color.green);
 		this.add(sunLabel);
-		
 		
 		
 		
@@ -93,5 +107,19 @@ public class LForecastPanel extends JPanel{
 	public void setIcon(String icon){
 		ClassLoader cl = this.getClass().getClassLoader();
 		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
+	}
+	
+	
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		BufferedImage img = null;
+		ClassLoader cl = this.getClass().getClassLoader();
+//		iconLabel.setIcon(new ImageIcon(cl.getResource("cool_UI_01.png")));
+		try {
+		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_06.png"));
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		g.drawImage(img, 0,0,10+(int)this.getPreferredSize().getWidth(), 10+(int)this.getPreferredSize().getHeight(), null);
 	}
 }
