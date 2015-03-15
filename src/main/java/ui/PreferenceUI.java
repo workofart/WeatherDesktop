@@ -7,48 +7,72 @@ import java.awt.EventQueue;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URLDecoder;
+
 import javax.swing.JTextField;
 
+/**
+ * PreferenceUI object to read, write preference object
+ * Also it represent a window for setting user preference
+ * 
+ * @author ca.uwo.csd.cs2212.team8
+ */
 public class PreferenceUI extends JFrame {
-
-	private Preference pref, prefCopy;
-	private JLabel lblLocation, lblTemperature;
-	private JRadioButton tempC, tempK, tempF;
-	private ButtonGroup buttonGroup;
-	private JButton btnSave, btnCancel;
-	private JTextField textField;
+	// attributes
+	private Preference pref, //first copy of preference
+					   prefCopy; // second copy of preference in order to determine refresh or refresh unit only
+	private JLabel lblLocation, lblTemperature; // label for location and temperature unit
+	private JRadioButton tempC, tempK, tempF; // radio button for temperature choice
+	private ButtonGroup buttonGroup; // button group to make only one radio button can be selected
+	private JButton btnSave, btnCancel; // button for save and cancel
+	private JTextField textField; // text field for input location
 
 	
 	
 
 	/**
 	 * constructor for Preference UI who tries to read preference object from disk
+	 * generate a frame and show it
+	 * @throws Exception when the file not exit, throw exception and let main deal with it
+	 * @param name the filename of preference object
 	 */
 	public PreferenceUI(String name) throws Exception{
-		
+		// create an empty preference
 		pref = new Preference();
+		// create a frame and show it
 		init();
+		// path to read from
+		// put to the same folder whene the jar file is
+		// start with dot, so it is hidden
 		String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		path = URLDecoder.decode(path, "UTF-8");
 		path = path.substring(0,path.lastIndexOf("/")+1);
+		// try to read the saved the file
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(path+name));
 		pref = (Preference) input.readObject();
+		// make a copy of the file
 		prefCopy = pref.clone();
+		// set the elected button and text field according to the save file
 		JRadioButton[] a = {tempK, tempC, tempF};
 		a[pref.getTempUnit()].setSelected(true);
 		textField.setText(pref.getLocation());
 		System.out.println("Load from saved Preference " + pref.getLocation() + " "+pref.getTempUnit());
+		// close the input stream
 		input.close();	
 	}
 	
@@ -77,7 +101,7 @@ public class PreferenceUI extends JFrame {
 		
 		
 		tempC = new JRadioButton("C");
-		tempC.setBounds(100, 45, 40, 25);
+		tempC.setBounds(100, 45, 45, 25);
 		tempC.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				pref.setTempUnit(1);
@@ -164,6 +188,63 @@ public class PreferenceUI extends JFrame {
 		getContentPane().add(textField);
 		textField.setColumns(10);
 		textField.setText("Mars");
+		textField.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				int key = e.getKeyCode();
+				if(e.getSource() == textField && key == KeyEvent.VK_ENTER){
+					try {
+						if(!format(textField.getText().toLowerCase()).matches("(mars)|([a-z]+\\,[a-z]{2})")){
+							Main.wrongLocationFormat();
+							return;
+						}
+						pref.setLocation(format(textField.getText()));
+						System.out.println("input preference " + pref.getLocation() +" " + pref.getTempUnit());
+						setVisible(false);
+						String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+						path = URLDecoder.decode(path, "UTF-8");
+						path = path.substring(0,path.lastIndexOf("/")+1);
+						ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(path +".Preference"));
+						output.writeObject(pref);
+						output.close();
+						if(pref.getLocation().equalsIgnoreCase(prefCopy.getLocation())){
+							if(pref.getTempUnit()!=prefCopy.getTempUnit()){
+								if(Main.refreshed()){
+									Main.refreshUnit(pref.getLocation(),pref.getTempUnit());
+									System.out.println("Refreshing Unit");
+								}
+								else{
+									Main.refresh(pref.getLocation(),pref.getTempUnit());
+									System.out.println("Refreshing");
+								}
+							}
+							
+						}else{
+							Main.refresh(pref.getLocation(),pref.getTempUnit());
+							System.out.println("Refreshing");
+						}
+						prefCopy = pref.clone();
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		if(System.getProperty("os.name").toLowerCase().startsWith("win") || System.getProperty("os.name").toLowerCase().startsWith("mac")){
 			setSize(240,150);
