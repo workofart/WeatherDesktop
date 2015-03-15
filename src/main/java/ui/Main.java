@@ -34,7 +34,6 @@ public class Main{
 	private static LForecastPanel[] lpanelArray;
 	private static PreferenceUI preference;
 	private static JFrame frame;
-	private static Query q;
 	private static CurrentWeather cdata;
 	private static MarsWeather mdata;
 	private static ShortForecast sdata;
@@ -76,7 +75,7 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						frame.setSize(520,310);
+						frame.setSize(520,280);
 						//frame.setSize((int)tpanel.getSize().getWidth(),(int)tpanel.getSize().getHeight()+29);
 					}
 					
@@ -102,7 +101,7 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						frame.setSize(520,950);
+						frame.setSize(520,920);
 						//frame.setSize((int)tpanel.getSize().getWidth(), (int)tpanel.getSize().getHeight() + Math.min(spanelArray[0].getHeight()*8,lpanelArray[0].getHeight()*5) +29);
 					}
 					
@@ -227,7 +226,7 @@ public class Main{
 		lpanels.setLocation(260, 280);
 
 		
-		frame.setSize(520,950);
+		frame.setSize(520,920);
 		frame.setVisible(true);
 	}
 	public static boolean refreshed(){
