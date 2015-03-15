@@ -89,7 +89,7 @@ public class Main{
 						Query q = new Query(null, 3);
 						MarsWeather mdata = new MarsWeather(q.toString());
 						Main.setMdata(mdata);
-						Main.tpanel.refreshMars(tempUnit);
+						Main.tpanel.refreshMars(Main.preference.getUnitPref());
 					}
 					
 				});
@@ -110,10 +110,10 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						Query q = new Query(location, 0);
+						Query q = new Query(Main.preference.getLocationPref(), 0);
 						CurrentWeather cdata = new CurrentWeather(q.toString());
 						Main.setCdata(cdata);
-						Main.tpanel.refresh(tempUnit);
+						Main.tpanel.refresh(Main.preference.getUnitPref());
 					}
 					
 				});
@@ -121,11 +121,11 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						Query q = new Query(location, 1);
+						Query q = new Query(Main.preference.getLocationPref(), 1);
 						ShortForecast sdata = new ShortForecast(q.toString());
 						Main.setSdata(sdata);
 						for(int i = 0; i < 8; i++){
-							Main.spanelArray[i].refresh(i, tempUnit);
+							Main.spanelArray[i].refresh(i, Main.preference.getUnitPref());
 						}
 
 					}
@@ -135,11 +135,11 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						Query q = new Query(location, 2);
+						Query q = new Query(Main.preference.getLocationPref(), 2);
 						LongForecast ldata = new LongForecast(q.toString());
 						Main.setLdata(ldata);
 						for(int i = 0; i < 5; i++){
-							Main.lpanelArray[i].refresh(i,  tempUnit);
+							Main.lpanelArray[i].refresh(i, Main.preference.getUnitPref());
 							
 						}
 					}
