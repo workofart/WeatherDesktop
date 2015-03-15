@@ -89,7 +89,7 @@ public class Main{
 						Query q = new Query(null, 3);
 						MarsWeather mdata = new MarsWeather(q.toString());
 						Main.setMdata(mdata);
-						tpanel.refreshMars(tempUnit);
+						Main.tpanel.refreshMars(tempUnit);
 					}
 					
 				});
@@ -113,7 +113,7 @@ public class Main{
 						Query q = new Query(location, 0);
 						CurrentWeather cdata = new CurrentWeather(q.toString());
 						Main.setCdata(cdata);
-						tpanel.refresh(tempUnit);
+						Main.tpanel.refresh(tempUnit);
 					}
 					
 				});
@@ -125,7 +125,7 @@ public class Main{
 						ShortForecast sdata = new ShortForecast(q.toString());
 						Main.setSdata(sdata);
 						for(int i = 0; i < 8; i++){
-							spanelArray[i].refresh(i, tempUnit);
+							Main.spanelArray[i].refresh(i, tempUnit);
 						}
 
 					}
@@ -139,7 +139,7 @@ public class Main{
 						LongForecast ldata = new LongForecast(q.toString());
 						Main.setLdata(ldata);
 						for(int i = 0; i < 5; i++){
-							lpanelArray[i].refresh(i,  tempUnit);
+							Main.lpanelArray[i].refresh(i,  tempUnit);
 							
 						}
 					}
