@@ -98,7 +98,7 @@ public class PreferenceUI extends JFrame {
 		getContentPane().add(tempC);
 		
 		tempF = new JRadioButton("F");
-		tempF.setBounds(135, 45, 35, 25);
+		tempF.setBounds(140, 45, 35, 25);
 		tempF.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				pref.setTempUnit(2);
@@ -107,7 +107,7 @@ public class PreferenceUI extends JFrame {
 		getContentPane().add(tempF);
 		
 		tempK = new JRadioButton("K");
-		tempK.setBounds(170, 45, 35, 25);
+		tempK.setBounds(180, 45, 35, 25);
 		tempK.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				pref.setTempUnit(0);
