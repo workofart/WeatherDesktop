@@ -63,6 +63,7 @@ public class PreferenceUI extends JFrame {
 	
 	public PreferenceUI(){
 		pref = new Preference();
+		prefCopy = pref.clone();
 		init();
 		this.setVisible(true);
 	}
