@@ -53,6 +53,7 @@ public class PreferenceUI extends JFrame {
 		init();
 		String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		path = URLDecoder.decode(path, "UTF-8");
+		path = path.substring(0,path.lastIndexOf("/")+1);
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(path+name));
 		pref = (Preference) input.readObject();
 		prefCopy = pref.clone();
@@ -132,7 +133,7 @@ public class PreferenceUI extends JFrame {
 					setVisible(false);
 					String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 					path = URLDecoder.decode(path, "UTF-8");
-					
+					path = path.substring(0,path.lastIndexOf("/")+1);
 					ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(path +".Preference"));
 					output.writeObject(pref);
 					output.close();
