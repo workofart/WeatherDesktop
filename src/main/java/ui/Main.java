@@ -75,7 +75,11 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						frame.setSize(520,280);
+						if(System.getProperty("os.name").startsWith("Win")){
+							frame.setSize(520,309);
+						}else{
+							frame.setSize(520,279);
+						}
 						//frame.setSize((int)tpanel.getSize().getWidth(),(int)tpanel.getSize().getHeight()+29);
 					}
 					
@@ -101,7 +105,11 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						frame.setSize(520,920);
+						if(System.getProperty("os.name").startsWith("Win")){
+							frame.setSize(520,949);
+						}else{
+							frame.setSize(520,919);
+						}
 						//frame.setSize((int)tpanel.getSize().getWidth(), (int)tpanel.getSize().getHeight() + Math.min(spanelArray[0].getHeight()*8,lpanelArray[0].getHeight()*5) +29);
 					}
 					
@@ -226,7 +234,11 @@ public class Main{
 		lpanels.setLocation(260, 280);
 
 		
-		frame.setSize(520,920);
+		if(System.getProperty("os.name").startsWith("Win")){
+			frame.setSize(520,949);
+		}else{
+			frame.setSize(520,919);
+		}
 		frame.setVisible(true);
 	}
 	public static boolean refreshed(){

@@ -29,6 +29,7 @@ import java.net.URLDecoder;
 import javax.swing.JTextField;
 
 import data.Query;
+
 import javax.swing.JFormattedTextField;
 
 public class PreferenceUI extends JFrame {
@@ -175,6 +176,11 @@ public class PreferenceUI extends JFrame {
 		textField.setColumns(10);
 		textField.setText("Mars");
 		
+		if(System.getProperty("os.name").startsWith("Win")){
+			setSize(240,150);
+		}else{
+			setSize(240,120);
+		}
 		setSize(240,150);
 		setVisible(false);
 		setResizable(false);
