@@ -53,37 +53,37 @@ public class TodayPanel extends JPanel{
 	
 	public void refreshMars(int unit){
 		risetLabel.setVisible(false);
-		setIcon(Main.mdata.getIcon());
-		setWinLabel(Main.mdata.getSpeed(), Main.mdata.getDirection());
-		setPresLabel(Main.mdata.getPressure());
-		setHumLabel(Main.mdata.getHumidity());
+		setIcon(Main.getMdata().getIcon());
+		setWinLabel(Main.getMdata().getSpeed(), Main.getMdata().getDirection());
+		setPresLabel(Main.getMdata().getPressure());
+		setHumLabel(Main.getMdata().getHumidity());
 		setRefreshLabel();
-		setSunLabel(Main.mdata.getWeather());
+		setSunLabel(Main.getMdata().getWeather());
 		setLocationLabel("Mars");
 		refreshMarsUnit(unit);
 	}
 	public void refresh(int unit){
 		risetLabel.setVisible(true);
-		setIcon(Main.cdata.getIcon());
-		setWinLabel(Main.cdata.getSpeed(), Main.cdata.getDirection());
-		setPresLabel(Main.cdata.getPressure());
-		setHumLabel(Main.cdata.getHumidity());
+		setIcon(Main.getCdata().getIcon());
+		setWinLabel(Main.getCdata().getSpeed(), Main.getCdata().getDirection());
+		setPresLabel(Main.getCdata().getPressure());
+		setHumLabel(Main.getCdata().getHumidity());
 		setRefreshLabel();
-		setSunLabel(Main.cdata.getWeather());
-		setLocationLabel(Main.cdata.getLocation());
-		setRisetLabel(Main.cdata.getSunrise(), Main.cdata.getSunset());
+		setSunLabel(Main.getCdata().getWeather());
+		setLocationLabel(Main.getCdata().getLocation());
+		setRisetLabel(Main.getCdata().getSunrise(), Main.getCdata().getSunset());
 		refreshUnit(unit);
 	}	
 	
 	
 	public void refreshUnit(int unit){
-		setTempLabel(Main.cdata.getTemp(unit),unit);
-		setMaxMinLabel(Main.cdata.getMaxTemp(unit),Main.cdata.getMinTemp(unit),unit);
+		setTempLabel(Main.getCdata().getTemp(unit),unit);
+		setMaxMinLabel(Main.getCdata().getMaxTemp(unit),Main.getCdata().getMinTemp(unit),unit);
 	}
 	
 	public void refreshMarsUnit(int unit){
-		setTempLabel(Main.mdata.getTemp(unit),unit);
-		setMaxMinLabel(Main.mdata.getMaxTemp(unit),Main.mdata.getMinTemp(unit),unit);
+		setTempLabel(Main.getMdata().getTemp(unit),unit);
+		setMaxMinLabel(Main.getMdata().getMaxTemp(unit),Main.getMdata().getMinTemp(unit),unit);
 	}
 	
 	

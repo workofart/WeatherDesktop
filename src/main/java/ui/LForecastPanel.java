@@ -34,15 +34,15 @@ public class LForecastPanel extends JPanel{
 		init();
 	}
 	public void refreshUnit(int i, int unit){
-		setTemp(Main.ldata.getTemp(i, unit), unit);
-		setMaxMin(Main.ldata.getMaxTemp(i, unit), Main.ldata.getMinTemp(i, unit), unit);
+		setTemp(Main.getLdata().getTemp(i, unit), unit);
+		setMaxMin(Main.getLdata().getMaxTemp(i, unit), Main.getLdata().getMinTemp(i, unit), unit);
 	}
 	public void refresh(int i, int unit){
 	
 		refreshUnit(i, unit);
-		setSky(Main.ldata.getWeather(i));
-		setIcon(Main.ldata.getIcon(i));
-		setTime(Main.ldata.getTime(i));
+		setSky(Main.getLdata().getWeather(i));
+		setIcon(Main.getLdata().getIcon(i));
+		setTime(Main.getLdata().getTime(i));
 	}
 	private void init(){
 		

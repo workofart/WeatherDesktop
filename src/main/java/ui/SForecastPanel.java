@@ -72,13 +72,13 @@ public class SForecastPanel extends JPanel{
 	}
 	public void refresh(int  i,int unit){
 		refreshUnit(i,unit);
-		setIcon(Main.sdata.getIcon(i));
-		setSky(Main.sdata.getWeather(i));
-		setTime(Main.sdata.getTime(i));		
+		setIcon(Main.getSdata().getIcon(i));
+		setSky(Main.getSdata().getWeather(i));
+		setTime(Main.getSdata().getTime(i));		
 	}
 	
 	public void refreshUnit(int i, int unit){
-		setTemp(Main.sdata.getTemp(i, unit), unit);
+		setTemp(Main.getSdata().getTemp(i, unit), unit);
 	}
 	private void setTime(String time){
 		timeLabel.setText("<html><p style=\"font-size:10px\">" + time + "</p></html>");

@@ -135,14 +135,17 @@ public class PreferenceUI extends JFrame {
 						if(pref.getTempUnit()!=prefCopy.getTempUnit()){
 							if(Main.refreshed()){
 								Main.refreshUnit(pref.getLocation(),pref.getTempUnit());
+								System.out.println("Refreshing Unit");
 							}
 							else{
 								Main.refresh(pref.getLocation(),pref.getTempUnit());
+								System.out.println("Refreshing");
 							}
 						}
 						
 					}else{
 						Main.refresh(pref.getLocation(),pref.getTempUnit());
+						System.out.println("Refreshing");
 					}
 					prefCopy = pref.clone();
 				} catch (IOException e) {

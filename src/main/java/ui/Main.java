@@ -35,10 +35,10 @@ public class Main{
 	private static PreferenceUI preference;
 	private static JFrame frame;
 	private static Query q;
-	public static CurrentWeather cdata;
-	public static MarsWeather mdata;
-	public static ShortForecast sdata;
-	public static LongForecast ldata;
+	private static CurrentWeather cdata;
+	private static MarsWeather mdata;
+	private static ShortForecast sdata;
+	private static LongForecast ldata;
 	private static Thread t1,t2,t3;
 	/**
 	 * the program starts here
@@ -86,8 +86,9 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						q = new Query(null, 3);
-						mdata = new MarsWeather(q.toString());
+						Query q = new Query(null, 3);
+						MarsWeather mdata = new MarsWeather(q.toString());
+						Main.setMdata(mdata);
 						tpanel.refreshMars(tempUnit);
 					}
 					
@@ -109,8 +110,9 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						q = new Query(location, 0);
-						cdata = new CurrentWeather(q.toString());
+						Query q = new Query(location, 0);
+						CurrentWeather cdata = new CurrentWeather(q.toString());
+						Main.setCdata(cdata);
 						tpanel.refresh(tempUnit);
 					}
 					
@@ -119,8 +121,9 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						q = new Query(location, 1);
-						sdata = new ShortForecast(q.toString());
+						Query q = new Query(location, 1);
+						ShortForecast sdata = new ShortForecast(q.toString());
+						Main.setSdata(sdata);
 						for(int i = 0; i < 8; i++){
 							spanelArray[i].refresh(i, tempUnit);
 						}
@@ -132,8 +135,9 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						q = new Query(location, 2);
-						ldata = new LongForecast(q.toString());
+						Query q = new Query(location, 2);
+						LongForecast ldata = new LongForecast(q.toString());
+						Main.setLdata(ldata);
 						for(int i = 0; i < 5; i++){
 							lpanelArray[i].refresh(i,  tempUnit);
 							
@@ -241,5 +245,64 @@ public class Main{
 		if(t1!= null){
 			t1.stop();
 		}
+		System.out.println("Interupt");
 	}
+
+	/**
+	 * @return the cdata
+	 */
+	public static CurrentWeather getCdata() {
+		return cdata;
+	}
+
+	/**
+	 * @return the mdata
+	 */
+	public static MarsWeather getMdata() {
+		return mdata;
+	}
+
+	/**
+	 * @return the sdata
+	 */
+	public static ShortForecast getSdata() {
+		return sdata;
+	}
+
+	/**
+	 * @return the ldata
+	 */
+	public static LongForecast getLdata() {
+		return ldata;
+	}
+
+	/**
+	 * @param cdata the cdata to set
+	 */
+	public static void setCdata(CurrentWeather cdata) {
+		Main.cdata = cdata;
+	}
+
+	/**
+	 * @param mdata the mdata to set
+	 */
+	public static void setMdata(MarsWeather mdata) {
+		Main.mdata = mdata;
+	}
+
+	/**
+	 * @param sdata the sdata to set
+	 */
+	public static void setSdata(ShortForecast sdata) {
+		Main.sdata = sdata;
+	}
+
+	/**
+	 * @param ldata the ldata to set
+	 */
+	public static void setLdata(LongForecast ldata) {
+		Main.ldata = ldata;
+	}
+	
+	
 }
