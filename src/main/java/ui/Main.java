@@ -76,20 +76,21 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-
-						frame.setSize(530,310);
+						frame.setSize(520,310);
+						//frame.setSize((int)tpanel.getSize().getWidth(),(int)tpanel.getSize().getHeight()+29);
 					}
 					
 				}));
 				t1 = new Thread(new Runnable(){
 
 					@Override
-					public void run() {
+					public void run(){
 						// TODO Auto-generated method stub
 						Query q = new Query(null, 3);
 						MarsWeather mdata = new MarsWeather(q.toString());
 						Main.setMdata(mdata);
 						Main.tpanel.refreshMars(Main.preference.getUnitPref());
+						Main.tpanel.repaint();
 					}
 					
 				});
@@ -101,31 +102,33 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						frame.setSize(530,933);
-						frame.repaint();
+						frame.setSize(520,950);
+						//frame.setSize((int)tpanel.getSize().getWidth(), (int)tpanel.getSize().getHeight() + Math.min(spanelArray[0].getHeight()*8,lpanelArray[0].getHeight()*5) +29);
 					}
 					
 				}));
 				t1 = new Thread(new Runnable(){
 					@Override
-					public void run() {
+					public void run(){
 						// TODO Auto-generated method stub
 						Query q = new Query(Main.preference.getLocationPref(), 0);
 						CurrentWeather cdata = new CurrentWeather(q.toString());
 						Main.setCdata(cdata);
 						Main.tpanel.refresh(Main.preference.getUnitPref());
+						Main.tpanel.repaint();
 					}
 					
 				});
 				t2 = new Thread(new Runnable(){
 					@Override
-					public void run() {
+					public void run(){
 						// TODO Auto-generated method stub
 						Query q = new Query(Main.preference.getLocationPref(), 1);
 						ShortForecast sdata = new ShortForecast(q.toString());
 						Main.setSdata(sdata);
 						for(int i = 0; i < 8; i++){
 							Main.spanelArray[i].refresh(i, Main.preference.getUnitPref());
+							Main.spanelArray[i].repaint();
 						}
 
 					}
@@ -133,14 +136,14 @@ public class Main{
 				});
 				t3 = new Thread(new Runnable(){
 					@Override
-					public void run() {
+					public void run(){
 						// TODO Auto-generated method stub
 						Query q = new Query(Main.preference.getLocationPref(), 2);
 						LongForecast ldata = new LongForecast(q.toString());
 						Main.setLdata(ldata);
 						for(int i = 0; i < 5; i++){
 							Main.lpanelArray[i].refresh(i, Main.preference.getUnitPref());
-							
+							Main.lpanelArray[i].repaint();
 						}
 					}
 					
@@ -175,9 +178,6 @@ public class Main{
 	public static void refresh(){
 		refresh(preference.getLocationPref(), preference.getUnitPref());
 	}
-	public static PreferenceUI getPrefUI(){
-		return preference;
-	}
 	
 	/**
 	 * helper method to initialize windows
@@ -186,25 +186,28 @@ public class Main{
 		frame = new JFrame("8_TheWeather");
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
+		frame.setLayout(null);
 		
 		
 		//Panel
 		tpanel = new TodayPanel();
-		frame.add(tpanel,BorderLayout.PAGE_START);
+		frame.add(tpanel);
+		tpanel.setLocation(0, 0);
+		//frame.add(tpanel,BorderLayout.PAGE_START);
 		
 		//*****Short Term Panels****
 		
 		JPanel spanels = new JPanel();
 		spanels.setBackground(Color.magenta);
 		spanels.setLayout(new BoxLayout(spanels,BoxLayout.PAGE_AXIS));
-		spanels.setPreferredSize(new Dimension(262,(int)(910*0.7)));
+		spanels.setSize(new Dimension(260,80*8));
 		spanelArray = new SForecastPanel[8];
 		for(int i=0;i<spanelArray.length;i++){
 			spanelArray[i]=new SForecastPanel();
 			spanels.add(spanelArray[i]);
 		}
-		frame.add(spanels, BorderLayout.LINE_START);
+		frame.add(spanels);
+		spanels.setLocation(0, 280);
 
 		
 		
@@ -213,7 +216,7 @@ public class Main{
 		
 		lpanels.setBackground(Color.gray);
 		lpanels.setLayout(new BoxLayout(lpanels,BoxLayout.PAGE_AXIS));
-		lpanels.setPreferredSize(new Dimension(262,(int)(910*0.7)));
+		lpanels.setSize(new Dimension(260,128*5));
 		lpanelArray=new LForecastPanel[5];
 		for(int i=0;i<lpanelArray.length;i++){
 			lpanelArray[i]=new LForecastPanel();
@@ -221,11 +224,10 @@ public class Main{
 		}
 		lpanels.setBackground(Color.magenta);
 		frame.add(lpanels,BorderLayout.LINE_END);
+		lpanels.setLocation(260, 280);
 
 		
-		tpanel.setLayout(null);
-		frame.pack();
-		frame.setSize(530,933);
+		frame.setSize(520,950);
 		frame.setVisible(true);
 	}
 	public static boolean refreshed(){
@@ -235,7 +237,17 @@ public class Main{
 		else 
 			return cdata != null && sdata != null && ldata != null;
 	}
-	public static void interupt(){
+	
+	public static void wrongLocationFormat(){
+		JOptionPane.showMessageDialog(null, "example: cityname,two character country code or Mars", "Wrong city name format", JOptionPane.INFORMATION_MESSAGE);
+		preference.showPreference();
+	}
+	
+	public static void wrongLocation(){
+		JOptionPane.showMessageDialog(null, "Server cannot guess base on your input", "Wrong city name", JOptionPane.INFORMATION_MESSAGE);
+		preference.showPreferenceDefault();
+	}
+	public static void interrupt(){
 		if(t3!= null){
 			t3.stop();
 		}
@@ -246,6 +258,10 @@ public class Main{
 			t1.stop();
 		}
 		System.out.println("Interupt");
+	}
+	
+	public static void showPreference(){
+		preference.showPreference();
 	}
 
 	/**

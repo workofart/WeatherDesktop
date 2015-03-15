@@ -2,6 +2,8 @@
 package weather;
 
 
+import ui.Main;
+import data.JSONException;
 import data.JSONObject;
 import data.Query;
 /**
@@ -16,22 +18,26 @@ public class LongForecast{
 	 * constructor take city name as parameter to get long forecast data
 	 * @param city name for city to get data about
 	 */
-	public LongForecast(String city){
+	public LongForecast(String info){
 		// get the long term weather from online and save the data in an array
-		Query getter = new Query(city,2);
-		JSONObject data = new JSONObject(getter.toString());
+		JSONObject data = new JSONObject(info);
 		list = new LongForecastEntry[5];
-		for(int i = 1; i < 6; i++){
-			list[i-1] = new LongForecastEntry(
-											data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
-											data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
-											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("day"),
-											data.getJSONArray("list").getJSONObject(i).getInt("humidity") + " %",
-											data.getJSONArray("list").getJSONObject(i).getDouble("pressure") + " hPa",
-											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("min"),
-											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("max"),
-											new java.util.Date((long)data.getJSONArray("list").getJSONObject(i).getInt("dt") * 1000).toString().substring(4, 10));
+		try{
+			for(int i = 1; i < 6; i++){
+				list[i-1] = new LongForecastEntry(
+												data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
+												data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
+												data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("day"),
+												data.getJSONArray("list").getJSONObject(i).getInt("humidity") + " %",
+												data.getJSONArray("list").getJSONObject(i).getDouble("pressure") + " hPa",
+												data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("min"),
+												data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("max"),
+												new java.util.Date((long)data.getJSONArray("list").getJSONObject(i).getInt("dt") * 1000).toString().substring(4, 10));
+			}
+		}catch(JSONException e){
+			Main.interrupt();
 		}
+		
 	}
 	/**
 	 * getter method for humidity

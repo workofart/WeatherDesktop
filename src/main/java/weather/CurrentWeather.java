@@ -1,6 +1,7 @@
 package weather;
 import java.util.Date;
 
+import ui.Main;
 import data.JSONArray;
 import data.JSONException;
 import data.JSONObject;
@@ -33,22 +34,29 @@ public class CurrentWeather{
 	 * Constructor for the current weather
 	 * @param city the city to be search about
 	 */
-	public CurrentWeather(String info) {
+	public CurrentWeather(String info){
 		// get the JSON String from web sites
 		// extract the data from JSON
-		JSONObject data = new JSONObject(info);
-		sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
-		sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
-		weather = data.getJSONArray("weather").getJSONObject(0).getString("main");
-		icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
-		humidity = data.getJSONObject("main").getInt("humidity");
-		temperature = data.getJSONObject("main").getDouble("temp");
-		pressure = data.getJSONObject("main").getDouble("pressure");
-		minTemp = data.getJSONObject("main").getDouble("temp_min");
-		maxTemp = data.getJSONObject("main").getDouble("temp_max");
-		speed = data.getJSONObject("wind").getInt("speed");
-		location = data.getString("name") + ", "+ data.getJSONObject("sys").getString("country");
-		makeDirection(data.getJSONObject("wind").getInt("deg"));
+		try{
+			JSONObject data = new JSONObject(info);
+			sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
+			sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
+			weather = data.getJSONArray("weather").getJSONObject(0).getString("main");
+			icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
+			humidity = data.getJSONObject("main").getInt("humidity");
+			temperature = data.getJSONObject("main").getDouble("temp");
+			pressure = data.getJSONObject("main").getDouble("pressure");
+			minTemp = data.getJSONObject("main").getDouble("temp_min");
+			maxTemp = data.getJSONObject("main").getDouble("temp_max");
+			speed = data.getJSONObject("wind").getInt("speed");
+			location = data.getString("name") + ", "+ data.getJSONObject("sys").getString("country");
+			makeDirection(data.getJSONObject("wind").getInt("deg"));
+		}catch(JSONException e){
+			System.out.println("No guess");
+			Main.wrongLocation();
+			Main.interrupt();
+		}
+		
 	}
 	
 	/**

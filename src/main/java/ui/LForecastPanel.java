@@ -82,10 +82,10 @@ public class LForecastPanel extends JPanel{
 		this.add(sunLabel);
 		
 		
-		
-		setPreferredSize(new Dimension(262,127));
-		setMinimumSize(new Dimension(262,127));
-		setMaximumSize(new Dimension(5000,5000));
+		setSize(260,128);
+		//setPreferredSize(new Dimension(262,127));
+		//setMinimumSize(new Dimension(262,127));
+		//setMaximumSize(new Dimension(5000,5000));
 		this.setBackground(Color.PINK);
 	}
 	/**
@@ -168,6 +168,6 @@ public class LForecastPanel extends JPanel{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		g.drawImage(img, 0,0,10+(int)this.getPreferredSize().getWidth(), 10+(int)this.getPreferredSize().getHeight(), null);
+		g.drawImage(img, 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
 	}
 }

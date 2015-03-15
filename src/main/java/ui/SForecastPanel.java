@@ -66,7 +66,7 @@ public class SForecastPanel extends JPanel{
 		this.add(timeLabel);
 		
 
-		
+		setSize(260,80);
 		setPreferredSize(new Dimension(262,79));
 		setMinimumSize(new Dimension(262,80));
 	}
@@ -74,7 +74,7 @@ public class SForecastPanel extends JPanel{
 		refreshUnit(i,unit);
 		setIcon(Main.getSdata().getIcon(i));
 		setSky(Main.getSdata().getWeather(i));
-		setTime(Main.getSdata().getTime(i));		
+		setTime(Main.getSdata().getTime(i));
 	}
 	
 	public void refreshUnit(int i, int unit){
@@ -133,7 +133,7 @@ public class SForecastPanel extends JPanel{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		g.drawImage(img, 0,0,10+(int)this.getPreferredSize().getWidth(), 10+(int)this.getPreferredSize().getHeight(), null);
+		g.drawImage(img, 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
 	}
 	
 	public String getTime(){

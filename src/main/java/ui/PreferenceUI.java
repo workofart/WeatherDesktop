@@ -29,6 +29,7 @@ import java.net.URLDecoder;
 import javax.swing.JTextField;
 
 import data.Query;
+import javax.swing.JFormattedTextField;
 
 public class PreferenceUI extends JFrame {
 
@@ -121,9 +122,12 @@ public class PreferenceUI extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					if(!textField.getText().toLowerCase().matches("(mars)|([a-z]+\\,[a-z]{2})")){
+						Main.wrongLocationFormat();
+						return;
+					}
 					pref.setLocation(textField.getText());
-					System.out.println(pref.getLocation());
-					System.out.println(pref.getTempUnit());
+					System.out.println("input preference" + pref.getLocation() +" " + pref.getTempUnit());
 					setVisible(false);
 					String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 					path = URLDecoder.decode(path, "UTF-8");
@@ -166,13 +170,12 @@ public class PreferenceUI extends JFrame {
 		getContentPane().add(btnCancel);
 		
 		textField = new JTextField();
-		textField.setBounds(100, 15, 105, 20);
+		textField.setBounds(100, 15, 105, 22);
 		getContentPane().add(textField);
 		textField.setColumns(10);
 		textField.setText("Mars");
 		
-		pack();
-		setBounds(100, 100, 241, 144);
+		setSize(240,150);
 		setVisible(false);
 		setResizable(false);
 	}
@@ -205,6 +208,13 @@ public class PreferenceUI extends JFrame {
 		return pref.getTempUnit();
 	}
 	
+	public void showPreferenceDefault(){
+		textField.setText("London,ca");
+		tempC.setSelected(true);
+
+		this.setVisible(true);
+	}
+	
 	/**
 	 * test method for PreferenceUI
 	 * @param args command line arguments
@@ -222,5 +232,4 @@ public class PreferenceUI extends JFrame {
 			}
 		});
 	}
-	
 }
