@@ -39,11 +39,17 @@ public class Main{
 	private static ShortForecast sdata;
 	private static LongForecast ldata;
 	private static Thread t1,t2,t3;
+	private static int height;
 	/**
 	 * the program starts here
 	 * @param args parameter from command line
 	 */
 	public static void main(String[] args) {
+		if(System.getProperty("os.name").toLowerCase().startsWith("win") || System.getProperty("os.name").toLowerCase().startsWith("mac")){
+			height = 949;
+		}else{
+			height = 919;
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				init();	
@@ -75,11 +81,7 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						if(System.getProperty("os.name").startsWith("Win")){
-							frame.setSize(520,309);
-						}else{
-							frame.setSize(520,279);
-						}
+						frame.setSize(520,Main.getHeight()-640);
 						//frame.setSize((int)tpanel.getSize().getWidth(),(int)tpanel.getSize().getHeight()+29);
 					}
 					
@@ -105,11 +107,7 @@ public class Main{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						if(System.getProperty("os.name").startsWith("Win")){
-							frame.setSize(520,949);
-						}else{
-							frame.setSize(520,919);
-						}
+							frame.setSize(520,Main.getHeight());
 						//frame.setSize((int)tpanel.getSize().getWidth(), (int)tpanel.getSize().getHeight() + Math.min(spanelArray[0].getHeight()*8,lpanelArray[0].getHeight()*5) +29);
 					}
 					
@@ -233,12 +231,8 @@ public class Main{
 		frame.add(lpanels,BorderLayout.LINE_END);
 		lpanels.setLocation(260, 280);
 
-		
-		if(System.getProperty("os.name").startsWith("Win")){
-			frame.setSize(520,949);
-		}else{
-			frame.setSize(520,919);
-		}
+		frame.setSize(520,height);
+
 		frame.setVisible(true);
 	}
 	public static boolean refreshed(){
@@ -331,5 +325,8 @@ public class Main{
 		Main.ldata = ldata;
 	}
 	
+	public static int getHeight(){
+		return height;
+	}
 	
 }

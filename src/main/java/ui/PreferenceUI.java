@@ -123,12 +123,12 @@ public class PreferenceUI extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					if(!textField.getText().toLowerCase().matches("(mars)|([a-z]+\\,[a-z]{2})")){
+					if(!format(textField.getText().toLowerCase()).matches("(mars)|([a-z]+\\,[a-z]{2})")){
 						Main.wrongLocationFormat();
 						return;
 					}
-					pref.setLocation(textField.getText());
-					System.out.println("input preference" + pref.getLocation() +" " + pref.getTempUnit());
+					pref.setLocation(format(textField.getText()));
+					System.out.println("input preference " + pref.getLocation() +" " + pref.getTempUnit());
 					setVisible(false);
 					String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 					path = URLDecoder.decode(path, "UTF-8");
@@ -176,7 +176,7 @@ public class PreferenceUI extends JFrame {
 		textField.setColumns(10);
 		textField.setText("Mars");
 		
-		if(System.getProperty("os.name").startsWith("Win")){
+		if(System.getProperty("os.name").toLowerCase().startsWith("win") || System.getProperty("os.name").toLowerCase().startsWith("mac")){
 			setSize(240,150);
 		}else{
 			setSize(240,120);
@@ -213,6 +213,15 @@ public class PreferenceUI extends JFrame {
 		return pref.getTempUnit();
 	}
 	
+	private String format(String s){
+		String result = "";
+		for(int i = 0; i < s.length();i++){
+			if(s.charAt(i) != ' '){
+				result = result + s.charAt(i);
+			}
+		}
+		return result;
+	}
 	public void showPreferenceDefault(){
 		textField.setText("London,ca");
 		tempC.setSelected(true);
