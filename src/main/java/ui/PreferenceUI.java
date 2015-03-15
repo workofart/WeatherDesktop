@@ -181,7 +181,6 @@ public class PreferenceUI extends JFrame {
 		}else{
 			setSize(240,120);
 		}
-		setSize(240,150);
 		setVisible(false);
 		setResizable(false);
 	}
