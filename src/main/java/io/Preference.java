@@ -10,28 +10,34 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-
 /**
- * object to store user preference
- * @author team 8
+ * Preference object to store user preference for location and temperature unit
+ * This object implements serializable interface
+ * User preference persist between run
+ * 
+ * @author ca.uwo.csd.cs2212.team8
  */
 public class Preference implements Serializable {
 
 	// The user's current location
-	
 	private String location;
-	//The user's temperature unit
+	// The user's temperature unit
 	private int tempUnit;
-	
+	// ID for identify data
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * constructor to use default location and unit
+	 * constructor to use empty location and unit
 	 */
 	public Preference(){
 		this("", 1);
 	}
 	
+	/**
+	 * constructor with location and unit specified
+	 * @param location user's current location
+	 * @param tempUnit user's temperature unit
+	 */
 	public Preference(String location, int tempUnit){
 		this.location = location;
 		this.tempUnit = tempUnit;
@@ -64,10 +70,20 @@ public class Preference implements Serializable {
 	public void setTempUnit(int tempUnit) {
 		this.tempUnit = tempUnit;
 	}
+	
+	/**
+	 * method to make a copy of the preference
+	 * @return Preference a copy of the current preference
+	 */
 	public Preference clone(){
 		Preference p = new Preference(this.getLocation(), this.getTempUnit());
 		return p;
 	}
+	
+	/**
+	 * test method for Preference Object
+	 * @param args System input arguments
+	 */
 	public static void main(String[] args) {
 		String path;
 		try {

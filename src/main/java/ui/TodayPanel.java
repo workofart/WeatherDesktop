@@ -276,7 +276,7 @@ public class TodayPanel extends JPanel{
 	 * @param direction the wind direction to be shown
 	 */
 	private void setWinLabel(String speed, String direction) {
-		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + speed + "</b> m/s" + direction  + "</p></html>");
+		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + speed + "</b> m/s " + direction  + "</p></html>");
 		winLabel.setBounds(330,100,(int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
 	}
 
@@ -321,8 +321,6 @@ public class TodayPanel extends JPanel{
 		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:"+date.toString().substring(4,19)+"</p></html>");
 		refreshLabel.setBounds((int)(this.getSize().getWidth()-refreshLabel.getPreferredSize().getWidth()-5),(int)(this.getSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 	}
-
-	
 	private void setLocationLabel(String s){
 		locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s + "</b></p></html>");
 		locationLabel.setBounds((int)(this.getSize().getWidth()-locationLabel.getPreferredSize().getWidth()-160),(int)(locationLabel.getPreferredSize().getHeight()+10),(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);

@@ -6,31 +6,19 @@ import java.awt.EventQueue;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-
 import java.awt.Font;
-
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URLDecoder;
-
 import javax.swing.JTextField;
-
-import data.Query;
-
-import javax.swing.JFormattedTextField;
 
 public class PreferenceUI extends JFrame {
 
@@ -89,7 +77,7 @@ public class PreferenceUI extends JFrame {
 		
 		
 		tempC = new JRadioButton("C");
-		tempC.setBounds(100, 45, 35, 25);
+		tempC.setBounds(100, 45, 40, 25);
 		tempC.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				pref.setTempUnit(1);
@@ -98,7 +86,7 @@ public class PreferenceUI extends JFrame {
 		getContentPane().add(tempC);
 		
 		tempF = new JRadioButton("F");
-		tempF.setBounds(140, 45, 35, 25);
+		tempF.setBounds(140, 45, 40, 25);
 		tempF.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				pref.setTempUnit(2);
@@ -107,7 +95,7 @@ public class PreferenceUI extends JFrame {
 		getContentPane().add(tempF);
 		
 		tempK = new JRadioButton("K");
-		tempK.setBounds(180, 45, 35, 25);
+		tempK.setBounds(180, 45, 40, 25);
 		tempK.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				pref.setTempUnit(0);
