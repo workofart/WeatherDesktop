@@ -64,7 +64,10 @@ public class Preference implements Serializable {
 	public void setTempUnit(int tempUnit) {
 		this.tempUnit = tempUnit;
 	}
-	
+	public Preference clone(){
+		Preference p = new Preference(this.getLocation(), this.getTempUnit());
+		return p;
+	}
 	public static void main(String[] args) {
 		String path;
 		try {

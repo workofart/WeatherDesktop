@@ -17,13 +17,9 @@ public final class MarsWeather{
 	/**
 	 * constructor to get data from website and store
 	 */
-	public MarsWeather(){
-		Query getter = new Query(null, 3);
-		while(getter.toString() == null){
-			getter = new Query(null, 3);
-		}
+	public MarsWeather(String mdata){
 		// get data from JSON
-		JSONObject data = new JSONObject(getter.toString());
+		JSONObject data = new JSONObject(mdata);
 		min_temp = data.getJSONObject("report").getDouble("min_temp");
 		min_temp_fahrenheit = data.getJSONObject("report").getDouble("min_temp_fahrenheit");
 		max_temp = data.getJSONObject("report").getDouble("max_temp");
@@ -174,12 +170,4 @@ public final class MarsWeather{
 			   "Wind direction " + this.wind_direction;
 	}
 	
-	/**
-	 * test method 
-	 * @param args parameter from command line
-	 */
-	public static void main(String[] args){
-		MarsWeather weather = new MarsWeather();
-		System.out.println(weather);
-	}
 }

@@ -33,12 +33,10 @@ public class CurrentWeather{
 	 * Constructor for the current weather
 	 * @param city the city to be search about
 	 */
-	public CurrentWeather(String city) throws JSONException{
+	public CurrentWeather(String info) {
 		// get the JSON String from web sites
-		Query getter = new Query(city,0);
 		// extract the data from JSON
-		JSONObject data = new JSONObject(getter.toString());
-		//JSONObject data = new JSONObject("{\"coord\":{\"lon\":139,\"lat\":35},\"sys\":{\"country\":\"JP\",\"sunrise\":1369769524,\"sunset\":1369821049},\"weather\":[{\"id\":804,\"main\":\"clouds\",\"description\":\"overcast clouds\",\"icon\":\"04n\"}],\"main\":{\"temp\":289.5,\"humidity\":89,\"pressure\":1013,\"temp_min\":287.04,\"temp_max\":292.04},\"wind\":{\"speed\":7.31,\"deg\":187.002},\"rain\":{\"3h\":0},\"clouds\":{\"all\":92},\"dt\":1369824698,\"id\":1851632,\"name\":\"Shuzenji\",\"cod\":200}");
+		JSONObject data = new JSONObject(info);
 		sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
 		sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
 		weather = data.getJSONArray("weather").getJSONObject(0).getString("main");

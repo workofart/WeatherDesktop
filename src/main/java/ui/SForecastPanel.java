@@ -6,6 +6,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 
@@ -15,18 +18,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import weather.CurrentWeather;
+import weather.ShortForecast;
+
 /**
  * Class for Short Forecast Panel
  * @author team8
  */
 public class SForecastPanel extends JPanel{
-	//label for temperature, main weahter and icon
+	//label for temperature, main weather and icon
 	private JLabel tempLabel, sunLabel, iconLabel, timeLabel;
 	private String tmpbkgd="cool";
 	/**
 	 * constructor that initialize all the texts to hyphen
 	 */
 	public SForecastPanel(){
+		init();
+	}
+	private void init(){
 		this.setLayout(null);
 		
 		//icon
@@ -58,12 +67,20 @@ public class SForecastPanel extends JPanel{
 		
 
 		
-		setPreferredSize(new Dimension(262,80));
+		setPreferredSize(new Dimension(262,79));
 		setMinimumSize(new Dimension(262,80));
-		setMaximumSize(new Dimension(5000,5000));
-		
 	}
-	public void setTime(String time){
+	public void refresh(int  i,int unit){
+		refreshUnit(i,unit);
+		setIcon(Main.sdata.getIcon(i));
+		setSky(Main.sdata.getWeather(i));
+		setTime(Main.sdata.getTime(i));		
+	}
+	
+	public void refreshUnit(int i, int unit){
+		setTemp(Main.sdata.getTemp(i, unit), unit);
+	}
+	private void setTime(String time){
 		timeLabel.setText("<html><p style=\"font-size:10px\">" + time + "</p></html>");
 		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 	}
@@ -72,7 +89,7 @@ public class SForecastPanel extends JPanel{
 	 * @param temp the temperature to be shown
 	 * @param unit the flag to indicate temperature unit
 	 */
-	public void setTemp(String temp, int unit){
+	private void setTemp(String temp, int unit){
 		String s = "<html><p style=\"font-size:30px\">" + temp;
 		switch(unit){
 			case 0: s = s + "&#8490";
@@ -92,7 +109,7 @@ public class SForecastPanel extends JPanel{
 	 * refresh method for main weather
 	 * @param sky the sky condition to be shown
 	 */
-	public void setSky(String sky){
+	private void setSky(String sky){
 		sunLabel.setText("<html><p style=\"font-size:12px\">" + sky + "</p></html>");
 
 		sunLabel.setBounds(120,45,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
@@ -102,7 +119,7 @@ public class SForecastPanel extends JPanel{
 	 * refresh method for icon
 	 * @param icon the icon code for Open Weather API
 	 */
-	public void setIcon(String icon){
+	private void setIcon(String icon){
 		ClassLoader cl = this.getClass().getClassLoader();
 		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
 	}

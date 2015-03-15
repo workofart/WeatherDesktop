@@ -6,6 +6,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 
@@ -14,6 +17,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import weather.CurrentWeather;
+import weather.LongForecast;
 
 /**
  * Class for Long Forecast Panel
@@ -25,6 +31,21 @@ public class LForecastPanel extends JPanel{
 	private String tmpbkgd="cool";
 	
 	public LForecastPanel(){
+		init();
+	}
+	public void refreshUnit(int i, int unit){
+		setTemp(Main.ldata.getTemp(i, unit), unit);
+		setMaxMin(Main.ldata.getMaxTemp(i, unit), Main.ldata.getMinTemp(i, unit), unit);
+	}
+	public void refresh(int i, int unit){
+	
+		refreshUnit(i, unit);
+		setSky(Main.ldata.getWeather(i));
+		setIcon(Main.ldata.getIcon(i));
+		setTime(Main.ldata.getTime(i));
+	}
+	private void init(){
+		
 		this.setLayout(null);
 		
 		//icon
@@ -67,13 +88,12 @@ public class LForecastPanel extends JPanel{
 		setMaximumSize(new Dimension(5000,5000));
 		this.setBackground(Color.PINK);
 	}
-	
 	/**
 	 * method to refresh temperature
 	 * @param temp the temperature to show
 	 * @param unit the flag to indicate unit of temperature
 	 */
-	public void setTemp(String temp, int unit){
+	private void setTemp(String temp, int unit){
 		String s = "<html><p style=\"font-size:30px\">" + temp;
 		switch(unit){
 			case 0: s = s + "&#8490";
@@ -94,7 +114,7 @@ public class LForecastPanel extends JPanel{
 	 * method to refresh main weather
 	 * @param sky the main weather description to show
 	 */
-	public void setSky(String sky){
+	private void setSky(String sky){
 		sunLabel.setText("<html><p style=\"font-size:12px\">" + sky + "</p></html>");
 
 		sunLabel.setBounds(120,60,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
@@ -104,17 +124,17 @@ public class LForecastPanel extends JPanel{
 	 * method to refresh icon
 	 * @param icon the icon code for Open Weather API
 	 */
-	public void setIcon(String icon){
+	private void setIcon(String icon){
 		ClassLoader cl = this.getClass().getClassLoader();
 		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
 	}
 	
-	public void setTime(String date){
+	private void setTime(String date){
 		timeLabel.setText("<html><p style=\"font-size:10px\">" + date + "</p></html>");
 		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 	}
 	
-	public void setMaxMin(String max, String min, int unit){
+	private void setMaxMin(String max, String min, int unit){
 		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
 		String s = "<html><p style=\"color:blue; font-size:10px\">Max: " + max;
 		switch(unit){

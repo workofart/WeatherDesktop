@@ -15,7 +15,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -31,6 +34,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import weather.CurrentWeather;
+import weather.MarsWeather;
 /**
  * Class for Current Weather panel
  * @author team8
@@ -44,10 +48,49 @@ public class TodayPanel extends JPanel{
 	 * constructor to initialize all the text fields to hyphen
 	 */
 	public TodayPanel(){
-		
+		init();
+	}
+	
+	public void refreshMars(int unit){
+		risetLabel.setVisible(false);
+		setIcon(Main.mdata.getIcon());
+		setWinLabel(Main.mdata.getSpeed(), Main.mdata.getDirection());
+		setPresLabel(Main.mdata.getPressure());
+		setHumLabel(Main.mdata.getHumidity());
+		setRefreshLabel();
+		setSunLabel(Main.mdata.getWeather());
+		setLocationLabel("Mars");
+		refreshMarsUnit(unit);
+	}
+	public void refresh(int unit){
+		risetLabel.setVisible(true);
+		setIcon(Main.cdata.getIcon());
+		setWinLabel(Main.cdata.getSpeed(), Main.cdata.getDirection());
+		setPresLabel(Main.cdata.getPressure());
+		setHumLabel(Main.cdata.getHumidity());
+		setRefreshLabel();
+		setSunLabel(Main.cdata.getWeather());
+		setLocationLabel(Main.cdata.getLocation());
+		setRisetLabel(Main.cdata.getSunrise(), Main.cdata.getSunset());
+		refreshUnit(unit);
+	}	
+	
+	
+	public void refreshUnit(int unit){
+		setTempLabel(Main.cdata.getTemp(unit),unit);
+		setMaxMinLabel(Main.cdata.getMaxTemp(unit),Main.cdata.getMinTemp(unit),unit);
+	}
+	
+	public void refreshMarsUnit(int unit){
+		setTempLabel(Main.mdata.getTemp(unit),unit);
+		setMaxMinLabel(Main.mdata.getMaxTemp(unit),Main.mdata.getMinTemp(unit),unit);
+	}
+	
+	
+	private void init(){
 //		this.setBackground(Color.cyan);
-		this.setMinimumSize(new Dimension(525,270));
-		this.setPreferredSize(new Dimension(525,270));
+		this.setMinimumSize(new Dimension(525,282));
+		this.setPreferredSize(new Dimension(525,282));
 		setLayout(null);
 		
 		//Temp, wind, pressure, humidity, sun, sky
@@ -67,6 +110,7 @@ public class TodayPanel extends JPanel{
 		refresh_b.setFocusable(false);
 		refresh_b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				Main.interupt();
 				System.out.println("Refreshing");
 				Main.refresh();
 			}
@@ -97,6 +141,7 @@ public class TodayPanel extends JPanel{
 		pref_b.setFocusable(false);
 		pref_b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				Main.interupt();
 				System.out.println("Open PreferenceUI");
 				Main.getPrefUI().showPreference();;
 			}
@@ -146,13 +191,12 @@ public class TodayPanel extends JPanel{
 		add(locationLabel);
 		
 		
-		
 	}
 	/**
 	 * refresh method for icon
 	 * @param icon the icon code to be shown
 	 */
-	public void setIcon(String icon){
+	private void setIcon(String icon){
 		ClassLoader cl = this.getClass().getClassLoader();
 		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
 	}
@@ -162,7 +206,7 @@ public class TodayPanel extends JPanel{
 	 * refresh method for main temperature
 	 * @param temp the temperature data to be shown
 	 */
-	public void setTempLabel(String temp, int unit) {
+	private void setTempLabel(String temp, int unit) {
 		String s = "<html><p style=\"font-size:75px\">" + temp;
 		switch(unit){
 			case 0: s = s + "&#8490";
@@ -177,7 +221,7 @@ public class TodayPanel extends JPanel{
 		tempLabel.setBounds(50,50,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 	}
 	
-	public void setMaxMinLabel(String max, String min, int unit){
+	private void setMaxMinLabel(String max, String min, int unit){
 		String s = "<html><p style=\"color:blue; font-size:12px\">Max: " + max;
 		switch(unit){
 			case 0: s = s + "&#8490 Min: ";
@@ -206,7 +250,7 @@ public class TodayPanel extends JPanel{
 	 * @param speed the wind speed to be shown in m/s
 	 * @param direction the wind direction to be shown
 	 */
-	public void setWinLabel(String speed, String direction) {
+	private void setWinLabel(String speed, String direction) {
 		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + speed + "</b> m/s" + direction  + "</p></html>");
 		winLabel.setBounds(330,100,(int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
 	}
@@ -216,7 +260,7 @@ public class TodayPanel extends JPanel{
 	 * refresh method for air pressure label
 	 * @param pressure the air pressure data in hPa to be shown
 	 */
-	public void setPresLabel(String pressure) {
+	private void setPresLabel(String pressure) {
 		presLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + pressure + "</b> hPa</p></html>");
 		presLabel.setBounds(330,150,(int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
 	}
@@ -226,7 +270,7 @@ public class TodayPanel extends JPanel{
 	 * refresh method for humidity
 	 * @param humidity the humidity data in % to be shown
 	 */
-	public void setHumLabel(String humidity) {
+	private void setHumLabel(String humidity) {
 		humLabel.setText("<html><p style=\"color:blue; font-size:16px\">" + humidity + " % humidity</p></html>");
 		humLabel.setBounds(330,200,(int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
 	}
@@ -236,7 +280,7 @@ public class TodayPanel extends JPanel{
 	 * refresh method for main weather
 	 * @param weather the weather data to be shown
 	 */
-	public void setSunLabel(String weather) {
+	private void setSunLabel(String weather) {
 		sunLabel.setText("<html><p style=\"color:blue; font-size:16px\">" + weather + "</p></html>");
 		sunLabel.setBounds((int)tempLabel.getPreferredSize().getWidth()-70,(int)tempLabel.getPreferredSize().getHeight()+50,(int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 	}
@@ -247,19 +291,19 @@ public class TodayPanel extends JPanel{
 	 * @param speed the wind speed to be shown in m/s
 	 * @param direction the wind direction to be shown
 	 */
-	public void setRefreshLabel() {
+	private void setRefreshLabel() {
 		Date date = new Date();
 		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:"+date.toString().substring(4,19)+"</p></html>");
 		refreshLabel.setBounds((int)(this.getPreferredSize().getWidth()-refreshLabel.getPreferredSize().getWidth()),(int)(this.getPreferredSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 	}
 
 	
-	public void setLocationLabel(String s){
+	private void setLocationLabel(String s){
 		locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s + "</b></p></html>");
 		locationLabel.setBounds((int)(this.getPreferredSize().getWidth()-locationLabel.getPreferredSize().getWidth()-160),(int)(locationLabel.getPreferredSize().getHeight()+10),(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
 	}
 	
-	public void setRisetLabel(String sunrise, String sunset){
+	private void setRisetLabel(String sunrise, String sunset){
 		risetLabel.setText("<html><p style=\"color:blue; font-size:12px\">Sunrise:" + sunrise + " Sunset:" + sunset + "</p></html>");
 		risetLabel.setBounds(25,247,(int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		

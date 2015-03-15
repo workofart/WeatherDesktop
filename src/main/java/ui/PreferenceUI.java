@@ -32,7 +32,7 @@ import data.Query;
 
 public class PreferenceUI extends JFrame {
 
-	private Preference pref;
+	private Preference pref, prefCopy;
 	private JLabel lblLocation, lblTemperature;
 	private JRadioButton tempC, tempK, tempF;
 	private ButtonGroup buttonGroup;
@@ -51,12 +51,13 @@ public class PreferenceUI extends JFrame {
 		init();
 		String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		path = URLDecoder.decode(path, "UTF-8");
-		System.out.println(path);
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(path+name));
 		pref = (Preference) input.readObject();
+		prefCopy = pref.clone();
 		JRadioButton[] a = {tempK, tempC, tempF};
 		a[pref.getTempUnit()].setSelected(true);
 		textField.setText(pref.getLocation());
+		System.out.println("Load from saved Preference " + pref.getLocation() + " "+pref.getTempUnit());
 		input.close();	
 	}
 	
@@ -125,11 +126,24 @@ public class PreferenceUI extends JFrame {
 					setVisible(false);
 					String path = PreferenceUI.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 					path = URLDecoder.decode(path, "UTF-8");
+					
 					ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(path +".Preference"));
 					output.writeObject(pref);
 					output.close();
-					Main.refresh(pref.getLocation(),pref.getTempUnit());
-					
+					if(pref.getLocation().equalsIgnoreCase(prefCopy.getLocation())){
+						if(pref.getTempUnit()!=prefCopy.getTempUnit()){
+							if(Main.refreshed()){
+								Main.refreshUnit(pref.getLocation(),pref.getTempUnit());
+							}
+							else{
+								Main.refresh(pref.getLocation(),pref.getTempUnit());
+							}
+						}
+						
+					}else{
+						Main.refresh(pref.getLocation(),pref.getTempUnit());
+					}
+					prefCopy = pref.clone();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

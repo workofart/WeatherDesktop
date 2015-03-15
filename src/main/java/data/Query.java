@@ -3,12 +3,16 @@ package data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.ExecutionException;
+
+import javax.swing.SwingWorker;
 
 import ui.Main;
+import weather.CurrentWeather;
+import weather.MarsWeather;
 /**
  * class to fetch data from Internet
  * @author Team8
@@ -45,46 +49,38 @@ public class Query {
 		default:
 			address = "http://marsweather.ingenology.com/v1/latest/?format=json";
 		}
-		// handle explicit Exception for URL
-		while(JSon.isEmpty()){
-			String[] info = {"current", "short term", "long term", "Mars"};
-			long startTime = 0;
-			startTime = System.currentTimeMillis();
-			URL url;
+		String[] s = {"Current", "Short-term", "Long-term", "Mars"};
+		URL url;
+		while(true){
 			try {
 				url = new URL(address);
 				URLConnection connect = url.openConnection();
-				//connect.setConnectTimeout(5000);
-				//connect.setReadTimeout(10000);
+				connect.setConnectTimeout(5000);
+				connect.setReadTimeout(10000);
 				BufferedReader br = new BufferedReader(new InputStreamReader(connect.getInputStream()));
-				System.out.println("Connected");
 				JSon = br.readLine();
-				System.out.println("Finish pulling within " + (System.currentTimeMillis() - startTime) + " ms");
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.out.println(e.getMessage() + "\nBad Connection, pulling again " + (System.currentTimeMillis() - startTime) + " ms");
+				System.out.println(s[type] + " Finish");
+				break;
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					System.out.println(s[type] + " Connection failed");
 			}
 		}
+		
 	}
 	
-	/**
-	 * Method to return the JSON as a String
-	 * @return JSON as a String
-	 */
 	public String toString(){
 		return this.JSon;
 	}
-	
 	/**
 	 * test method for Query
 	 * @param args system parameter
 	 */
 	public static void main(String[] args){
-		//Query getter = new Query("London,gb", 2);
-		//System.out.println(getter);
-		Query getter = new Query("",3);
-		System.out.println(getter);
+		Query q1 = new Query(null, 3);
+		System.out.println(q1);
 	}
+	
 	
 }

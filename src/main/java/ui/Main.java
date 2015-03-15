@@ -2,29 +2,24 @@
 package ui;
 
 import data.JSONException;
+import data.Query;
 import weather.CurrentWeather;
 import weather.LongForecast;
 import weather.MarsWeather;
 import weather.ShortForecast;
-import io.Preference;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.io.FileInputStream;
+import java.awt.EventQueue;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Date;
-import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -39,12 +34,22 @@ public class Main{
 	private static LForecastPanel[] lpanelArray;
 	private static PreferenceUI preference;
 	private static JFrame frame;
+	private static Query q;
+	public static CurrentWeather cdata;
+	public static MarsWeather mdata;
+	public static ShortForecast sdata;
+	public static LongForecast ldata;
+	private static Thread t1,t2,t3;
 	/**
 	 * the program starts here
 	 * @param args parameter from command line
 	 */
 	public static void main(String[] args) {
-		init();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				init();	
+			}
+		});
 		try {
 			preference = new PreferenceUI(".Preference");
 			refresh();
@@ -54,6 +59,7 @@ public class Main{
 			else
 				preference.setVisible(true);
 		}
+	
 		
 	}
 	
@@ -61,63 +67,103 @@ public class Main{
 	 * helper method to refresh main window according to the preference object
 	 * @param pref the Preference object that contain all the preference data
 	 */
-	public static void refresh(String location, int tempUnit) throws JSONException{
-		if(location.toLowerCase().equals("mars")){
-			frame.setSize(530,300);
-			MarsWeather data = new MarsWeather();
-			tpanel.setTempLabel(data.getTemp(tempUnit), tempUnit);
-			tpanel.setSunLabel(data.getWeather());
-			tpanel.setPresLabel(data.getPressure());
-			tpanel.setHumLabel(data.getHumidity());
-			tpanel.setWinLabel(data.getSpeed(), data.getDirection());
-			tpanel.setIcon(data.getIcon());
-			tpanel.setMaxMinLabel(data.getMaxTemp(tempUnit), data.getMinTemp(tempUnit), tempUnit);
-			tpanel.setLocationLabel("Mars");
-			tpanel.setRefreshLabel();
-			
-		}
-		else{
-			frame.setSize(530,933);
-			try{
-				CurrentWeather data = new CurrentWeather(location);
-				tpanel.setTempLabel(data.getTemp(tempUnit), tempUnit);
-				tpanel.setSunLabel(data.getWeather());
-				tpanel.setPresLabel(data.getPressure());
-				tpanel.setHumLabel(data.getHumidity());
-				tpanel.setWinLabel(data.getSpeed(), data.getDirection());
-				tpanel.setIcon(data.getIcon());
-				tpanel.setMaxMinLabel(data.getMaxTemp(tempUnit), data.getMinTemp(tempUnit), tempUnit);
-				tpanel.setRisetLabel(data.getSunrise(),data.getSunset());
-				tpanel.setLocationLabel(data.getLocation());
-				tpanel.setRefreshLabel();
-			}catch(JSONException e){
-				JOptionPane.showMessageDialog(null," is invalid.");
-				preference.showPreference();
-				return;
+	public static void refresh(String location, int tempUnit){
+		t1 = null; t2 = null; t3 = null;
+		try{
+			if(location.toLowerCase().equals("mars")){
+				EventQueue.invokeLater(new Thread(new Runnable(){
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+
+						frame.setSize(530,310);
+					}
+					
+				}));
+				t1 = new Thread(new Runnable(){
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						q = new Query(null, 3);
+						mdata = new MarsWeather(q.toString());
+						tpanel.refreshMars(tempUnit);
+					}
+					
+				});
+				t1.start();
 			}
-			
-			
-			//if(spanelArray[0].getTime().equals("--") || new Date().toString().compareTo(spanelArray[0].getTime()) >= 0){
-				ShortForecast sdata = new ShortForecast(location);
+			else{
+				EventQueue.invokeLater(new Thread(new Runnable(){
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						frame.setSize(530,933);
+						frame.repaint();
+					}
+					
+				}));
+				t1 = new Thread(new Runnable(){
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						q = new Query(location, 0);
+						cdata = new CurrentWeather(q.toString());
+						tpanel.refresh(tempUnit);
+					}
+					
+				});
+				t2 = new Thread(new Runnable(){
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						q = new Query(location, 1);
+						sdata = new ShortForecast(q.toString());
+						for(int i = 0; i < 8; i++){
+							spanelArray[i].refresh(i, tempUnit);
+						}
+
+					}
+					
+				});
+				t3 = new Thread(new Runnable(){
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						q = new Query(location, 2);
+						ldata = new LongForecast(q.toString());
+						for(int i = 0; i < 5; i++){
+							lpanelArray[i].refresh(i,  tempUnit);
+							
+						}
+					}
+					
+				});
+				t1.start();
+				t2.start();
+				t3.start();
 				
-				for(int i = 0; i < 8; i++){
-					spanelArray[i].setTemp(sdata.getTemp(i, tempUnit), tempUnit);
-					spanelArray[i].setIcon(sdata.getIcon(i));
-					spanelArray[i].setSky(sdata.getWeather(i));
-					spanelArray[i].setTime(sdata.getTime(i));
-				}
-			//}
-			
-						
-			LongForecast ldata = new LongForecast(location);
-			
+			}
+		}catch(JSONException e){
+			JOptionPane.showMessageDialog(null, "City cannot be found", "Wrong city name", JOptionPane.INFORMATION_MESSAGE);
+			preference.showPreference();
+		}
+		
+	}
+	
+	public static void refreshUnit(String location, int unit){
+		if(location.toLowerCase().equals("mars")){
+			tpanel.refreshMarsUnit(unit);
+		}else{
+			tpanel.refreshUnit(unit);
 			for(int i = 0; i < 5; i++){
-				lpanelArray[i].setTemp(ldata.getTemp(i, tempUnit), tempUnit);
-				lpanelArray[i].setSky(ldata.getWeather(i));
-				lpanelArray[i].setIcon(ldata.getIcon(i));
-				lpanelArray[i].setMaxMin(ldata.getMaxTemp(i, tempUnit), ldata.getMinTemp(i, tempUnit), tempUnit);
-				lpanelArray[i].setTime(ldata.getTime(i));
+				lpanelArray[i].refreshUnit(i,  unit);
 				
+			}
+			for(int i = 0; i < 8; i++){
+				spanelArray[i].refresh(i, unit);
 			}
 		}
 	}
@@ -178,5 +224,22 @@ public class Main{
 		frame.setSize(530,933);
 		frame.setVisible(true);
 	}
-	
+	public static boolean refreshed(){
+		if(preference.getLocationPref().equalsIgnoreCase("mars")){
+			return mdata != null;
+		}
+		else 
+			return cdata != null && sdata != null && ldata != null;
+	}
+	public static void interupt(){
+		if(t3!= null){
+			t3.stop();
+		}
+		if(t2!= null){
+			t2.stop();
+		}
+		if(t1!= null){
+			t1.stop();
+		}
+	}
 }
