@@ -37,9 +37,6 @@
 		</plugins>
 
 		<resources>
-        	        <resource>
-	                        <directory> src/main/resources/Preference </directory>
-        	        </resource>
 			<resource>
                                 <directory> src/main/resources/UI/Icon </directory>
                         </resource>
