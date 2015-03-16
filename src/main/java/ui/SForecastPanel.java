@@ -41,7 +41,7 @@ public class SForecastPanel extends JPanel{
 		// use absolute layout
 		// create a black board
 		this.setLayout(null);
-		this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		
 		// create icon label, put it to the left of the panel
 		iconLabel = new JLabel();

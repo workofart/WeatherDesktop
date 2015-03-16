@@ -66,7 +66,7 @@ public class LForecastPanel extends JPanel{
 		// use absolute layout
 		this.setLayout(null);
 		// add a black board for each panel
-		this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		setSize(260,128);
 		
 		// initiate icon label
