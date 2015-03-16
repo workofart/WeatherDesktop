@@ -104,14 +104,14 @@ public class PreferenceUI extends JFrame {
 		// put it to the left top label
 		lblLocation = new JLabel("Location");
 		lblLocation.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblLocation.setBounds(10, 11, 47, 26);
+		lblLocation.setBounds(10, 11, (int)lblLocation.getPreferredSize().getWidth() + 5, (int)lblLocation.getPreferredSize().getHeight() + 5);
 		getContentPane().add(lblLocation);
 		
 		// create label for temperature 
 		// put it under the location label
 		lblTemperature = new JLabel("Temperature");
 		lblTemperature.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblTemperature.setBounds(10, 45, 76, 20);
+		lblTemperature.setBounds(10, 45, (int)lblTemperature.getPreferredSize().getWidth() + 5, (int)lblTemperature.getPreferredSize().getHeight() + 5);
 		getContentPane().add(lblTemperature);
 		
 		// create a radio button for celcius
