@@ -1,13 +1,17 @@
 
 package weather;
 /**
- * class for Short forecast entry
- * @author team8
+ * Short Forecast Entry object store the information for a short forecast entry
+ * It has information for temperature, sky condition, icon code and data time
+ * 
+ * @author ca.uwo.csd.cs2212.team8
  */
-
 public class ShortForecastEntry {
-		private double temperature;
-		private String weather, icon, time;
+		// attribute
+		private double temperature; // field for temperature 
+		private String weather,// field for sky condition
+					   icon,// field for icon code
+					   time; // field for data time
 		
 		/**
 		 * constructor to store data properly

@@ -4,10 +4,11 @@ package weather;
 
 import data.JSONException;
 import data.JSONObject;
-import data.Query;
+
 /**
- * Class for Mars Weather
- * @author team8
+ * Mars Weather Object contain all the information for Mars weather
+ * 
+ * @author ca.uwo.csd.cs2212.team8
  */
 public final class MarsWeather{
 	private double wind_speed,min_temp, min_temp_fahrenheit, max_temp, max_temp_fahrenheit, pressure;
@@ -16,14 +17,15 @@ public final class MarsWeather{
 			
 	/**
 	 * constructor to get data from website and store
+	 * @param mdata JSON string that contains all the Mars weather data 
 	 */
-	public MarsWeather(){
-		Query getter = new Query(null, 3);
-		while(getter.toString() == null){
-			getter = new Query(null, 3);
-		}
-		// get data from JSON
-		JSONObject data = new JSONObject(getter.toString());
+	public MarsWeather(String mdata){
+		// extract the data from JSON
+		// because the info is actually the String return from Query
+		// there are two possible kind of String
+		// one is the correct string, so the data will be extracted correctly
+		// the other one is error message because the city doe not exist
+		JSONObject data = new JSONObject(mdata);
 		min_temp = data.getJSONObject("report").getDouble("min_temp");
 		min_temp_fahrenheit = data.getJSONObject("report").getDouble("min_temp_fahrenheit");
 		max_temp = data.getJSONObject("report").getDouble("max_temp");
@@ -60,7 +62,13 @@ public final class MarsWeather{
 		}
 	}
 	
+	/**
+	 * getter methsd for Temperature
+	 * @param unit temperature unit
+	 * @return the calculated temperature
+	 */
 	public String getTemp(int unit){
+		// because there is no current temperature in the Mar, we use the average
 		double temp = (min_temp + max_temp)/2, temp_fahrenheit = (min_temp_fahrenheit + max_temp_fahrenheit)/2;
 		if(unit == 0){
 			return Math.round(temp + 273.15) + "";
@@ -174,12 +182,4 @@ public final class MarsWeather{
 			   "Wind direction " + this.wind_direction;
 	}
 	
-	/**
-	 * test method 
-	 * @param args parameter from command line
-	 */
-	public static void main(String[] args){
-		MarsWeather weather = new MarsWeather();
-		System.out.println(weather);
-	}
 }

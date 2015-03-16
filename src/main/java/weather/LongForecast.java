@@ -1,12 +1,14 @@
-
 package weather;
 
-
+import ui.Main;
+import data.JSONException;
 import data.JSONObject;
-import data.Query;
 /**
- * Class for Long Forecast which contains five entries
- * @author team8
+ * Long Forecast Object contain all the information for long forecast
+ * This object also deal with the wrong location
+ * if the location is wrong, catch the exception, let current weather end the thread
+ * 
+ * @author ca.uwo.csd.cs2212.team8
  */
 public class LongForecast{
 	// array to contain five entries
@@ -14,41 +16,30 @@ public class LongForecast{
 	
 	/**
 	 * constructor take city name as parameter to get long forecast data
-	 * @param city name for city to get data about
+	 * @param info JSON string that contains all the long forecast data 
 	 */
-	public LongForecast(String city){
-		// get the long term weather from online and save the data in an array
-		Query getter = new Query(city,2);
-		JSONObject data = new JSONObject(getter.toString());
+	public LongForecast(String info){
+		// extract the data from JSON
+		// because the info is actually the String return from Query
+		// there are two possible kind of String
+		// one is the correct string, so the data will be extracted correctly
+		// the other one is error message because the city doe not exist
+		JSONObject data = new JSONObject(info);
 		list = new LongForecastEntry[5];
-		for(int i = 1; i < 6; i++){
-			list[i-1] = new LongForecastEntry(
-											data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
-											data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
-											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("day"),
-											data.getJSONArray("list").getJSONObject(i).getInt("humidity") + " %",
-											data.getJSONArray("list").getJSONObject(i).getDouble("pressure") + " hPa",
-											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("min"),
-											data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("max"),
-											new java.util.Date((long)data.getJSONArray("list").getJSONObject(i).getInt("dt") * 1000).toString().substring(4, 10));
+		try{
+			for(int i = 1; i < 6; i++){
+				list[i-1] = new LongForecastEntry(
+												data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
+												data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
+												data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("day"),
+												data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("min"),
+												data.getJSONArray("list").getJSONObject(i).getJSONObject("temp").getDouble("max"),
+												new java.util.Date((long)data.getJSONArray("list").getJSONObject(i).getInt("dt") * 1000).toString().substring(4, 10));
+			}
+		}catch(JSONException e){
+			System.out.println("Short forecst locaiont wrong");
 		}
-	}
-	/**
-	 * getter method for humidity
-	 * @param index position in array
-	 * @return humidity as String
-	 */
-	public String getHumidity(int index){
-		return list[index].getHumidity();
-	}
-	
-	/**
-	 * getter method for air pressure
-	 * @param index position in array
-	 * @return air Pressure as String
-	 */
-	public String getPressure(int index){
-		return list[index].getPressure();
+		
 	}
 	
 	/**

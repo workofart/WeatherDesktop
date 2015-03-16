@@ -1,30 +1,42 @@
-
 package weather;
 
 
+import ui.Main;
+import data.JSONException;
 import data.JSONObject;
-import data.Query;
+
 /**
- * class for short forecast which contains eight entries
- * @author team8
+ * Short Forecast Weather Object contain all the information for short Forecast weather
+ * This object also deal with the wrong location
+ * if the location is wrong, catch the exception, let current weather to end the thread
+ * 
+ * @author ca.uwo.csd.cs2212.team8
  */
 public class ShortForecast{
 	// list of eight entries
 	private ShortForecastEntry[] list;
 	/**
 	 * constructor to load data from city name
-	 * @param city name of city 
+	 * @param info JSON string that contains all the short forecast data 
 	 */
-	public ShortForecast(String city){
+	public ShortForecast(String info){
 		// get data from online and save the first eight entries as an array of short forecast entries
-		Query getter = new Query(city,1);
-		JSONObject data = new JSONObject(getter.toString());
+		JSONObject data = new JSONObject(info);
 		list = new ShortForecastEntry[8];
-		for(int i = 0; i < 8; i++){
-			list[i] = new ShortForecastEntry(data.getJSONArray("list").getJSONObject(i).getString("dt_txt").substring(11,16),
-										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
-										 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
-										 	 data.getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp"));
+		// extract the data from JSON
+		// because the info is actually the String return from Query
+		// there are two possible kind of String
+		// one is the correct string, so the data will be extracted correctly
+		// the other one is error message because the city doe not exist
+		try{
+			for(int i = 0; i < 8; i++){
+				list[i] = new ShortForecastEntry(data.getJSONArray("list").getJSONObject(i).getString("dt_txt").substring(11,16),
+											 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
+											 	 data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),
+											 	 data.getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp"));
+			}
+		}catch(JSONException e){
+			System.out.println("Short forecst locaiont wrong");
 		}
 	}
 	

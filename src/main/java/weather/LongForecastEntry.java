@@ -1,33 +1,29 @@
 
 package weather;
-
 /**
- * Class for Long Forecast Entry
- * @author team8
+ * Long Forecast Entry object store the information for a long forecast entry
+ * It has information for temperature, maximum minimum temperature, sky condition, icon code and data time
+ * 
+ * @author ca.uwo.csd.cs2212.team8
  */
-
 public class LongForecastEntry{
 	
 	private double  minTemp, maxTemp,temperature; // attribute for minimum, maximum and current temperature
-	private String pressure,weather, icon, humidity, time; // attribute for air pressure, weather description, icon code, humidity and data time
+	private String weather, icon, time; // attribute for weather description, icon code and data time
 	
 	/**
 	 * constructor to set all the field
 	 * @param weather weather description
 	 * @param icon icon code
 	 * @param temperature current temperature
-	 * @param humidity humidity
-	 * @param pressure air pressure
 	 * @param minTemp minimum temperature
 	 * @param maxTemp maximum temperature
 	 * @param time data time
 	 */
-	public LongForecastEntry(String weather, String icon, double temperature, String humidity, String pressure, double minTemp, double maxTemp, String time) {
+	public LongForecastEntry(String weather, String icon, double temperature, double minTemp, double maxTemp, String time) {
 		this.weather = weather;
 		this.icon = icon;
 		this.temperature = temperature;
-		this.humidity = humidity;
-		this.pressure = pressure;
 		this.minTemp = minTemp;
 		this.maxTemp = maxTemp;
 		this.time = time;
@@ -51,19 +47,11 @@ public class LongForecastEntry{
 				 "Min temperature in K " + getMinTemp(0) + "\n" +
 				 "Min temperature in C " + getMinTemp(1) + "\n" +
 				 "Min temperature in F " + getMinTemp(2) + "\n" +
-				 "Humidity " + humidity + "\n" +
-				 "Pressure " + pressure + "\n" +
 				 "Date " + time;
 		return result;
 	}
 	
-	/**
-	 * getter method for air pressure
-	 * @return air pressure in String
-	 */
-	public String getPressure(){
-		return this.pressure;
-	}
+	
 	/**
 	 * getter method for data time
 	 * @return data time in String
@@ -72,13 +60,6 @@ public class LongForecastEntry{
 		return time;
 	}
 	
-	/**
-	 * getter method for Humidity
-	 * @return humidity in String
-	 */
-	public String getHumidity(){
-		return humidity;
-	}
 	
 	/**
 	 * getter method for main weather description

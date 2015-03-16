@@ -1,29 +1,28 @@
 package weather;
-import java.util.Date;
 
-import data.JSONArray;
+import ui.Main;
 import data.JSONException;
 import data.JSONObject;
-import data.Query;
 
 /**
- * This class contains all the data for current weather
- * @author Team8
- *
+ * Current Weather Object contain all the information for current weather
+ * This object also deal with the wrong location
+ * if the location is wrong, send a signal to Main object
+ * 
+ * @author ca.uwo.csd.cs2212.team8
  */
 public class CurrentWeather{
 	private String sunrise, // sunrise time
 				   sunset, // sunset time
 				   weather, // main weather description
 				   direction,// wind direction in meteorology
-				   location,
+				   location, // location of the data 
 				   icon; // weather icon
 				   
 				   
 	private double temperature, // Temperature in K
 					pressure, // pressure in hPa
 					speed, // wind speed in m/s
-		   			
 				  minTemp, // Temperature in K
 				  maxTemp; // Temperature in K
 	private int	humidity; // humidity in %
@@ -31,26 +30,39 @@ public class CurrentWeather{
 	
 	/**
 	 * Constructor for the current weather
-	 * @param city the city to be search about
+	 * @param info JSON string that contains all the current weather data 
 	 */
-	public CurrentWeather(String city) throws JSONException{
-		// get the JSON String from web sites
-		Query getter = new Query(city,0);
+	public CurrentWeather(String info){
 		// extract the data from JSON
-		JSONObject data = new JSONObject(getter.toString());
-		//JSONObject data = new JSONObject("{\"coord\":{\"lon\":139,\"lat\":35},\"sys\":{\"country\":\"JP\",\"sunrise\":1369769524,\"sunset\":1369821049},\"weather\":[{\"id\":804,\"main\":\"clouds\",\"description\":\"overcast clouds\",\"icon\":\"04n\"}],\"main\":{\"temp\":289.5,\"humidity\":89,\"pressure\":1013,\"temp_min\":287.04,\"temp_max\":292.04},\"wind\":{\"speed\":7.31,\"deg\":187.002},\"rain\":{\"3h\":0},\"clouds\":{\"all\":92},\"dt\":1369824698,\"id\":1851632,\"name\":\"Shuzenji\",\"cod\":200}");
-		sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
-		sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
-		weather = data.getJSONArray("weather").getJSONObject(0).getString("main");
-		icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
-		humidity = data.getJSONObject("main").getInt("humidity");
-		temperature = data.getJSONObject("main").getDouble("temp");
-		pressure = data.getJSONObject("main").getDouble("pressure");
-		minTemp = data.getJSONObject("main").getDouble("temp_min");
-		maxTemp = data.getJSONObject("main").getDouble("temp_max");
-		speed = data.getJSONObject("wind").getInt("speed");
-		location = data.getString("name") + ", "+ data.getJSONObject("sys").getString("country");
-		makeDirection(data.getJSONObject("wind").getInt("deg"));
+		// because the info is actually the String return from Query
+		// there are two possible kind of String
+		// one is the correct string, so the data will be extracted correctly
+		// the other one is error message because the city doe not exist
+		try{
+			JSONObject data = new JSONObject(info);
+			sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
+			sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
+			weather = data.getJSONArray("weather").getJSONObject(0).getString("main");
+			icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
+			humidity = data.getJSONObject("main").getInt("humidity");
+			temperature = data.getJSONObject("main").getDouble("temp");
+			pressure = data.getJSONObject("main").getDouble("pressure");
+			minTemp = data.getJSONObject("main").getDouble("temp_min");
+			maxTemp = data.getJSONObject("main").getDouble("temp_max");
+			speed = data.getJSONObject("wind").getInt("speed");
+			location = data.getString("name") + ", "+ data.getJSONObject("sys").getString("country");
+			makeDirection(data.getJSONObject("wind").getInt("deg"));
+		}catch(JSONException e){
+			// if the string is error message
+			// print error message
+			// use wrong location method in main to show error message
+			// stop all the pulling thread because the location is wrong
+			System.out.println("Current Location wrong");
+			System.out.println("No guess");
+			Main.wrongLocation();
+			Main.interrupt();
+		}
+		
 	}
 	
 	/**
@@ -62,6 +74,7 @@ public class CurrentWeather{
 		dir %= 360000;
 		dir /= 11250;
 		dir = (dir + 16) % 32;
+		// use the calculated number as index
 		String[] array = {"N", "NbE", "NNE", "NEbN",
 						  "NE", "NEbE", "ENE", "EbN",
 						  "E", "EbS", "ESE", "SEbE",
@@ -179,12 +192,14 @@ public class CurrentWeather{
 			   "Wind direction " + this.direction + "\n" +
 			   "Location " + this.location;
 	}
+	/**
+	 * getter method for location of the data
+	 * @return the location of the data
+	 */
 	public String getLocation(){
 		return this.location;
 	}
 	
-	
-
 	/**
 	 * getter method for temperature
 	 * @return the temperature

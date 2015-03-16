@@ -1599,9 +1599,11 @@ public class JSONObject {
     * compactness, no whitespace is added.
     * <p>
     * Warning: This method assumes that the data structure is acyclical.
-    *
+    * @param writer System writer
+    * @param indentFactor foactor for indent
+    * @param indent indent for each fields
     * @return The writer.
-    * @throws JSONException
+    * @throws JSONException when the output cannot be done
     */
    Writer write(Writer writer, int indentFactor, int indent)
            throws JSONException {
