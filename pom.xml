@@ -1,22 +1,22 @@
 <project>
-	<modelVersion> 4.0.0 </modelVersion>
-	<groupId> ca.uwo.csd.cs2212.team8 </groupId>
-	<artifactId> team8_TheWeather </artifactId>	
-	<packaging> jar </packaging>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ca.uwo.csd.cs2212.team8</groupId>
+	<artifactId>team8_TheWeather</artifactId>	
+	<packaging>jar</packaging>
 	<version>1.0</version>
 
 
 	<properties>
-		<project.build.sourceEncoding> UTF-8 </project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<build>
 		<finalName>8_TheWeather</finalName>
 		<plugins>
   			<plugin>
-				<groupId> org.apache.maven.plugins </groupId>
-				<artifactId> maven-jar-plugin </artifactId>
- 				<version>2.4 </version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+ 				<version>2.4</version>
  				<configuration>
  					<archive>
  						<manifest>
@@ -29,8 +29,8 @@
                 		<artifactId>maven-compiler-plugin</artifactId>
                     		<version>2.3.2</version>
                     		<configuration>
-                        		<source>1.6</source>
-                        		<target>1.6</target>
+                        		<source>1.7</source>
+                        		<target>1.7</target>
                         		<compilerArgument></compilerArgument>
                     		</configuration>
                 	</plugin>		
@@ -39,18 +39,17 @@
 
 		<resources>
 			<resource>
-                                <directory> src/main/resources/UI/Icon </directory>
+                                <directory>src/main/resources/UI/Icon</directory>
                         </resource>
 			<resource>
-                                <directory> src/main/resources/UI/Background/cool_temps </directory>
+                                <directory>src/main/resources/UI/Background/cool_temps</directory>
                         </resource>
 			<resource>
-                                <directory> src/main/resources/UI/Background/warm_temps </directory>
+                                <directory>src/main/resources/UI/Background/warm_temps</directory>
                         </resource>
 			<resource>
-                                <directory> src/main/resources/UI/Background/mars_UI </directory>
+                                <directory>src/main/resources/UI/Background/mars_UI</directory>
                         </resource>
 	        </resources>
-
 	</build>
 </project>
