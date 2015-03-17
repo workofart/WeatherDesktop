@@ -285,12 +285,7 @@ public class PreferenceUI extends JFrame {
 			public void keyReleased(KeyEvent e) {}
 		});
 		
-		// set the size of the frame according to the operating system
-		if(System.getProperty("os.name").toLowerCase().startsWith("win") || System.getProperty("os.name").toLowerCase().startsWith("mac")){
-			setSize(240,135);
-		}else{
-			setSize(240,115);
-		}
+		setSize(240,135);
 		setVisible(false);
 		setResizable(false);
 	}

@@ -45,13 +45,8 @@ public class Main{
 	 * @param args parameter from command line
 	 */
 	public static void main(String[] args) {
-		// if the operating system is Mac or window, height of main frame is 949
-		if(System.getProperty("os.name").toLowerCase().startsWith("win") || System.getProperty("os.name").toLowerCase().startsWith("mac")){
-			height = 949;
-		}else{
-		// if the operating system is Ubuntu, height of main frame is 919
-			height = 919;
-		}
+		height = 949;
+
 		// helper method to generate the frame and display it
 		init();
 		
@@ -103,7 +98,7 @@ public class Main{
 					Query q = new Query(null, 3);
 					MarsWeather mdata = new MarsWeather(q.toString());
 					Main.setMdata(mdata);
-					// call the refresh mehtod of today panel to refresh it
+					// call the refresh method of today panel to refresh it
 					Main.tpanel.refreshMars(Main.preference.getUnitPref());
 					Main.tpanel.repaint();
 				}
