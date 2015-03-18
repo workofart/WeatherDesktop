@@ -275,7 +275,7 @@ public class Main{
 	 * method to show the eroor message box when the location format is wrong
 	 */
 	public static void wrongLocationFormat(){
-		JOptionPane.showMessageDialog(null, "example: cityname,two character country code or Mars", "Wrong city name format", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Example: Toronto, ca (cityname, two-character country code or Mars)", "Wrong city name format", JOptionPane.INFORMATION_MESSAGE);
 		preference.showPreference();
 	}
 	
@@ -283,7 +283,7 @@ public class Main{
 	 * methdo to show the error message box when the server cannot guess the location based on the input location
 	 */
 	public static void wrongLocation(){
-		JOptionPane.showMessageDialog(null, "Server cannot guess base on your input", "Wrong city name", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Server cannot guess based on your input", "Wrong city name", JOptionPane.INFORMATION_MESSAGE);
 		preference.showPreferenceDefault();
 	}
 	
