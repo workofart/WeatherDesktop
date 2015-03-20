@@ -1,10 +1,15 @@
 package ui;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +34,18 @@ public class TodayPanel extends JPanel{
 				   risetLabel, //label for sunrise and sunset time
 				   maxminLabel, //label for maximum minimum temperature
 				   locationLabel; //label for current weather location
+	private final int tempLabelX=60, tempLabelY=85,
+						winLabelX=330,winLabelY=80,
+						presLabelX=330, presLabelY=130,
+						humLabelX=330, humLabelY=180,
+						sunLabelX=100, sunLabelY=55,
+						iconLabelX=50, iconLabelY=50,
+						risetLabelX=10, risetLabelY=260,
+						maxminLabelX=60, maxminLabelY=200,
+						locationLabelX=100, locationLabelY=5,
+						refreshLabelX=325, refreshLabelY=260, 
+						refresh_bX=0, refresh_bY=0,
+						pref_bX=465, pref_bY=0;
 	private JButton refresh_b, //button for refresh
 				    pref_b; //button for preference window
 	
@@ -102,17 +119,24 @@ public class TodayPanel extends JPanel{
 		setLayout(null);		
 		this.setSize(520,280);	
 		
-		// initiate icon label and leave blank
-		iconLabel = new JLabel();
-		iconLabel.setBounds(40,40,50,50);
-		this.add(iconLabel);
-			
+		
+		/*
+		 ********Buttons***********
+		 */
+		
 		// initiate refresh button
 		refresh_b = new JButton();
 		// use a picture from resource as the icon for button
-		refresh_b.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("reload.png")));
+		try{
+			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("reload.png"));
+			icon=imageResize(icon,42,33);
+			refresh_b.setIcon(new ImageIcon(icon));
+		}catch(IOException e){
+			System.out.println("Refresh button icon: "+e.getMessage());
+			refresh_b.setText("Refresh");
+		}
 		// the button is at the left upper corner of the panel with size 60, 60
-		refresh_b.setBounds(10,5,60,60);
+		refresh_b.setBounds(refresh_bX,refresh_bY,50,50);
 		refresh_b.setContentAreaFilled(false);
 		refresh_b.setBorderPainted(false);
 		// make all the components not focusable
@@ -130,28 +154,21 @@ public class TodayPanel extends JPanel{
 		// add this button to the panel
 		this.add(refresh_b);
 		
-		
-		// initiate temperature label
-		tempLabel = new JLabel();
-		// initiate as dash temperature
-		tempLabel.setText("<html><p style=\"color:blue; font-size:75px\">---&#8451</p></html>");
-		// put the label at 50, 50 and fit the content
-		tempLabel.setBounds(50,50,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
-		this.add(tempLabel);
-		
-		// initiate maximum minimum temperature label
-		// initiate the content to dash
-		maxminLabel=new JLabel("<html><p style=\"color:blue; font-size:12px\">Max: ---&#8451Min: ---&#8451</p></html>");
-		maxminLabel.setBounds(25,210,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
-		this.add(maxminLabel);
-		
-		
 		// initiate preferences Button
 		pref_b = new JButton();
 		// set the icon according to the icon resource
-		pref_b.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("gear.png")));
+//		pref_b.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("gear.png")));
+		try{
+			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("gear.png"));
+			icon=imageResize(icon,35,35);
+			pref_b.setIcon(new ImageIcon(icon));
+		}catch(IOException e){
+			System.out.println("Preference button icon: "+e.getMessage());
+			refresh_b.setText("Options");
+		}
+		
 		// put the icon to the right upper corner
-		pref_b.setBounds(450,5,60,60);
+		pref_b.setBounds(pref_bX,pref_bY,50,50);
 		pref_b.setContentAreaFilled(false);
 		pref_b.setBorderPainted(false);
 		pref_b.setFocusable(false);
@@ -167,45 +184,69 @@ public class TodayPanel extends JPanel{
 		});
 		this.add(pref_b);
 		
-		// initiate wind label with speed and direction set to dash
+		
+		/*
+		 ********Labels***********
+		 */
+		
+		
+		//  icon label and leave blank
+		iconLabel = new JLabel();
+		iconLabel.setBounds(iconLabelX,iconLabelY,50,50);
+		this.add(iconLabel);
+		
+		//  temperature label with temperature and unit set to dash as default
+		tempLabel = new JLabel();
+		tempLabel.setText("<html><p style=\"color:blue; font-size:75px\">---&#8451</p></html>");
+		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		this.add(tempLabel);
+		
+		//  maximum minimum temperature label
+		// initiate the content to dash
+		maxminLabel=new JLabel("<html><p style=\"color:blue; font-size:12px\">Max: ---&#8451Min: ---&#8451</p></html>");
+		maxminLabel.setBounds(maxminLabelX,maxminLabelY,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+		this.add(maxminLabel);
+		
+		
+		//  wind label with speed and direction set to dash
 		winLabel=new JLabel();
 		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>--</b>m/s --</p></html>");
-		winLabel.setBounds(330,100,(int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
+		winLabel.setBounds(winLabelX,winLabelY,(int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
 		this.add(winLabel);
 		
-		// initiate air pressure label with data set to dash
+		//  air pressure label with data set to dash
 		presLabel=new JLabel();
 		presLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>--</b>hPa</p></html>");
-		presLabel.setBounds(330,150,(int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
+		presLabel.setBounds(presLabelX,presLabelY,(int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
 		this.add(presLabel);
 		
-		// initiate humidity label with data set to dash
+		//  humidity label with data set to dash
 		humLabel=new JLabel();
 		humLabel.setText("<html><p style=\"color:blue; font-size:16px\">-- % humidity</p></html>");
-		humLabel.setBounds(330,200,(int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
+		humLabel.setBounds(humLabelX,humLabelY,(int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
 		this.add(humLabel);
 		
-		// initiate sky condition label
+		//  sky condition label
 		sunLabel=new JLabel();
 		sunLabel.setText("<html><p style=\"color:blue; font-size:16px\">--------</p></html>");
-		sunLabel.setBounds((int)tempLabel.getPreferredSize().getWidth()-70,(int)tempLabel.getPreferredSize().getHeight()+50,(int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
+		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 		this.add(sunLabel);
 		
-		// initiate sunrise sunset label
+		//  sunrise sunset label
 		risetLabel=new JLabel("<html><p style=\"color:blue; font-size:12px\">Sunrise: --:-- Sunset: --:--</p></html>");
-		risetLabel.setBounds(25,247,(int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
+		risetLabel.setBounds(risetLabelX,risetLabelY,(int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		this.add(risetLabel);
 		
 		
-		// initiate refresh time label
+		//  refresh time label
 		refreshLabel=new JLabel();
 		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:----------</p></html>");
-		refreshLabel.setBounds((int)(this.getSize().getWidth()-refreshLabel.getPreferredSize().getWidth()-30),(int)(this.getSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
+		refreshLabel.setBounds(refreshLabelX,refreshLabelY,(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 		this.add(refreshLabel);
 		
-		// initiate location label
+		//  location label
 		locationLabel = new JLabel("<html><p style=\"color:blue; font-size:16px\"><b>------,--</b></p></html>");
-		locationLabel.setBounds((int)(this.getSize().getWidth()-locationLabel.getPreferredSize().getWidth()-160),(int)(locationLabel.getPreferredSize().getHeight()+10),(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
+		locationLabel.setBounds(locationLabelX,locationLabelY,(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
 		add(locationLabel);
 			
 	}
@@ -238,7 +279,7 @@ public class TodayPanel extends JPanel{
 		}
 		// update the label
 		tempLabel.setText(s +"</p></html>");
-		tempLabel.setBounds(50,50,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		tempLabel.setSize((int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 	}
 	
 	/**
@@ -269,7 +310,7 @@ public class TodayPanel extends JPanel{
 		}
 		// update the label according to the string
 		maxminLabel.setText(s +"</p></html>");
-		maxminLabel.setBounds(25,210,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+		maxminLabel.setSize((int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
 	}
 
 
@@ -280,7 +321,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setWinLabel(String speed, String direction) {
 		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + speed + "</b> m/s " + direction  + "</p></html>");
-		winLabel.setBounds(330,100,(int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
+		winLabel.setSize((int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
 	}
 
 
@@ -290,7 +331,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setPresLabel(String pressure) {
 		presLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + pressure + "</b> hPa</p></html>");
-		presLabel.setBounds(330,150,(int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
+		presLabel.setSize((int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
 	}
 
 
@@ -300,7 +341,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setHumLabel(String humidity) {
 		humLabel.setText("<html><p style=\"color:blue; font-size:16px\">" + humidity + " % humidity</p></html>");
-		humLabel.setBounds(330,200,(int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
+		humLabel.setSize((int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
 	}
 
 
@@ -310,7 +351,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setSunLabel(String weather) {
 		sunLabel.setText("<html><p style=\"color:blue; font-size:16px\">" + weather + "</p></html>");
-		sunLabel.setBounds((int)tempLabel.getPreferredSize().getWidth()-70,(int)tempLabel.getPreferredSize().getHeight()+50,(int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
+		sunLabel.setSize((int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 	}
 	
 	
@@ -321,7 +362,7 @@ public class TodayPanel extends JPanel{
 		// get the current time 
 		Date date = new Date();
 		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:"+date.toString().substring(4,19)+"</p></html>");
-		refreshLabel.setBounds((int)(this.getSize().getWidth()-refreshLabel.getPreferredSize().getWidth()-5),(int)(this.getSize().getHeight()-refreshLabel.getPreferredSize().getHeight()),(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
+		refreshLabel.setSize((int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 	}
 	/**
 	 * helper method to update location label
@@ -329,7 +370,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setLocationLabel(String s){
 		locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s + "</b></p></html>");
-		locationLabel.setBounds((int)(this.getSize().getWidth()-locationLabel.getPreferredSize().getWidth()-160),(int)(locationLabel.getPreferredSize().getHeight()+10),(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
+		locationLabel.setSize((int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
 	}
 	/**
 	 * helper method to update sunset sunrise label
@@ -338,7 +379,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setRisetLabel(String sunrise, String sunset){
 		risetLabel.setText("<html><p style=\"color:blue; font-size:12px\">Sunrise:" + sunrise + " Sunset:" + sunset + "</p></html>");
-		risetLabel.setBounds(25,247,(int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
+		risetLabel.setSize((int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		
 	}
 	
@@ -355,5 +396,21 @@ public class TodayPanel extends JPanel{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	/**
+	 * Method to resize icons smoothly
+	 * @param original
+	 * @param width
+	 * @param height
+	 * @return BufferedImage
+	 */
+	private BufferedImage imageResize(BufferedImage original, int width, int height){
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d=img.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.drawImage(original, 0, 0, width, height, null);
+		g2d.dispose();
+		return img;
 	}
 }

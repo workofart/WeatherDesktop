@@ -84,7 +84,6 @@ public class Main{
 			// use two thread, one for pulling data, the other one for resize the window
 			// thread to resize the window
 			EventQueue.invokeLater(new Thread(new Runnable(){
-				@Override
 				public void run() {
 					// the mars frame is 640 smaller in height of the full window
 					frame.setSize(520,Main.getHeight()-640);
@@ -92,7 +91,6 @@ public class Main{
 			}));
 			// thread to pull data for Mars
 			t1 = new Thread(new Runnable(){
-				@Override
 				public void run(){
 					// get the data and update the Mars data of the main windows
 					Query q = new Query(null, 3);
@@ -111,7 +109,6 @@ public class Main{
 			// use four threads, three for pulling data for current, long and short, the other one for resize the window
 			// thread to resize the window
 			EventQueue.invokeLater(new Thread(new Runnable(){
-				@Override
 				public void run() {
 					// set the window to the full size
 					frame.setSize(520,Main.getHeight());
@@ -120,7 +117,6 @@ public class Main{
 			
 			// thread to pull current weather data
 			t1 = new Thread(new Runnable(){
-				@Override
 				public void run(){
 					// get the data and update the current weather data of the main Windows
 					Query q = new Query(Main.preference.getLocationPref(), 0);
@@ -134,7 +130,6 @@ public class Main{
 			
 			// thread to pull short term forecast data
 			t2 = new Thread(new Runnable(){
-				@Override
 				public void run(){
 					// get the data and update the short term data of the main windows
 					Query q = new Query(Main.preference.getLocationPref(), 1);
@@ -150,7 +145,6 @@ public class Main{
 			
 			// thread to pull the long forecast data
 			t3 = new Thread(new Runnable(){
-				@Override
 				public void run(){
 					// get the data and update the long term data of the main windows
 					Query q = new Query(Main.preference.getLocationPref(), 2);

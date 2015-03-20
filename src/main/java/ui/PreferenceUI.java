@@ -232,9 +232,7 @@ public class PreferenceUI extends JFrame {
 		textField.setText("Mars");
 		// when user click enter, act as pushing apply button
 		textField.addKeyListener(new KeyListener(){
-			@Override
 			public void keyTyped(KeyEvent e) {}
-			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyCode();
 				if(key == KeyEvent.VK_ENTER){
@@ -281,7 +279,6 @@ public class PreferenceUI extends JFrame {
 					}
 				}
 			}
-			@Override
 			public void keyReleased(KeyEvent e) {}
 		});
 		
