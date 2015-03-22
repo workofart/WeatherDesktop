@@ -6,9 +6,6 @@ import weather.CurrentWeather;
 import weather.LongForecast;
 import weather.MarsWeather;
 import weather.ShortForecast;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics2D;
@@ -50,7 +47,7 @@ public class Main{
 	 * @param args parameter from command line
 	 */
 	public static void main(String[] args) {
-		height = 949;
+		height = 946;
 
 		// helper method to generate the frame and display it
 		init();

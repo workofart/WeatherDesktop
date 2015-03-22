@@ -198,7 +198,7 @@ public class TodayPanel extends JPanel{
 		
 		//  temperature label with temperature and unit set to dash as default
 		tempLabel = new JLabel();
-		tempLabel.setText("<html><p style=\"color:blue; font-size:75px\">---&#8451</p></html>");
+		tempLabel.setText("<html><p style=\"color:blue; font-family:courier; font-size:75px\">---&#8451</p></html>");
 		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 		this.add(tempLabel);
 		
@@ -284,7 +284,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setTempLabel(String temp, int unit) {
 		// generate content string
-		String s = "<html><p style=\"font-size:75px\">" + temp;
+		String s = "<html><p style=\"font-size:75px;font-family:courier\">" + temp;
 		switch(unit){
 			case 0: s = s + "&#8490";
 				break;
