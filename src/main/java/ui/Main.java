@@ -303,6 +303,32 @@ public class Main{
 	}
 	
 	/**
+	 * method to interrupt specified thread to prevent duplicate threading
+	 * @param t Thread in main to be interrupted
+	 */
+	public static void interrupt(Thread t){
+		if(t != null)
+			t.stop();
+		System.out.println("Interupt");
+	}
+	
+	/**
+	 * method to get the pointer of short term refresh thread
+	 * @return Thread the thread in Main that refresh short term data
+	 */
+	public static Thread getShortTermThread(){
+		return t2;
+	}
+	
+	/**
+	 * method to get the pointer of long term refresh thread
+	 * @return Thread the thread in Main that refresh long term data
+	 */
+	public static Thread getLongTermThread(){
+		return t3;
+	}
+	
+	/**
 	 * method for preference button in today panel to show preference window
 	 */
 	public static void showPreference(){

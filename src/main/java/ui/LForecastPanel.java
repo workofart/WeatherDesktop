@@ -1,13 +1,11 @@
 
 package ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +23,7 @@ public class LForecastPanel extends JPanel{
 				   iconLabel, // label for icon represent sky condition
 				   maxminLabel, // label for maximum and minimum temperature
 				   timeLabel; // label for data time
-	private final int tempLabelX=75, tempLabelY=30, //Constants for the coordinates of the JLabels
+	private final int tempLabelX=80, tempLabelY=30, //Constants for the coordinates of the JLabels
 			sunLabelX=180, sunLabelY=95,
 			iconLabelX=27, iconLabelY=20, 
 			timeLabelX=5,timeLabelY=0,
@@ -79,7 +77,7 @@ public class LForecastPanel extends JPanel{
 		// the icon use absolute position below the temperature label
 		// the icon's size is 50 by 50
 		iconLabel = new JLabel();
-		iconLabel.setBounds(iconLabelX,iconLabelY,50,50);
+		iconLabel.setBounds(iconLabelX,iconLabelY,65,65);
 		this.add(iconLabel);
 	
 		// initiate data time label with dash content

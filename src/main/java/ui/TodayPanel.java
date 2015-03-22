@@ -34,6 +34,7 @@ public class TodayPanel extends JPanel{
 				   risetLabel, //label for sunrise and sunset time
 				   maxminLabel, //label for maximum minimum temperature
 				   locationLabel; //label for current weather location
+	// position data for labels and buttons
 	private final int tempLabelX=85, tempLabelY=85,
 						winLabelX=330,winLabelY=80,
 						presLabelX=330, presLabelY=130,
@@ -158,7 +159,6 @@ public class TodayPanel extends JPanel{
 		// initiate preferences Button
 		pref_b = new JButton();
 		// set the icon according to the icon resource
-//		pref_b.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("gear.png")));
 		try{
 			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("gear.png"));
 			icon=Main.imageResize(icon,35,35);
@@ -246,7 +246,7 @@ public class TodayPanel extends JPanel{
 		this.add(refreshLabel);
 		
 		//  location label
-		locationLabel = new JLabel("<html><p style=\"color:blue; font-size:16px\"><b>------,--</b></p></html>");
+		locationLabel = new JLabel("<html><p style=\"color:blue; font-size:16px\"><b>------</b></p></html>");
 		locationLabel.setBounds(locationLabelX,locationLabelY,(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
 		add(locationLabel);
 			
@@ -385,7 +385,15 @@ public class TodayPanel extends JPanel{
 	 * @param s location as String
 	 */
 	private void setLocationLabel(String s){
-		locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s + "</b></p></html>");
+		// for earth city, only show city name
+		if(s.equalsIgnoreCase("Mars")){
+			locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s+ "</b></p></html>");
+		}else{
+			int i = s.indexOf(',');
+			locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s.substring(0,i) + "</b></p></html>");
+		}
+		
+		locationLabel.setToolTipText(s);
 		locationLabel.setSize((int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
 	}
 	/**

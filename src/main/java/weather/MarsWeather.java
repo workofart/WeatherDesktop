@@ -11,7 +11,7 @@ import data.JSONObject;
  * @author ca.uwo.csd.cs2212.team8
  */
 public final class MarsWeather{
-	private double wind_speed,min_temp, min_temp_fahrenheit, max_temp, max_temp_fahrenheit, pressure;
+	private double wind_speed,min_temp,  max_temp, pressure;
 	private int humidity; // Atmospheric Pressure
 	private String  wind_direction, weather, icon;
 			
@@ -27,9 +27,7 @@ public final class MarsWeather{
 		// the other one is error message because the city doe not exist
 		JSONObject data = new JSONObject(mdata);
 		min_temp = data.getJSONObject("report").getDouble("min_temp");
-		min_temp_fahrenheit = data.getJSONObject("report").getDouble("min_temp_fahrenheit");
 		max_temp = data.getJSONObject("report").getDouble("max_temp");
-		max_temp_fahrenheit = data.getJSONObject("report").getDouble("max_temp_fahrenheit");
 		pressure = data.getJSONObject("report").getDouble("pressure");
 		// if the data not exist, give -1
 		try{
@@ -69,14 +67,14 @@ public final class MarsWeather{
 	 */
 	public String getTemp(int unit){
 		// because there is no current temperature in the Mar, we use the average
-		double temp = (min_temp + max_temp)/2, temp_fahrenheit = (min_temp_fahrenheit + max_temp_fahrenheit)/2;
+		double temp = (min_temp + max_temp)/2;
 		if(unit == 0){
 			return Math.round(temp + 273.15) + "";
 		}
 		if(unit == 1){
 			return Math.round(temp) + "";
 		}
-		return Math.round(temp_fahrenheit) + "";
+		return Math.round(temp * 9.0 / 5.0 +32) + "";
 	}
 
 	/**
@@ -91,7 +89,7 @@ public final class MarsWeather{
 		if(unit == 1){
 			return Math.round(min_temp) + "";
 		}
-		return Math.round(min_temp_fahrenheit) + "";
+		return Math.round(min_temp * 9.0 / 5.0 +32) + "";
 	}
 
 	/**
@@ -106,7 +104,7 @@ public final class MarsWeather{
 		if(unit == 1){
 			return Math.round(max_temp) + "";
 		}
-		return Math.round(max_temp_fahrenheit) + "";
+		return Math.round(max_temp * 9.0 / 5.0+32) + "";
 	}
 
 	/**

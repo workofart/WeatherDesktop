@@ -38,6 +38,7 @@ public class LongForecast{
 			}
 		}catch(JSONException e){
 			System.out.println("Short forecst locaiont wrong");
+			Main.interrupt(Main.getLongTermThread());
 		}
 		
 	}
