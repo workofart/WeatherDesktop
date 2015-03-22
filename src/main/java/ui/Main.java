@@ -407,10 +407,10 @@ public class Main{
 	
 	/**
 	 * Method to resize icons smoothly
-	 * @param original
-	 * @param width
-	 * @param height
-	 * @return BufferedImage
+	 * @param original the original image
+	 * @param width the width of the image to resize to
+	 * @param height the height of the image to resize to
+	 * @return BufferedImage the resized image
 	 */
 	public static BufferedImage imageResize(BufferedImage original, int width, int height){
 		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
