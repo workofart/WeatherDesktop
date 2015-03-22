@@ -295,7 +295,11 @@ public class TodayPanel extends JPanel{
 		}
 		// update the label
 		tempLabel.setText(s +"</p></html>");
-		tempLabel.setSize((int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		// adjust position if the temp string is too long
+		if(tempLabel.getSize().getWidth() + tempLabelX > humLabelX-5){
+			tempLabel.setLocation((int)(humLabelX-5-tempLabel.getSize().getWidth()),tempLabelY);
+		}
 	}
 	
 	/**
