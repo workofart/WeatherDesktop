@@ -34,18 +34,19 @@ public class TodayPanel extends JPanel{
 				   risetLabel, //label for sunrise and sunset time
 				   maxminLabel, //label for maximum minimum temperature
 				   locationLabel; //label for current weather location
-	private final int tempLabelX=60, tempLabelY=85,
+	private final int tempLabelX=85, tempLabelY=85,
 						winLabelX=330,winLabelY=80,
 						presLabelX=330, presLabelY=130,
 						humLabelX=330, humLabelY=180,
-						sunLabelX=100, sunLabelY=55,
-						iconLabelX=50, iconLabelY=50,
+						sunLabelX=120, sunLabelY=70,
+						iconLabelX=50, iconLabelY=30,
 						risetLabelX=10, risetLabelY=260,
-						maxminLabelX=60, maxminLabelY=200,
+						maxminLabelX=90, maxminLabelY=200,
 						locationLabelX=100, locationLabelY=5,
 						refreshLabelX=325, refreshLabelY=260, 
 						refresh_bX=0, refresh_bY=0,
 						pref_bX=465, pref_bY=0;
+	private String skyCondition="";
 	private JButton refresh_b, //button for refresh
 				    pref_b; //button for preference window
 	
@@ -129,7 +130,7 @@ public class TodayPanel extends JPanel{
 		// use a picture from resource as the icon for button
 		try{
 			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("reload.png"));
-			icon=imageResize(icon,42,33);
+			icon=Main.imageResize(icon,42,33);
 			refresh_b.setIcon(new ImageIcon(icon));
 		}catch(IOException e){
 			System.out.println("Refresh button icon: "+e.getMessage());
@@ -160,7 +161,7 @@ public class TodayPanel extends JPanel{
 //		pref_b.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("gear.png")));
 		try{
 			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("gear.png"));
-			icon=imageResize(icon,35,35);
+			icon=Main.imageResize(icon,35,35);
 			pref_b.setIcon(new ImageIcon(icon));
 		}catch(IOException e){
 			System.out.println("Preference button icon: "+e.getMessage());
@@ -192,7 +193,7 @@ public class TodayPanel extends JPanel{
 		
 		//  icon label and leave blank
 		iconLabel = new JLabel();
-		iconLabel.setBounds(iconLabelX,iconLabelY,50,50);
+		iconLabel.setBounds(iconLabelX,iconLabelY,100,100);
 		this.add(iconLabel);
 		
 		//  temperature label with temperature and unit set to dash as default
@@ -256,8 +257,23 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setIcon(String icon){
 		// load icon from resource and update
-		ClassLoader cl = this.getClass().getClassLoader();
-		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
+		//Resize image to maintain consistency
+		try{
+			BufferedImage img=ImageIO.read(this.getClass().getClassLoader().getResource(icon+".png"));
+			img=Main.imageResize(img,80,80);
+			iconLabel.setIcon(new ImageIcon(img));
+		}catch(IOException e){
+			System.out.println("Today forcast UI icon: "+e.getMessage());
+		}
+		//Determine what the  background image should be (matching the icon)
+		int code=Integer.parseInt(icon.substring(0,2));
+		if(code<13&&code>4){
+			skyCondition="_rain";
+		}else if(code==13){
+			skyCondition="_snow";
+		}else{
+			skyCondition="";
+		}
 	}
 
 
@@ -392,25 +408,10 @@ public class TodayPanel extends JPanel{
 		ClassLoader cl = this.getClass().getClassLoader();
 		try {
 			// paint the background using the picture
-		    g.drawImage(ImageIO.read(cl.getResource("cool_UI_01.png")), 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
+		    g.drawImage(ImageIO.read(cl.getResource("cool_UI_01"+skyCondition+".png")), 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	/**
-	 * Method to resize icons smoothly
-	 * @param original
-	 * @param width
-	 * @param height
-	 * @return BufferedImage
-	 */
-	private BufferedImage imageResize(BufferedImage original, int width, int height){
-		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d=img.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g2d.drawImage(original, 0, 0, width, height, null);
-		g2d.dispose();
-		return img;
-	}
+
 }

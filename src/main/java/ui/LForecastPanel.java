@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,7 +25,12 @@ public class LForecastPanel extends JPanel{
 				   iconLabel, // label for icon represent sky condition
 				   maxminLabel, // label for maximum and minimum temperature
 				   timeLabel; // label for data time
-	private String tmpbkgd="cool"; // string represent the color of backgournd picture
+	private final int tempLabelX=75, tempLabelY=30, //Constants for the coordinates of the JLabels
+			sunLabelX=180, sunLabelY=95,
+			iconLabelX=27, iconLabelY=20, 
+			timeLabelX=5,timeLabelY=0,
+			maxminLabelX=5,maxminLabelY=105;
+	private String tmpbkgd="cool", skyCondition=""; // string represent the color of backgournd picture
 	
 	/**
 	 * constructor to use generate and show the panel
@@ -73,35 +79,35 @@ public class LForecastPanel extends JPanel{
 		// the icon use absolute position below the temperature label
 		// the icon's size is 50 by 50
 		iconLabel = new JLabel();
-		iconLabel.setBounds(50,50,50,50);
+		iconLabel.setBounds(iconLabelX,iconLabelY,50,50);
 		this.add(iconLabel);
 	
 		// initiate data time label with dash content
 		// the time label use absolute position at the left upper coner
 		// change the size according to the text
 		timeLabel = new JLabel("<html><p style=\"font-size:10px\">--- --</p></html>");
-		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+		timeLabel.setBounds(timeLabelX,timeLabelY,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 		this.add(timeLabel);
 		
 		// initiate temperateure label with dash content
 		// the temperature label use absolute position below the time label
 		// change the size according to the text
-		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&#8451</p></html>");
-		tempLabel.setBounds(10,10,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		tempLabel=new JLabel("<html><p style=\"font-size:40px\">--&#8451</p></html>");
+		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 		this.add(tempLabel);
 		
 		// initiate maximum minimum temperature label with dash content
 		// the maximum minimum temperature label uses absolute position below the temp label
 		// change the size according to the text
 		maxminLabel=new JLabel("<html><p style=\"color:black; font-size:10px\">Max: ---&#8451 Min: ---&#8451</p></html>");
-		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+		maxminLabel.setBounds(maxminLabelX,maxminLabelY,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
 		this.add(maxminLabel);
 		
 		// initiate sky condition label with dash content
 		// the sky condition label uses absolute position to the right of icon
 		// change the size according to the text
 		sunLabel=new JLabel("<html><p style=\"font-size:12px\">--------</p></html>");
-		sunLabel.setBounds(120,60,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
+		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
 		this.add(sunLabel);
 	}
 	
@@ -111,7 +117,7 @@ public class LForecastPanel extends JPanel{
 	 * @param unit the flag to indicate unit of temperature
 	 */
 	private void setTemp(String temp, int unit){
-		String s = "<html><p style=\"font-size:30px\">" + temp;
+		String s = "<html><p style=\"font-size:40px\">" + temp;
 		// change unit according to unit
 		switch(unit){
 			case 0: s = s + "&#8490";
@@ -124,7 +130,7 @@ public class LForecastPanel extends JPanel{
 		// update label
 		tempLabel.setText(s+"</p></html>");
 		// change the size according to the text
-		tempLabel.setBounds(10,10,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 	}
 	
 	
@@ -136,7 +142,7 @@ public class LForecastPanel extends JPanel{
 		// update sky condition
 		// change the size according to the text
 		sunLabel.setText("<html><p style=\"font-size:12px\">" + sky + "</p></html>");
-		sunLabel.setBounds(120,60,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
+		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
 	}
 	
 	/**
@@ -145,8 +151,23 @@ public class LForecastPanel extends JPanel{
 	 */
 	private void setIcon(String icon){
 		// load the icon from resource and update icon label
-		ClassLoader cl = this.getClass().getClassLoader();
-		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
+		//Resize the icon to maintain consistency if icon files are changed
+		try{
+			BufferedImage img=ImageIO.read(this.getClass().getClassLoader().getResource(icon+".png"));
+			img=Main.imageResize(img,65,65);
+			iconLabel.setIcon(new ImageIcon(img));
+		}catch(IOException e){
+			System.out.println("Shortterm forcast UI icon: "+e.getMessage());
+		}
+		//Determine what the background image should be
+		int code=Integer.parseInt(icon.substring(0,2));
+		if(code<13&&code>4){
+			skyCondition="_rain";
+		}else if(code==13){
+			skyCondition="_snow";
+		}else{
+			skyCondition="";
+		}
 	}
 	
 	/**
@@ -157,7 +178,7 @@ public class LForecastPanel extends JPanel{
 		// update the date
 		// change the size according to the text
 		timeLabel.setText("<html><p style=\"font-size:10px\">" + date + "</p></html>");
-		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+		timeLabel.setBounds(timeLabelX,timeLabelY,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 	}
 	
 	/**
@@ -168,7 +189,7 @@ public class LForecastPanel extends JPanel{
 	 */
 	private void setMaxMin(String max, String min, int unit){
 		// generate data string
-		String s = "<html><p style=\"color:blue; font-size:10px\">Max: " + max;
+		String s = "<html><p style=\"font-size:10px\">Max: " + max;
 		// change unit according to unit
 		switch(unit){
 			case 0: s = s + "&#8490 Min: ";
@@ -190,7 +211,7 @@ public class LForecastPanel extends JPanel{
 		// update label
 		maxminLabel.setText(s +"</p></html>");
 		// change size according to the text
-		maxminLabel.setBounds(5,110,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+		maxminLabel.setBounds(maxminLabelX,maxminLabelY,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
 	}
 	
 	/**
@@ -202,7 +223,7 @@ public class LForecastPanel extends JPanel{
 		// load the picture from resource
 		ClassLoader cl = this.getClass().getClassLoader();
 		try {
-		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_06.png"));
+		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_03"+skyCondition+".png"));
 		} catch (IOException e) {
 			// if the picture not exists, print message
 			System.out.println(e.getMessage());

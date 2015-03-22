@@ -6,10 +6,15 @@ import weather.CurrentWeather;
 import weather.LongForecast;
 import weather.MarsWeather;
 import weather.ShortForecast;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -374,5 +379,22 @@ public class Main{
 	 */
 	public static int getHeight(){
 		return height;
+	}
+	
+	
+	/**
+	 * Method to resize icons smoothly
+	 * @param original
+	 * @param width
+	 * @param height
+	 * @return BufferedImage
+	 */
+	public static BufferedImage imageResize(BufferedImage original, int width, int height){
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d=img.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.drawImage(original, 0, 0, width, height, null);
+		g2d.dispose();
+		return img;
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -23,7 +24,11 @@ public class SForecastPanel extends JPanel{
 				   sunLabel, // label for sky condition
 				   iconLabel, // label for icon
 				   timeLabel; // label for data time
-	private String tmpbkgd="cool"; //string to determine the backgroung picture
+	private final int tempLabelX=100, tempLabelY=20,
+			sunLabelX=190, sunLabelY=55,
+			iconLabelX=42, iconLabelY=-27, 
+			timeLabelX=5,timeLabelY=0;
+	private String tmpbkgd="cool", skyCondition=""; //string to determine the backgroung picture
 	
 	/**
 	 * constructor that initialize all the texts to hyphen
@@ -45,24 +50,22 @@ public class SForecastPanel extends JPanel{
 		
 		// create icon label, put it to the left of the panel
 		iconLabel = new JLabel();
-		iconLabel.setBounds(38,34,50,50);
+		iconLabel.setBounds(iconLabelX,iconLabelY,100,100);
 		this.add(iconLabel);
-		
-		
 		
 		// create temperature label with dash as content
 		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&#8451</p></html>");
-		tempLabel.setBounds(10,20,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 		this.add(tempLabel);
 		
 		// create ksy condition label with dash as content
 		sunLabel=new JLabel("<html><p style=\"font-size:12px\">----------</p></html>");
-		sunLabel.setBounds(120,45,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
+		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
 		this.add(sunLabel);
 		
 		// create data time label with dash as content
 		timeLabel=new JLabel("<html><p style=\"font-size:10px\">--:--</p></html>");
-		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+		timeLabel.setBounds(timeLabelX,timeLabelY,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 		this.add(timeLabel);
 		
 
@@ -97,7 +100,7 @@ public class SForecastPanel extends JPanel{
 	 */
 	private void setTime(String time){
 		timeLabel.setText("<html><p style=\"font-size:10px\">" + time + "</p></html>");
-		timeLabel.setBounds(5,0,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
+		timeLabel.setBounds(timeLabelX,timeLabelY,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 	}
 	
 	/**
@@ -119,7 +122,7 @@ public class SForecastPanel extends JPanel{
 		}
 		// update the lable using the string and chagne size
 		tempLabel.setText(s +"</p></html>");
-		tempLabel.setBounds(10,10,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
+		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 	}
 	
 	/**
@@ -129,7 +132,7 @@ public class SForecastPanel extends JPanel{
 	private void setSky(String sky){
 		// update the lable using the string and chagne size
 		sunLabel.setText("<html><p style=\"font-size:12px\">" + sky + "</p></html>");
-		sunLabel.setBounds(120,45,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
+		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
 	}
 	
 	/**
@@ -138,8 +141,23 @@ public class SForecastPanel extends JPanel{
 	 */
 	private void setIcon(String icon){
 		// update the icon by loading resource according to the icon code
-		ClassLoader cl = this.getClass().getClassLoader();
-		iconLabel.setIcon(new ImageIcon(cl.getResource(icon+".png")));
+		//Resize the icon to maintain consistency if icon files are changed
+		try{
+			BufferedImage img=ImageIO.read(this.getClass().getClassLoader().getResource(icon+".png"));
+			img=Main.imageResize(img,65,65);
+			iconLabel.setIcon(new ImageIcon(img));
+		}catch(IOException e){
+			System.out.println("Shortterm forcast UI icon: "+e.getMessage());
+		}
+		//Determine what the background image should be
+		int code=Integer.parseInt(icon.substring(0,2));
+		if(code<13&&code>4){
+			skyCondition="_rain";
+		}else if(code==13){
+			skyCondition="_snow";
+		}else{
+			skyCondition="";
+		}
 	}
 	
 	/**
@@ -152,7 +170,7 @@ public class SForecastPanel extends JPanel{
 		ClassLoader cl = this.getClass().getClassLoader();
 		// paint the background
 		try {
-		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_06.png"));
+		    img = ImageIO.read(cl.getResource(tmpbkgd+"_UI_06"+skyCondition+".png"));
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
