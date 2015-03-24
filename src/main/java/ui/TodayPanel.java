@@ -132,6 +132,10 @@ public class TodayPanel extends JPanel{
 			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("reload.png"));
 			icon=Main.imageResize(icon,42,33);
 			refresh_b.setIcon(new ImageIcon(icon));
+			
+			BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource("reload-pressed.png"));
+			pressed=Main.imageResize(pressed,42,33);
+			refresh_b.setPressedIcon(new ImageIcon(pressed));
 		}catch(IOException e){
 			System.out.println("Refresh button icon: "+e.getMessage());
 			refresh_b.setText("Refresh");
@@ -162,9 +166,10 @@ public class TodayPanel extends JPanel{
 		try{
 			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("gear.png"));
 			icon=Main.imageResize(icon,35,35);
-			BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource("gear-pressed.png"));
-			icon=Main.imageResize(pressed,35,35);
 			pref_b.setIcon(new ImageIcon(icon));
+			//setting icon for when button is pressed
+			BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource("gear-pressed.png"));
+			pressed=Main.imageResize(pressed,35,35);
 			pref_b.setPressedIcon(new ImageIcon(pressed));
 		}catch(IOException e){
 			System.out.println("Preference button icon: "+e.getMessage());
