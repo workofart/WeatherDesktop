@@ -162,10 +162,13 @@ public class TodayPanel extends JPanel{
 		try{
 			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("gear.png"));
 			icon=Main.imageResize(icon,35,35);
+			BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource("gear-pressed.png"));
+			icon=Main.imageResize(pressed,35,35);
 			pref_b.setIcon(new ImageIcon(icon));
+			pref_b.setPressedIcon(new ImageIcon(pressed));
 		}catch(IOException e){
 			System.out.println("Preference button icon: "+e.getMessage());
-			refresh_b.setText("Options");
+			pref_b.setText("Options");
 		}
 		
 		// put the icon to the right upper corner
