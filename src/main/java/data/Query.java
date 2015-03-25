@@ -74,7 +74,7 @@ public class Query {
 				JSon = br.readLine();
 				// if finish pulling print message
 				System.out.println(s[type] + " Finish");
-				//System.out.println(JSon);
+				System.out.println(JSon);
 				// pull successfully break the loop
 				break;
 				} catch (MalformedURLException e) {
