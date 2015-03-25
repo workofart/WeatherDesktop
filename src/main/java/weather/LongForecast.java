@@ -37,7 +37,7 @@ public class LongForecast{
 												new java.util.Date((long)data.getJSONArray("list").getJSONObject(i).getInt("dt") * 1000).toString().substring(4, 10));
 			}
 		}catch(JSONException e){
-			System.out.println("Short forecst locaiont wrong");
+			System.out.println("Long Forecast Location Wrong");
 			Main.interrupt(Main.getLongTermThread());
 		}
 		

@@ -52,7 +52,7 @@ public class Query {
 			break;
 		case DAILY_FORECAST:
 			address = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + location 
-			+"&cnt=6&mode=json&APPID=bed420cd0cdd025a171927dacc52d5d7";
+			+"&cnt=6&APPID=bed420cd0cdd025a171927dacc52d5d7";
 			break;
 		default:
 			address = "http://marsweather.ingenology.com/v1/latest/?format=json";
@@ -74,6 +74,7 @@ public class Query {
 				JSon = br.readLine();
 				// if finish pulling print message
 				System.out.println(s[type] + " Finish");
+				//System.out.println(JSon);
 				// pull successfully break the loop
 				break;
 				} catch (MalformedURLException e) {
@@ -100,8 +101,7 @@ public class Query {
 	 * @param args system parameter
 	 */
 	public static void main(String[] args){
-		Query q1 = new Query(null, 3);
-		System.out.println(q1);
+		Query q1 = new Query("Toronto,ca", 2);
 	}
 	
 	
