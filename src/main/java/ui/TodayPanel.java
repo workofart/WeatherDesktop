@@ -50,6 +50,7 @@ public class TodayPanel extends JPanel{
 	private String skyCondition="";
 	private JButton refresh_b, //button for refresh
 				    pref_b; //button for preference window
+	private BufferedImage refresh_icon,refresh_pressed;
 	
 	// constructor to prepare and show the panel
 	public TodayPanel(){
@@ -130,13 +131,13 @@ public class TodayPanel extends JPanel{
 		refresh_b = new JButton();
 		// use a picture from resource as the icon for button
 		try{
-			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("reload.png"));
-			icon=Main.imageResize(icon,42,33);
-			refresh_b.setIcon(new ImageIcon(icon));
+			refresh_icon=ImageIO.read(this.getClass().getClassLoader().getResource("reload.png"));
+			refresh_icon=Main.imageResize(refresh_icon,42,33);
+			refresh_b.setIcon(new ImageIcon(refresh_icon));
 			
-			BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource("reload-pressed.png"));
-			pressed=Main.imageResize(pressed,42,33);
-			refresh_b.setPressedIcon(new ImageIcon(pressed));
+			refresh_pressed=ImageIO.read(this.getClass().getClassLoader().getResource("busy.png"));
+			refresh_pressed=Main.imageResize(refresh_pressed,42,33);
+			refresh_b.setPressedIcon(new ImageIcon(refresh_pressed));
 		}catch(IOException e){
 			System.out.println("Refresh button icon: "+e.getMessage());
 			refresh_b.setText("Refresh");
@@ -417,6 +418,19 @@ public class TodayPanel extends JPanel{
 		risetLabel.setText("<html><p style=\"color:blue; font-size:12px\">Sunrise:" + sunrise + " Sunset:" + sunset + "</p></html>");
 		risetLabel.setSize((int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		
+	}
+	
+	/**
+	 * method to set refresh icon to relax
+	 */
+	public void relax(){
+		refresh_b.setIcon(new ImageIcon(refresh_icon));
+	}
+	/**
+	 * method to set refresh icon to busy
+	 */
+	public void busy(){
+		refresh_b.setIcon(new ImageIcon(refresh_pressed));
 	}
 	
 	/**

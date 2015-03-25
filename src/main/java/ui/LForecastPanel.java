@@ -139,6 +139,7 @@ public class LForecastPanel extends JPanel{
 	private void setSky(String sky){
 		// update sky condition
 		// change the size according to the text
+		sunLabel.setVisible(true);
 		sunLabel.setText("<html><p style=\"font-size:12px\">" + sky + "</p></html>");
 		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
 	}
@@ -157,6 +158,7 @@ public class LForecastPanel extends JPanel{
 		}catch(IOException e){
 			System.out.println("Shortterm forcast UI icon: "+e.getMessage());
 		}
+		iconLabel.setVisible(true);
 		//Determine what the background image should be
 		int code=Integer.parseInt(icon.substring(0,2));
 		if(code<13&&code>4){
@@ -175,6 +177,7 @@ public class LForecastPanel extends JPanel{
 	private void setTime(String date){
 		// update the date
 		// change the size according to the text
+		this.timeLabel.setVisible(true);
 		timeLabel.setText("<html><p style=\"font-size:10px\">" + date + "</p></html>");
 		timeLabel.setBounds(timeLabelX,timeLabelY,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 	}
@@ -207,9 +210,22 @@ public class LForecastPanel extends JPanel{
 				break;
 		}
 		// update label
+		maxminLabel.setVisible(true);
 		maxminLabel.setText(s +"</p></html>");
 		// change size according to the text
 		maxminLabel.setBounds(maxminLabelX,maxminLabelY,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
+	}
+	
+	/**
+	 * method to set the label when there is no data
+	 */
+	public void setNoData(){
+		boolean aFlag = false;
+		this.iconLabel.setVisible(aFlag);
+		this.maxminLabel.setVisible(aFlag);
+		this.sunLabel.setVisible(aFlag);
+		this.timeLabel.setVisible(aFlag);
+		this.tempLabel.setText("<html><p style=\"font-size:20px\"> No Data</p></html>");
 	}
 	
 	/**

@@ -25,9 +25,10 @@ public class LongForecast{
 		// one is the correct string, so the data will be extracted correctly
 		// the other one is error message because the city doe not exist
 		JSONObject data = new JSONObject(info);
+		int cnt = data.getInt("cnt");
 		list = new LongForecastEntry[5];
 		try{
-			for(int i = 1; i < 6; i++){
+			for(int i = 1; i < cnt; i++){
 				list[i-1] = new LongForecastEntry(
 												data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
 												data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon"),

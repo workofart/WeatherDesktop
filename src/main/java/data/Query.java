@@ -67,21 +67,13 @@ public class Query {
 				url = new URL(address);
 				URLConnection connect = url.openConnection();
 				// set read/connect timeout
-				connect.setConnectTimeout(5000);
-				connect.setReadTimeout(10000);
+				connect.setConnectTimeout(2000);
+				connect.setReadTimeout(5000);
 				// read from URL
 				BufferedReader br = new BufferedReader(new InputStreamReader(connect.getInputStream()));
 				JSon = br.readLine();
 				// if finish pulling print message
 				System.out.println(s[type] + " Finish");
-				if(type == 2){
-					System.out.println(JSon);
-					JSONObject data = new JSONObject(JSon);
-					if(data.getInt("cnt") != 6){
-						System.out.println("Website didn't return full data");
-						continue;
-					}
-				}
 				// pull successfully break the loop
 				break;
 				} catch (MalformedURLException e) {
@@ -108,7 +100,9 @@ public class Query {
 	 * @param args system parameter
 	 */
 	public static void main(String[] args){
-		Query q1 = new Query("Toronto,ca", 2);
+		Query q1 = new Query("shijiazhuang,cn", 2);
+		JSONObject data = new JSONObject(q1.toString());
+		System.out.println(data.getInt("cnt"));
 	}
 	
 	

@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import java.awt.Color;
 
 
 /**
@@ -40,6 +41,8 @@ public class Main{
 	private static LongForecast ldata; // data for long term forecast
 	private static Thread t1,t2,t3; // thread for pulling data
 	private static int height; // height of main frame
+	private static int refresh; // flag to indicate the refreshing phase
+	private static int cnt; // field to remember the number of data returned for long forecast
 	
 	
 	/**
@@ -76,6 +79,8 @@ public class Main{
 	 * @param tempUnit unit for temperature
 	 */
 	public static void refresh(String location, int tempUnit){
+		tpanel.busy();
+		refresh = 0;
 		// disconnect all the previous threads
 		t1 = null;
 		t2 = null;
@@ -101,6 +106,7 @@ public class Main{
 					// call the refresh method of today panel to refresh it
 					Main.tpanel.refreshMars(Main.preference.getUnitPref());
 					Main.tpanel.repaint();
+					Main.tpanel.relax();
 				}
 			});
 			t1.start();
@@ -127,6 +133,8 @@ public class Main{
 					// call the refresh method of today panel to refresh it
 					Main.tpanel.refresh(Main.preference.getUnitPref());
 					Main.tpanel.repaint();
+					Main.refresh++;
+					Main.relax();
 				}
 			});
 			
@@ -142,6 +150,8 @@ public class Main{
 						Main.spanelArray[i].refresh(i, Main.preference.getUnitPref());
 						Main.spanelArray[i].repaint();
 					}
+					Main.refresh++;
+					Main.relax();
 				}
 			});
 			
@@ -153,17 +163,29 @@ public class Main{
 					LongForecast ldata = new LongForecast(q.toString());
 					Main.setLdata(ldata);
 					// call the refresh method to refresh each of 5 long term entry
-					for(int i = 0; i < 5; i++){
-						Main.lpanelArray[i].refresh(i, Main.preference.getUnitPref());
-						Main.lpanelArray[i].repaint();
+					try{
+						for(int i = 0; i < 5; i++){
+							Main.lpanelArray[i].refresh(i, Main.preference.getUnitPref());
+							Main.lpanelArray[i].repaint();
+						}
+						Main.refresh++;
+						Main.relax();
+						Main.cnt = 5;
+					}catch(NullPointerException e){
+						Main.lpanelArray[3].setNoData();
+						Main.lpanelArray[4].setNoData();
+						Main.refresh++;
+						Main.relax();
+						Main.cnt = 3;
 					}
+					
 				}	
 			});
 			
 			// start all the pulling thread
 			t1.start();
 			t2.start();
-			t3.start();	
+			t3.start();
 		}
 	}
 	
@@ -181,7 +203,7 @@ public class Main{
 			// if it is from open weather map
 			// refresh all the panel's unit
 			tpanel.refreshUnit(unit);
-			for(int i = 0; i < 5; i++){
+			for(int i = 0; i < cnt; i++){
 				lpanelArray[i].refreshUnit(i,  unit);
 			}
 			for(int i = 0; i < 8; i++){
@@ -209,13 +231,13 @@ public class Main{
 		frame = new JFrame("8_TheWeather");
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
+		frame.getContentPane().setLayout(null);
 		frame.setSize(520,height);
 		
 		// initiate the today panel for current weahter and mars weather
 		// the windoe is at the very top of the window
 		tpanel = new TodayPanel();
-		frame.add(tpanel);
+		frame.getContentPane().add(tpanel);
 		tpanel.setLocation(0, 0);
 		
 		// create a panel container for short term forecasts
@@ -230,7 +252,7 @@ public class Main{
 			spanels.add(spanelArray[i]);
 		}
 		// put the container into the main frame
-		frame.add(spanels);
+		frame.getContentPane().add(spanels);
 		// the container is to the very left of the frame and below the today panel
 		spanels.setLocation(0, 280);
 
@@ -247,7 +269,7 @@ public class Main{
 		}
 		// put the container into the frame
 		// long term forecast is below today panel and to the right of the short temr forecast
-		frame.add(lpanels);
+		frame.getContentPane().add(lpanels);
 		lpanels.setLocation(260, 280);
 		
 		// show the main frame
@@ -404,7 +426,21 @@ public class Main{
 		return height;
 	}
 	
+	/**
+	 * method to reset refresh button
+	 */
+	public static void relax(){
+		if(refresh == 3){
+			tpanel.relax();
+		}
+	}
 	
+	/**
+	 * method to set refresh button to busy
+	 */
+	public static void busy(){
+		tpanel.busy();
+	}
 	/**
 	 * Method to resize icons smoothly
 	 * @param original the original image
