@@ -52,7 +52,7 @@ public class Query {
 			break;
 		case DAILY_FORECAST:
 			address = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + location 
-			+"&cnt=6&APPID=bed420cd0cdd025a171927dacc52d5d7";
+			+"&mode=json&cnt=6&APPID=bed420cd0cdd025a171927dacc52d5d7";
 			break;
 		default:
 			address = "http://marsweather.ingenology.com/v1/latest/?format=json";
@@ -74,7 +74,14 @@ public class Query {
 				JSon = br.readLine();
 				// if finish pulling print message
 				System.out.println(s[type] + " Finish");
-				System.out.println(JSon);
+				if(type == 2){
+					System.out.println(JSon);
+					JSONObject data = new JSONObject(JSon);
+					if(data.getInt("cnt") != 6){
+						System.out.println("Website didn't return full data");
+						continue;
+					}
+				}
 				// pull successfully break the loop
 				break;
 				} catch (MalformedURLException e) {
