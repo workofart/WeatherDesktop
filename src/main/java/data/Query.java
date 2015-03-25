@@ -67,8 +67,8 @@ public class Query {
 				url = new URL(address);
 				URLConnection connect = url.openConnection();
 				// set read/connect timeout
-				connect.setConnectTimeout(2000);
-				connect.setReadTimeout(5000);
+				connect.setConnectTimeout(5000);
+				connect.setReadTimeout(10000);
 				// read from URL
 				BufferedReader br = new BufferedReader(new InputStreamReader(connect.getInputStream()));
 				JSon = br.readLine();

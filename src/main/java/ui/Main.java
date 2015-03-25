@@ -319,6 +319,7 @@ public class Main{
 			t1.stop();
 		}
 		System.out.println("Interupt");
+		tpanel.relax();
 	}
 	
 	/**
