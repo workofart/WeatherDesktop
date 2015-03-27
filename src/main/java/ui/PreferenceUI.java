@@ -167,7 +167,7 @@ public class PreferenceUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					// if the input location is wrong format, return and show an error message
-					if(!format(textField.getText().toLowerCase()).matches("(mars)|([a-z]+\\,[a-z]{2})")){
+					if(!format(textField.getText().toLowerCase()).matches("(mars)|((([a-z]+)|([a-z]+\\.[a-z]+)?)\\,[a-z]{2})")){
 						Main.wrongLocationFormat();
 						return;
 					}
@@ -238,7 +238,7 @@ public class PreferenceUI extends JFrame {
 				if(key == KeyEvent.VK_ENTER){
 					try {
 						// if the input location is wrong format, return and show an error message
-						if(!format(textField.getText().toLowerCase()).matches("(mars)|([a-z]+\\,[a-z]{2})")){
+						if(!format(textField.getText().toLowerCase()).matches("(mars)|((([a-z]+)|([a-z]+\\.[a-z]+)?)\\,[a-z]{2})")){
 							Main.wrongLocationFormat();
 							return;
 						}
