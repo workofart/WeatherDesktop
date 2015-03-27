@@ -6,12 +6,17 @@ import weather.CurrentWeather;
 import weather.LongForecast;
 import weather.MarsWeather;
 import weather.ShortForecast;
+
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -212,17 +217,26 @@ public class Main{
 		frame.setLayout(null);
 		frame.setSize(520,height);
 		
+		MainPanel mainPanel=new MainPanel();
+		mainPanel.setLayout(null);
+		frame.add(mainPanel);
+		mainPanel.setLocation(0, 0);
+		mainPanel.setSize(1000,1000);
+		
 		// initiate the today panel for current weahter and mars weather
 		// the windoe is at the very top of the window
 		tpanel = new TodayPanel();
-		frame.add(tpanel);
+		mainPanel.add(tpanel);
+		mainPanel.setTPanel(tpanel);
 		tpanel.setLocation(0, 0);
+		
 		
 		// create a panel container for short term forecasts
 		// the container use box layout
 		JPanel spanels = new JPanel();
 		spanels.setLayout(new BoxLayout(spanels,BoxLayout.PAGE_AXIS));
 		spanels.setSize(new Dimension(260,80*8));
+		spanels.setOpaque(false);
 		spanelArray = new SForecastPanel[8];
 		// put all the short term into the container
 		for(int i=0;i<spanelArray.length;i++){
@@ -230,7 +244,7 @@ public class Main{
 			spanels.add(spanelArray[i]);
 		}
 		// put the container into the main frame
-		frame.add(spanels);
+		mainPanel.add(spanels);
 		// the container is to the very left of the frame and below the today panel
 		spanels.setLocation(0, 280);
 
@@ -239,6 +253,7 @@ public class Main{
 		JPanel lpanels = new JPanel();
 		lpanels.setLayout(new BoxLayout(lpanels,BoxLayout.PAGE_AXIS));
 		lpanels.setSize(new Dimension(260,128*5));
+		lpanels.setOpaque(false);
 		lpanelArray=new LForecastPanel[5];
 		// put all the long term into the containers
 		for(int i=0;i<lpanelArray.length;i++){
@@ -247,7 +262,7 @@ public class Main{
 		}
 		// put the container into the frame
 		// long term forecast is below today panel and to the right of the short temr forecast
-		frame.add(lpanels);
+		mainPanel.add(lpanels);
 		lpanels.setLocation(260, 280);
 		
 		// show the main frame
@@ -419,5 +434,18 @@ public class Main{
 		g2d.drawImage(original, 0, 0, width, height, null);
 		g2d.dispose();
 		return img;
+	}
+	
+	public static BufferedImage imageDarken(BufferedImage original){
+		RescaleOp op=new RescaleOp(0.85f,0,null);
+		return op.filter(original,null);
+	}
+	
+	public static void shrinkGrow(){
+		if(frame.getSize().getHeight()<700){
+			frame.setSize(520,Main.getHeight());
+		}else{
+			frame.setSize(520,Main.getHeight()-640);
+		}
 	}
 }
