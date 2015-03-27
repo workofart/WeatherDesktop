@@ -26,6 +26,7 @@ public class CurrentWeather{
 				  minTemp, // Temperature in K
 				  maxTemp; // Temperature in K
 	private int	humidity; // humidity in %
+	private boolean incomplete;
 				
 	
 	/**
@@ -38,28 +39,103 @@ public class CurrentWeather{
 		// there are two possible kind of String
 		// one is the correct string, so the data will be extracted correctly
 		// the other one is error message because the city doe not exist
+		incomplete = false;
 		try{
 			JSONObject data = new JSONObject(info);
-			sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
-			sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
-			weather = data.getJSONArray("weather").getJSONObject(0).getString("main");
-			icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
-			humidity = data.getJSONObject("main").getInt("humidity");
-			temperature = data.getJSONObject("main").getDouble("temp");
-			pressure = data.getJSONObject("main").getDouble("pressure");
-			minTemp = data.getJSONObject("main").getDouble("temp_min");
-			maxTemp = data.getJSONObject("main").getDouble("temp_max");
-			speed = data.getJSONObject("wind").getInt("speed");
-			location = data.getString("name") + ", "+ data.getJSONObject("sys").getString("country");
-			makeDirection(data.getJSONObject("wind").getInt("deg"));
+			int code = data.getInt("cod");
+			// if the returned code is 404, that means the city name input does not exist
+			if(code == 404){
+				throw new JSONException("1");
+				}
+			try{
+				sunrise = new java.util.Date((long)data.getJSONObject("sys").getInt("sunrise") * 1000).toString().substring(11,16);
+				}catch(JSONException e){
+					sunrise = null;
+					incomplete = true;
+					}
+			try{
+				sunset = new java.util.Date((long)data.getJSONObject("sys").getInt("sunset") * 1000).toString().substring(11,16);
+				}catch(JSONException e){
+					sunset = null;
+					incomplete = true;
+					}
+			try{
+					weather = data.getJSONArray("weather").getJSONObject(0).getString("main");
+				}catch(JSONException e){
+					weather = null;
+					incomplete = true;
+				}
+			try{
+					icon = data.getJSONArray("weather").getJSONObject(0).getString("icon");
+				}catch(JSONException e){
+					icon = null;
+					incomplete = true;
+				}
+			try{
+					humidity = data.getJSONObject("main").getInt("humidity");
+				}catch(JSONException e){
+					humidity = -1;
+					incomplete = true;
+				}
+			try{
+					temperature = data.getJSONObject("main").getDouble("temp");
+				}catch(JSONException e){
+					temperature = -1000;
+					incomplete = true;
+				}
+			try{
+					pressure = data.getJSONObject("main").getDouble("pressure");
+				}catch(JSONException e){
+					pressure = -1;
+					incomplete = true;
+				}
+			try{
+					minTemp = data.getJSONObject("main").getDouble("temp_min");
+				}catch(JSONException e){
+					minTemp = -1000;
+					incomplete = true;
+				}
+			try{
+					maxTemp = data.getJSONObject("main").getDouble("temp_max");
+				}catch(JSONException e){
+					maxTemp = -1000;
+					incomplete = true;
+				}
+			try{
+					speed = data.getJSONObject("wind").getInt("speed");
+				}catch(JSONException e){
+					speed = -1;
+					incomplete = true;
+				}
+			try{
+					location = data.getString("name") + ", "+ data.getJSONObject("sys").getString("country");
+				}catch(JSONException e){
+					location = null;
+					incomplete = true;
+				}
+			try{
+					makeDirection(data.getJSONObject("wind").getInt("deg"));
+				}catch(JSONException e){
+					direction = null;
+					incomplete = true;
+				}
 		}catch(JSONException e){
-			// if the string is error message
-			// print error message
-			// use wrong location method in main to show error message
-			// stop all the pulling thread because the location is wrong
-			System.out.println("Current Location wrong");
-			System.out.println("No guess");
-			Main.wrongLocation();
+			if(e.getMessage().equals("1")){
+				// if the string is error message
+				// print error message
+				// use wrong location method in main to show error message
+				// stop all the pulling thread because the location is wrong
+				System.out.println("Current Location wrong");
+				System.out.println("No guess");
+				Main.wrongLocation();
+				Main.interrupt();
+			}
+			else{
+				System.out.println("Current weather other json problem");
+				Main.interrupt();
+			}
+		}catch(Exception e){
+			System.out.println("Current weather other unknown problem");
 			Main.interrupt();
 		}
 		
@@ -238,5 +314,13 @@ public class CurrentWeather{
 	public static void main(String[] args){
 		CurrentWeather weather  = new CurrentWeather("London,CA");
 		System.out.println(weather);
+	}
+	
+	/**
+	 * getter method to the boolean flag for incompletion
+	 * @return boolean true if the data is not complete, false otherwise
+	 */
+	public boolean isInComplete(){
+		return incomplete;
 	}
 }

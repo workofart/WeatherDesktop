@@ -38,6 +38,9 @@ public class ShortForecast{
 		}catch(JSONException e){
 			System.out.println("Short forecst location wrong");
 			Main.interrupt(Main.getShortTermThread());
+		}catch(Exception e){
+			System.out.println("Short Forecast unknown problem");
+			Main.interrupt(Main.getShortTermThread());
 		}
 	}
 	

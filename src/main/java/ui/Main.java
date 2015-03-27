@@ -9,19 +9,14 @@ import weather.ShortForecast;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.Color;
 
 
 /**
@@ -45,9 +40,8 @@ public class Main{
 	private static ShortForecast sdata; // data for short term forecast
 	private static LongForecast ldata; // data for long term forecast
 	private static Thread t1,t2,t3; // thread for pulling data
-	private static int height; // height of main frame
+	private static final int height = 946; // height of main frame
 	private static int refresh; // flag to indicate the refreshing phase
-	private static int cnt; // field to remember the number of data returned for long forecast
 	
 	
 	/**
@@ -55,7 +49,6 @@ public class Main{
 	 * @param args parameter from command line
 	 */
 	public static void main(String[] args) {
-		height = 946;
 
 		// helper method to generate the frame and display it
 		init();
@@ -140,6 +133,9 @@ public class Main{
 					Main.tpanel.repaint();
 					Main.refresh++;
 					Main.relax();
+					if(cdata.isInComplete()){
+						Main.incomplete(1);
+					}
 				}
 			});
 			
@@ -169,19 +165,19 @@ public class Main{
 					Main.setLdata(ldata);
 					// call the refresh method to refresh each of 5 long term entry
 					try{
-						for(int i = 0; i < 5; i++){
+						for(int i = 0; i < ldata.getCnt()-1; i++){
 							Main.lpanelArray[i].refresh(i, Main.preference.getUnitPref());
 							Main.lpanelArray[i].repaint();
 						}
 						Main.refresh++;
 						Main.relax();
-						Main.cnt = 5;
 					}catch(NullPointerException e){
-						Main.lpanelArray[3].setNoData();
-						Main.lpanelArray[4].setNoData();
+						for(int i = ldata.getCnt()-1; i < 5; i++){
+							Main.lpanelArray[i].setNoData();
+						}
 						Main.refresh++;
 						Main.relax();
-						Main.cnt = 3;
+						Main.incomplete(2);
 					}
 					
 				}	
@@ -208,7 +204,7 @@ public class Main{
 			// if it is from open weather map
 			// refresh all the panel's unit
 			tpanel.refreshUnit(unit);
-			for(int i = 0; i < cnt; i++){
+			for(int i = 0; i < ldata.getCnt()-1; i++){
 				lpanelArray[i].refreshUnit(i,  unit);
 			}
 			for(int i = 0; i < 8; i++){
@@ -320,6 +316,14 @@ public class Main{
 		preference.showPreferenceDefault();
 	}
 	
+	public static void incomplete(int i){
+		if(i == 1){
+			JOptionPane.showMessageDialog(null, "Server does not return enougn data for current weather, please try again later", "Open Weather API problem", JOptionPane.INFORMATION_MESSAGE);
+		}
+		if(i == 2){
+			JOptionPane.showMessageDialog(null, "Server does not return enougn data for long forecast, please try again later", "Open Weather API problem", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
 	/**
 	 * method to interrupt all the thread to prevent duplicate threading
 	 */
@@ -473,16 +477,30 @@ public class Main{
 		return img;
 	}
 	
+	/**
+	 * method to darken the background image
+	 * @param original the original image
+	 * @return BufferedImage the darken image
+	 */
 	public static BufferedImage imageDarken(BufferedImage original){
 		RescaleOp op=new RescaleOp(0.85f,0,null);
 		return op.filter(original,null);
 	}
 	
+	/**
+	 * method to change the size of the main frame
+	 */
 	public static void shrinkGrow(){
-		if(frame.getSize().getHeight()<700){
-			frame.setSize(520,Main.getHeight());
-		}else{
-			frame.setSize(520,Main.getHeight()-640);
-		}
+		EventQueue.invokeLater(new Thread(new Runnable(){
+			public void run() {
+				// set the window to the full size
+				if(frame.getSize().getHeight()<700){
+					frame.setSize(520,height);
+				}else{
+					frame.setSize(520,height-640);
+				}
+			}
+		}));
+		
 	}
 }

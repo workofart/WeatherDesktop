@@ -13,6 +13,7 @@ import data.JSONObject;
 public class LongForecast{
 	// array to contain five entries
 	private LongForecastEntry[] list;
+	private int cnt; // number of data returned from the website
 	
 	/**
 	 * constructor take city name as parameter to get long forecast data
@@ -25,9 +26,9 @@ public class LongForecast{
 		// one is the correct string, so the data will be extracted correctly
 		// the other one is error message because the city doe not exist
 		JSONObject data = new JSONObject(info);
-		int cnt = data.getInt("cnt");
 		list = new LongForecastEntry[5];
 		try{
+			cnt = data.getInt("cnt");
 			for(int i = 1; i < cnt; i++){
 				list[i-1] = new LongForecastEntry(
 												data.getJSONArray("list").getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main"),
@@ -39,6 +40,9 @@ public class LongForecast{
 			}
 		}catch(JSONException e){
 			System.out.println("Long Forecast Location Wrong");
+			Main.interrupt(Main.getLongTermThread());
+		}catch(Exception e){
+			System.out.println("Long Forecast unknown problem");
 			Main.interrupt(Main.getLongTermThread());
 		}
 		
@@ -114,6 +118,13 @@ public class LongForecast{
 		return result;
 	}
 	
+	/**
+	 * getter method to the number of data entries contained in the returned data
+	 * @return cnt the number of data entries contained in the returned data
+	 */
+	public int getCnt(){
+		return cnt;
+	}
 	/**
 	 * test method for Long Forecast
 	 * @param args parameter from command line

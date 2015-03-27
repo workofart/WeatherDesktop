@@ -52,6 +52,7 @@ public class TodayPanel extends JPanel{
 						drop_bX=245, drop_bY=255;
 	private String skyCondition="";
 	private JButton refresh_b, //button for refresh
+					drop_b,
 				    pref_b; //button for preference window
 	private BufferedImage refresh_icon,refresh_pressed;
 	
@@ -69,6 +70,7 @@ public class TodayPanel extends JPanel{
 		risetLabel.setVisible(false);
 		// refresh all the label according to the data
 		// fit the content
+		drop_b.setVisible(false);
 		refreshMarsUnit(unit);
 		setIcon(Main.getMdata().getIcon());
 		setWinLabel(Main.getMdata().getSpeed(), Main.getMdata().getDirection());
@@ -88,6 +90,7 @@ public class TodayPanel extends JPanel{
 		risetLabel.setVisible(true);
 		// refresh all the label according to the data
 		// fit the content
+		drop_b.setVisible(true);
 		refreshUnit(unit);
 		setIcon(Main.getCdata().getIcon());
 		setWinLabel(Main.getCdata().getSpeed(), Main.getCdata().getDirection());
@@ -197,15 +200,15 @@ public class TodayPanel extends JPanel{
 		});
 		this.add(pref_b);
 		
-		JButton drop_b=new JButton();
+		drop_b=new JButton();
 		try{
 			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("dropdown.png"));
 			icon=Main.imageResize(icon,25,25);
 			drop_b.setIcon(new ImageIcon(icon));
 			//setting icon for when button is pressed
-//			BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource(".png"));
-//			pressed=Main.imageResize(pressed,35,35);
-//			pref_b.setPressedIcon(new ImageIcon(pressed));
+			//BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource(".png"));
+			//pressed=Main.imageResize(pressed,35,35);
+			//pref_b.setPressedIcon(new ImageIcon(pressed));
 		}catch(IOException e){
 			System.out.println("Dropdown button icon: "+e.getMessage());
 			drop_b.setText("Drop");
@@ -217,8 +220,6 @@ public class TodayPanel extends JPanel{
 		drop_b.setFocusable(false);
 		drop_b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// when the button is clicked, interrupt all the pulling threads of Main Windows
-				Main.interrupt();
 				// invoke method in Main to show preference window
 				Main.shrinkGrow();
 			}
@@ -297,23 +298,28 @@ public class TodayPanel extends JPanel{
 	 * @param icon the icon code to be shown
 	 */
 	private void setIcon(String icon){
-		// load icon from resource and update
-		//Resize image to maintain consistency
-		try{
-			BufferedImage img=ImageIO.read(this.getClass().getClassLoader().getResource(icon+".png"));
-			img=Main.imageResize(img,80,80);
-			iconLabel.setIcon(new ImageIcon(img));
-		}catch(IOException e){
-			System.out.println("Today forcast UI icon: "+e.getMessage());
-		}
-		//Determine what the  background image should be (matching the icon)
-		int code=Integer.parseInt(icon.substring(0,2));
-		if(code<13&&code>4){
-			skyCondition="_rain";
-		}else if(code==13){
-			skyCondition="_snow";
-		}else{
+		if(icon == null){
 			skyCondition="";
+		}
+		else{
+			// load icon from resource and update
+			//Resize image to maintain consistency
+			try{
+				BufferedImage img=ImageIO.read(this.getClass().getClassLoader().getResource(icon+".png"));
+				img=Main.imageResize(img,80,80);
+				iconLabel.setIcon(new ImageIcon(img));
+			}catch(IOException e){
+				System.out.println("Today forcast UI icon: "+e.getMessage());
+			}
+			//Determine what the  background image should be (matching the icon)
+			int code=Integer.parseInt(icon.substring(0,2));
+			if(code<13&&code>4){
+				skyCondition="_rain";
+			}else if(code==13){
+				skyCondition="_snow";
+			}else{
+				skyCondition="";
+			}
 		}
 	}
 
@@ -324,6 +330,9 @@ public class TodayPanel extends JPanel{
 	 * @param unit temperature unit 0-K 1-C 2-F
 	 */
 	private void setTempLabel(String temp, int unit) {
+		if(temp.equals("-1000")){
+			temp = "--";
+		}
 		// generate content string
 		String s = "<html><p style=\" color:white; font-size:75px;\">" + temp;
 		switch(unit){
@@ -350,6 +359,12 @@ public class TodayPanel extends JPanel{
 	 * @param unit temperature unit 0-K 1-C 2-F
 	 */
 	private void setMaxMinLabel(String max, String min, int unit){
+		if(max.equals("-1000")){
+			max = "--";
+		}
+		if(min.equals("-1000")){
+			min = "--";
+		}
 		// generate string accoring to the data and unit
 		String s = "<html><p style=\"color:white; font-size:12px\">Max: " + max;
 		// add unit symbol according to the unit flag
@@ -381,6 +396,9 @@ public class TodayPanel extends JPanel{
 	 * @param direction the wind direction to be shown
 	 */
 	private void setWinLabel(String speed, String direction) {
+		if(speed.equals("-1")){
+			speed = "--";
+		}
 		winLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>" + speed + "</b> m/s " + direction  + "</p></html>");
 		winLabel.setSize((int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
 	}
@@ -391,6 +409,9 @@ public class TodayPanel extends JPanel{
 	 * @param pressure the air pressure data in hPa to be shown
 	 */
 	private void setPresLabel(String pressure) {
+		if(pressure.equals("-1")){
+			pressure = "--";
+		}
 		presLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>" + pressure + "</b> hPa</p></html>");
 		presLabel.setSize((int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
 	}
@@ -401,6 +422,9 @@ public class TodayPanel extends JPanel{
 	 * @param humidity the humidity data in % to be shown
 	 */
 	private void setHumLabel(String humidity) {
+		if(humidity.equals("-1")){
+			humidity = "--";
+		}
 		humLabel.setText("<html><p style=\"color:white; font-size:16px\">" + humidity + " % humidity</p></html>");
 		humLabel.setSize((int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
 	}
@@ -411,6 +435,9 @@ public class TodayPanel extends JPanel{
 	 * @param weather the weather data to be shown
 	 */
 	private void setSunLabel(String weather) {
+		if(weather == null){
+			weather = "----";
+		}
 		sunLabel.setText("<html><p style=\"color:white; font-size:16px\">" + weather + "</p></html>");
 		sunLabel.setSize((int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 	}
@@ -430,6 +457,9 @@ public class TodayPanel extends JPanel{
 	 * @param s location as String
 	 */
 	private void setLocationLabel(String s){
+		if(s == null){
+			s = "----,--";
+		}
 		// for earth city, only show city name
 		if(s.equalsIgnoreCase("Mars")){
 			locationLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>" + s+ "</b></p></html>");
@@ -447,6 +477,12 @@ public class TodayPanel extends JPanel{
 	 * @param sunset sunset time as String
 	 */
 	private void setRisetLabel(String sunrise, String sunset){
+		if(sunrise == null){
+			sunrise = "--:--";
+		}
+		if(sunset == null){
+			sunset = "--:--";
+		}
 		risetLabel.setText("<html><p style=\"color:white; font-size:12px\">Sunrise:" + sunrise + " Sunset:" + sunset + "</p></html>");
 		risetLabel.setSize((int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		
