@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -15,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Today Panel is the panel to show current weather for open weather map or Mars weather
@@ -39,14 +41,15 @@ public class TodayPanel extends JPanel{
 						winLabelX=330,winLabelY=80,
 						presLabelX=330, presLabelY=130,
 						humLabelX=330, humLabelY=180,
-						sunLabelX=120, sunLabelY=70,
-						iconLabelX=50, iconLabelY=30,
-						risetLabelX=10, risetLabelY=260,
+						sunLabelX=130, sunLabelY=60,
+						iconLabelX=35, iconLabelY=20,
+						risetLabelX=5, risetLabelY=260,
 						maxminLabelX=90, maxminLabelY=200,
-						locationLabelX=100, locationLabelY=5,
-						refreshLabelX=325, refreshLabelY=260, 
+						locationLabelX=0, locationLabelY=5,
+						refreshLabelX=290, refreshLabelY=255, 
 						refresh_bX=0, refresh_bY=0,
-						pref_bX=465, pref_bY=0;
+						pref_bX=465, pref_bY=0,
+						drop_bX=245, drop_bY=255;
 	private String skyCondition="";
 	private JButton refresh_b, //button for refresh
 				    pref_b; //button for preference window
@@ -194,6 +197,35 @@ public class TodayPanel extends JPanel{
 		});
 		this.add(pref_b);
 		
+		JButton drop_b=new JButton();
+		try{
+			BufferedImage icon=ImageIO.read(this.getClass().getClassLoader().getResource("dropdown.png"));
+			icon=Main.imageResize(icon,25,25);
+			drop_b.setIcon(new ImageIcon(icon));
+			//setting icon for when button is pressed
+//			BufferedImage pressed=ImageIO.read(this.getClass().getClassLoader().getResource(".png"));
+//			pressed=Main.imageResize(pressed,35,35);
+//			pref_b.setPressedIcon(new ImageIcon(pressed));
+		}catch(IOException e){
+			System.out.println("Dropdown button icon: "+e.getMessage());
+			drop_b.setText("Drop");
+		}
+		
+		drop_b.setBounds(drop_bX,drop_bY,25,25);
+		drop_b.setContentAreaFilled(false);
+		drop_b.setBorderPainted(false);
+		drop_b.setFocusable(false);
+		drop_b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				// when the button is clicked, interrupt all the pulling threads of Main Windows
+				Main.interrupt();
+				// invoke method in Main to show preference window
+				Main.shrinkGrow();
+			}
+		});
+		this.add(drop_b);
+		
+		
 		
 		/*
 		 ********Labels***********
@@ -207,56 +239,56 @@ public class TodayPanel extends JPanel{
 		
 		//  temperature label with temperature and unit set to dash as default
 		tempLabel = new JLabel();
-		tempLabel.setText("<html><p style=\"color:blue; font-family:courier; font-size:75px\">---&#8451</p></html>");
+		tempLabel.setText("<html><p style=\"color:white;font-size:75px\">---&#8451</p></html>");
 		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 		this.add(tempLabel);
 		
 		//  maximum minimum temperature label
 		// initiate the content to dash
-		maxminLabel=new JLabel("<html><p style=\"color:blue; font-size:12px\">Max: ---&#8451Min: ---&#8451</p></html>");
+		maxminLabel=new JLabel("<html><p style=\"color:white; font-size:12px\">Max: ---&#8451Min: ---&#8451</p></html>");
 		maxminLabel.setBounds(maxminLabelX,maxminLabelY,(int)maxminLabel.getPreferredSize().getWidth(),(int)maxminLabel.getPreferredSize().getHeight());
 		this.add(maxminLabel);
 		
 		
 		//  wind label with speed and direction set to dash
 		winLabel=new JLabel();
-		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>--</b>m/s --</p></html>");
+		winLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>--</b>m/s --</p></html>");
 		winLabel.setBounds(winLabelX,winLabelY,(int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
 		this.add(winLabel);
 		
 		//  air pressure label with data set to dash
 		presLabel=new JLabel();
-		presLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>--</b>hPa</p></html>");
+		presLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>--</b>hPa</p></html>");
 		presLabel.setBounds(presLabelX,presLabelY,(int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
 		this.add(presLabel);
 		
 		//  humidity label with data set to dash
 		humLabel=new JLabel();
-		humLabel.setText("<html><p style=\"color:blue; font-size:16px\">-- % humidity</p></html>");
+		humLabel.setText("<html><p style=\"color:white; font-size:16px\">-- % humidity</p></html>");
 		humLabel.setBounds(humLabelX,humLabelY,(int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
 		this.add(humLabel);
 		
 		//  sky condition label
 		sunLabel=new JLabel();
-		sunLabel.setText("<html><p style=\"color:blue; font-size:16px\">--------</p></html>");
+		sunLabel.setText("<html><p style=\"color:white; font-size:16px\">--------</p></html>");
 		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 		this.add(sunLabel);
 		
 		//  sunrise sunset label
-		risetLabel=new JLabel("<html><p style=\"color:blue; font-size:12px\">Sunrise: --:-- Sunset: --:--</p></html>");
+		risetLabel=new JLabel("<html><p style=\"color:white; font-size:12px\">Sunrise: --:-- Sunset: --:--</p></html>");
 		risetLabel.setBounds(risetLabelX,risetLabelY,(int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		this.add(risetLabel);
 		
 		
 		//  refresh time label
 		refreshLabel=new JLabel();
-		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:----------</p></html>");
+		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">last updated:----------</p></html>");
 		refreshLabel.setBounds(refreshLabelX,refreshLabelY,(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 		this.add(refreshLabel);
 		
 		//  location label
-		locationLabel = new JLabel("<html><p style=\"color:blue; font-size:16px\"><b>------</b></p></html>");
-		locationLabel.setBounds(locationLabelX,locationLabelY,(int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
+		locationLabel = new JLabel("<html><p style=\"color:white; font-size:16px\"><b>------</b></p></html>", SwingConstants.CENTER);
+		locationLabel.setBounds(locationLabelX,locationLabelY,(int)this.getPreferredSize().getWidth(),30);
 		add(locationLabel);
 			
 	}
@@ -293,7 +325,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setTempLabel(String temp, int unit) {
 		// generate content string
-		String s = "<html><p style=\"font-size:75px;font-family:courier\">" + temp;
+		String s = "<html><p style=\" color:white; font-size:75px;\">" + temp;
 		switch(unit){
 			case 0: s = s + "&#8490";
 				break;
@@ -319,7 +351,7 @@ public class TodayPanel extends JPanel{
 	 */
 	private void setMaxMinLabel(String max, String min, int unit){
 		// generate string accoring to the data and unit
-		String s = "<html><p style=\"color:blue; font-size:12px\">Max: " + max;
+		String s = "<html><p style=\"color:white; font-size:12px\">Max: " + max;
 		// add unit symbol according to the unit flag
 		switch(unit){
 			case 0: s = s + "&#8490 Min: ";
@@ -349,7 +381,7 @@ public class TodayPanel extends JPanel{
 	 * @param direction the wind direction to be shown
 	 */
 	private void setWinLabel(String speed, String direction) {
-		winLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + speed + "</b> m/s " + direction  + "</p></html>");
+		winLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>" + speed + "</b> m/s " + direction  + "</p></html>");
 		winLabel.setSize((int)winLabel.getPreferredSize().getWidth()+5,(int)winLabel.getPreferredSize().getHeight()+5);
 	}
 
@@ -359,7 +391,7 @@ public class TodayPanel extends JPanel{
 	 * @param pressure the air pressure data in hPa to be shown
 	 */
 	private void setPresLabel(String pressure) {
-		presLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + pressure + "</b> hPa</p></html>");
+		presLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>" + pressure + "</b> hPa</p></html>");
 		presLabel.setSize((int)presLabel.getPreferredSize().getWidth()+5,(int)presLabel.getPreferredSize().getHeight()+5);
 	}
 
@@ -369,7 +401,7 @@ public class TodayPanel extends JPanel{
 	 * @param humidity the humidity data in % to be shown
 	 */
 	private void setHumLabel(String humidity) {
-		humLabel.setText("<html><p style=\"color:blue; font-size:16px\">" + humidity + " % humidity</p></html>");
+		humLabel.setText("<html><p style=\"color:white; font-size:16px\">" + humidity + " % humidity</p></html>");
 		humLabel.setSize((int)humLabel.getPreferredSize().getWidth()+5,(int)humLabel.getPreferredSize().getHeight()+5);
 	}
 
@@ -379,7 +411,7 @@ public class TodayPanel extends JPanel{
 	 * @param weather the weather data to be shown
 	 */
 	private void setSunLabel(String weather) {
-		sunLabel.setText("<html><p style=\"color:blue; font-size:16px\">" + weather + "</p></html>");
+		sunLabel.setText("<html><p style=\"color:white; font-size:16px\">" + weather + "</p></html>");
 		sunLabel.setSize((int)sunLabel.getPreferredSize().getWidth()+5,(int)sunLabel.getPreferredSize().getHeight()+5);
 	}
 	
@@ -390,7 +422,7 @@ public class TodayPanel extends JPanel{
 	private void setRefreshLabel() {
 		// get the current time 
 		Date date = new Date();
-		refreshLabel.setText("<html><p style=\"color:white; font-size:10px\">last updated:"+date.toString().substring(4,19)+"</p></html>");
+		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">last updated:"+date.toString().substring(4,19)+"</p></html>");
 		refreshLabel.setSize((int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 	}
 	/**
@@ -400,14 +432,14 @@ public class TodayPanel extends JPanel{
 	private void setLocationLabel(String s){
 		// for earth city, only show city name
 		if(s.equalsIgnoreCase("Mars")){
-			locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s+ "</b></p></html>");
+			locationLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>" + s+ "</b></p></html>");
 		}else{
 			int i = s.indexOf(',');
-			locationLabel.setText("<html><p style=\"color:blue; font-size:16px\"><b>" + s.substring(0,i) + "</b></p></html>");
+			locationLabel.setText("<html><p style=\"color:white; font-size:16px\"><b>" + s.substring(0,i) + "</b></p></html>");
 		}
 		
 		locationLabel.setToolTipText(s);
-		locationLabel.setSize((int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
+//		locationLabel.setSize((int)locationLabel.getPreferredSize().getWidth()+5,(int)locationLabel.getPreferredSize().getHeight()+5);
 	}
 	/**
 	 * helper method to update sunset sunrise label
@@ -415,7 +447,7 @@ public class TodayPanel extends JPanel{
 	 * @param sunset sunset time as String
 	 */
 	private void setRisetLabel(String sunrise, String sunset){
-		risetLabel.setText("<html><p style=\"color:blue; font-size:12px\">Sunrise:" + sunrise + " Sunset:" + sunset + "</p></html>");
+		risetLabel.setText("<html><p style=\"color:white; font-size:12px\">Sunrise:" + sunrise + " Sunset:" + sunset + "</p></html>");
 		risetLabel.setSize((int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		
 	}
@@ -442,10 +474,15 @@ public class TodayPanel extends JPanel{
 		ClassLoader cl = this.getClass().getClassLoader();
 		try {
 			// paint the background using the picture
-		    g.drawImage(ImageIO.read(cl.getResource("cool_UI_01"+skyCondition+".png")), 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
+			
+		    g.drawImage(Main.imageDarken(ImageIO.read(cl.getResource("new_UI_01"+skyCondition+".png"))), 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 	}
-
+	
+	public String getSkyString(){
+		return skyCondition;
+	}
+	
 }

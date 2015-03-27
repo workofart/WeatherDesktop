@@ -26,7 +26,7 @@ public class SForecastPanel extends JPanel{
 				   timeLabel; // label for data time
 	private final int tempLabelX=100, tempLabelY=20,
 			sunLabelX=190, sunLabelY=55,
-			iconLabelX=42, iconLabelY=-27, 
+			iconLabelX=44, iconLabelY=-20, 
 			timeLabelX=5,timeLabelY=0;
 	private String tmpbkgd="cool", skyCondition=""; //string to determine the backgroung picture
 	
@@ -46,7 +46,8 @@ public class SForecastPanel extends JPanel{
 		// use absolute layout
 		// create a black board
 		this.setLayout(null);
-		//this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		this.setOpaque(false);
+		this.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
 		// create icon label, put it to the left of the panel
 		iconLabel = new JLabel();
@@ -54,17 +55,17 @@ public class SForecastPanel extends JPanel{
 		this.add(iconLabel);
 		
 		// create temperature label with dash as content
-		tempLabel=new JLabel("<html><p style=\"font-size:30px\">--&#8451</p></html>");
+		tempLabel=new JLabel("<html><p style=\"color:white;font-size:30px\">--&#8451</p></html>");
 		tempLabel.setBounds(tempLabelX,tempLabelY,(int)tempLabel.getPreferredSize().getWidth(),(int)tempLabel.getPreferredSize().getHeight());
 		this.add(tempLabel);
 		
 		// create ksy condition label with dash as content
-		sunLabel=new JLabel("<html><p style=\"font-size:12px\">----------</p></html>");
+		sunLabel=new JLabel("<html><p style=\"color:white;font-size:12px\">----------</p></html>");
 		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
 		this.add(sunLabel);
 		
 		// create data time label with dash as content
-		timeLabel=new JLabel("<html><p style=\"font-size:10px\">--:--</p></html>");
+		timeLabel=new JLabel("<html><p style=\"color:white;font-size:10px\">--:--</p></html>");
 		timeLabel.setBounds(timeLabelX,timeLabelY,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 		this.add(timeLabel);
 		
@@ -99,7 +100,7 @@ public class SForecastPanel extends JPanel{
 	 * @param time the time of data in short forecast represent
 	 */
 	private void setTime(String time){
-		timeLabel.setText("<html><p style=\"font-size:10px\">" + time + "</p></html>");
+		timeLabel.setText("<html><p style=\"color:white;font-size:10px\">" + time + "</p></html>");
 		timeLabel.setBounds(timeLabelX,timeLabelY,(int)timeLabel.getPreferredSize().getWidth(),(int)timeLabel.getPreferredSize().getHeight());
 	}
 	
@@ -110,7 +111,7 @@ public class SForecastPanel extends JPanel{
 	 */
 	private void setTemp(String temp, int unit){
 		// generate content string
-		String s = "<html><p style=\"font-size:30px\">" + temp;
+		String s = "<html><p style=\"color:white;font-size:30px\">" + temp;
 		// according data unit to generate unit symbol
 		switch(unit){
 			case 0: s = s + "&#8490";
@@ -131,7 +132,7 @@ public class SForecastPanel extends JPanel{
 	 */
 	private void setSky(String sky){
 		// update the lable using the string and chagne size
-		sunLabel.setText("<html><p style=\"font-size:12px\">" + sky + "</p></html>");
+		sunLabel.setText("<html><p style=\"color:white;font-size:12px\">" + sky + "</p></html>");
 		sunLabel.setBounds(sunLabelX,sunLabelY,(int)sunLabel.getPreferredSize().getWidth(),(int)sunLabel.getPreferredSize().getHeight());
 	}
 	
@@ -144,7 +145,7 @@ public class SForecastPanel extends JPanel{
 		//Resize the icon to maintain consistency if icon files are changed
 		try{
 			BufferedImage img=ImageIO.read(this.getClass().getClassLoader().getResource(icon+".png"));
-			img=Main.imageResize(img,65,65);
+			img=Main.imageResize(img,50,50);
 			iconLabel.setIcon(new ImageIcon(img));
 		}catch(IOException e){
 			System.out.println("Shortterm forcast UI icon: "+e.getMessage());
@@ -174,6 +175,6 @@ public class SForecastPanel extends JPanel{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		g.drawImage(img, 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
+//		g.drawImage(img, 0,0,10+(int)this.getSize().getWidth(), 10+(int)this.getSize().getHeight(), null);
 	}
 }
