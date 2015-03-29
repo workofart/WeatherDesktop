@@ -174,7 +174,7 @@ public class PreferenceUI extends JFrame {
 					// if the input location is in correct format
 					// hide the preference window
 					// print the content of preference
-					pref.setLocation(format(textField.getText()));
+					pref.setLocation(textField.getText());
 					System.out.println("input preference " + pref.getLocation() +" " + pref.getTempUnit());
 					setVisible(false);
 					// write the content to file
@@ -245,7 +245,7 @@ public class PreferenceUI extends JFrame {
 						// if the input location is in correct format
 						// hide the preference window
 						// print the content of preference
-						pref.setLocation(format(textField.getText()));
+						pref.setLocation(textField.getText());
 						System.out.println("input preference " + pref.getLocation() +" " + pref.getTempUnit());
 						setVisible(false);
 						// write the content to file
