@@ -36,7 +36,7 @@ public class ShortForecast{
 											 	 data.getJSONArray("list").getJSONObject(i).getJSONObject("main").getDouble("temp"));
 			}
 		}catch(JSONException e){
-			System.out.println("Short forecst location wrong");
+			System.out.println("Short forecast location wrong");
 			Main.interrupt(Main.getShortTermThread());
 		}catch(Exception e){
 			System.out.println("Short Forecast unknown problem");

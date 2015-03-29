@@ -337,7 +337,7 @@ public class Main{
 		if(t1!= null){
 			t1.stop();
 		}
-		System.out.println("Interupt");
+		System.out.println("Interrupt");
 		tpanel.relax();
 	}
 	
@@ -348,7 +348,7 @@ public class Main{
 	public static void interrupt(Thread t){
 		if(t != null)
 			t.stop();
-		System.out.println("Interupt");
+		System.out.println("Interrupt");
 	}
 	
 	/**
