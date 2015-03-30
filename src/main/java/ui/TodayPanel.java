@@ -283,7 +283,7 @@ public class TodayPanel extends JPanel{
 		
 		//  refresh time label
 		refreshLabel=new JLabel();
-		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">update time:----------</p></html>");
+		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">update:----------</p></html>");
 		refreshLabel.setBounds(refreshLabelX,refreshLabelY,(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 		this.add(refreshLabel);
 		
@@ -449,7 +449,7 @@ public class TodayPanel extends JPanel{
 	private void setRefreshLabel() {
 		// get the current time 
 		Date date = new Date();
-		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">update time:"+date.toString().substring(4,19)+"</p></html>");
+		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">update:"+date.toString().substring(4,19)+"</p></html>");
 		refreshLabel.setSize((int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 		refreshLabel.setLocation((int)this.getSize().getWidth()-(int)refreshLabel.getPreferredSize().getWidth()-5,refreshLabelY);
 	}
