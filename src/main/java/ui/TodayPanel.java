@@ -276,14 +276,14 @@ public class TodayPanel extends JPanel{
 		this.add(sunLabel);
 		
 		//  sunrise sunset label
-		risetLabel=new JLabel("<html><p style=\"color:white; font-size:12px\">Sunrise: --:-- Sunset: --:--</p></html>");
+		risetLabel=new JLabel("<html><p style=\"color:white; font-size:12px\">Up: --:-- Down: --:--</p></html>");
 		risetLabel.setBounds(risetLabelX,risetLabelY,(int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		this.add(risetLabel);
 		
 		
 		//  refresh time label
 		refreshLabel=new JLabel();
-		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">last updated:----------</p></html>");
+		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">update time:----------</p></html>");
 		refreshLabel.setBounds(refreshLabelX,refreshLabelY,(int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
 		this.add(refreshLabel);
 		
@@ -449,8 +449,9 @@ public class TodayPanel extends JPanel{
 	private void setRefreshLabel() {
 		// get the current time 
 		Date date = new Date();
-		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">last updated:"+date.toString().substring(4,19)+"</p></html>");
+		refreshLabel.setText("<html><p style=\"color:white; font-size:12px\">update time:"+date.toString().substring(4,19)+"</p></html>");
 		refreshLabel.setSize((int)refreshLabel.getPreferredSize().getWidth()+5,(int)refreshLabel.getPreferredSize().getHeight()+5);
+		refreshLabel.setLocation((int)this.getSize().getWidth()-(int)refreshLabel.getPreferredSize().getWidth()-5,refreshLabelY);
 	}
 	/**
 	 * helper method to update location label
@@ -483,7 +484,7 @@ public class TodayPanel extends JPanel{
 		if(sunset == null){
 			sunset = "--:--";
 		}
-		risetLabel.setText("<html><p style=\"color:white; font-size:12px\">Sunrise:" + sunrise + " Sunset:" + sunset + "</p></html>");
+		risetLabel.setText("<html><p style=\"color:white; font-size:12px\">Up:" + sunrise + " Down:" + sunset + "</p></html>");
 		risetLabel.setSize((int)risetLabel.getPreferredSize().getWidth(),(int)risetLabel.getPreferredSize().getHeight());
 		
 	}
