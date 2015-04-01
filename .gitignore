@@ -1,9 +1,0 @@
-*.class
-target/
-/bin/
-*.java~
-.DS_Store
-.classpath
-.project
-.settings
-src/test
