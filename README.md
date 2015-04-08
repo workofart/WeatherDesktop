@@ -16,9 +16,8 @@ After download is complete, use the command `java –jar 8_TheWeather.jar` to ru
 
 To build, simply pull the branch [Final-Release](https://github.com/UWO-2212-W2015/team8/tree/Final-Release) from our [GitHub repository](https://github.com/UWO-2212-W2015/team8) to download the source files and java docs.
 Once download is complete, use the command `mvn compile` to compile the application. Then use the command `mvn package` to package the files into an executable jar file.
-Finally, execute `cd target` to redirect into the <b>target</b> folder and use the command `java –jar 8_TheWeather.jar` to run the program.
-<br /><br /><b>Dependencies required:</b>
-* [JDK 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
+Finally, execute `cd target` to redirect into the <b>target</b> folder and use the command `java –jar 8_TheWeather.jar` to run the program. To execute the program, you will need [JDK 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
+<br /><br /><b>Plugins required:</b>
 * [Maven Compiler Plugin 2.4](http://search.maven.org/#artifactdetails|org.apache.maven.plugins|maven-jar-plugin|2.4|maven-plugin) (Included)
 * [Maven Jar Plugin 2.3.2](http://search.maven.org/#artifactdetails|org.apache.maven.plugins|maven-compiler-plugin|2.3.2|maven-plugin) (Included)
 
