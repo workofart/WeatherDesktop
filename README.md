@@ -23,7 +23,7 @@ Finally, execute `cd target` to redirect into the <b>target</b> folder and use t
 
 
 # Usage Example
-<b>Placeholder</b>
+http://youtu.be/DlIub-rh8cY
 
 # Documentation
 
