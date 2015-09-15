@@ -10,7 +10,7 @@ The user interface was designed by hand using Swing and uses a [free icon pack](
 # Install
 
 To install, simply pull the branch [Install](https://github.com/UWO-2212-W2015/team8/tree/Install) from our [GitHub repository](https://github.com/UWO-2212-W2015/team8) to download the application, <b>8_TheWeather.jar</b>.
-After download is complete, use the command `java –jar 8_TheWeather.jar` to run the program.
+After download is complete, use the command `java –jar 8_TheWeather.jar` to run the program. <b>Note that OpenWeatherMap API keys are expired, we haven't updated them.</b>
  
 # Build
 
